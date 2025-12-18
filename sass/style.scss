@@ -1,0 +1,2336 @@
+@use "sass:math";
+
+// =================================================================
+//  Variables
+// =================================================================
+
+// --- Spacing ---
+$space-xs: 0.25rem; // 4px
+$space-s: 0.5rem; // 8px
+$space-m: 1rem; // 16px
+$space-l: 1.5rem; // 24px
+$space-xl: 2rem; // 32px
+$space-xxl: 2.5rem; // 40px
+$space-xxxl: 3rem; // 48px
+
+// --- Colors ---
+$color-text: #3A2D26;
+$color-line: #E8D7C8;
+$color-main: #E89A67;
+$color-accent: #D9877A;
+$color-bg: #fff;
+$bg-light: #FFF9F6;
+$color-arrow: #6f6b52;
+
+// --- Typography ---
+$font-size-base: 16;
+$font-family-gothic: "Hiragino Maru Gothic ProN", "ヒラギノ丸ゴ ProN", "Hiragino Sans", "ヒラギノ角ゴシック", "Meiryo", "メイリオ", sans-serif;
+$font-family-mincho: "Times New Roman", Times, "Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif;
+
+// --- Breakpoints ---
+$breakpoints: (
+    other-photograph: 1080px,
+    desktop: 800px,
+    sp: 480px,
+    birdgap: 640px
+);
+
+// =================================================================
+//  Functions
+// =================================================================
+
+// pxをremに変換する
+// @param {number} $px-value - px値
+// @return {string} - rem値
+@function rem($px-value) {
+    @return #{math.div($px-value, $font-size-base)}rem;
+}
+
+// XDのトラッキング値をemに変換する
+// @param {number} $xd-value - XDのトラッキング値
+// @return {string} - em値
+@function ls($xd-value) {
+    @return #{math.div($xd-value, 1000)}em;
+}
+
+
+// =================================================================
+//  Mixins
+// =================================================================
+
+// メディアクエリ (モバイルファースト)
+// @param {string} $breakpoint - $breakpointsのキー
+@mixin mq($breakpoint: desktop) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+        @content;
+    }
+}
+
+// インナー幅の指定
+// @param {number} $mw - max-width
+// @param {number} $w  - width
+
+@mixin header-inner($mw: 1280px, $w: percentage(math.div(1180, 1280))) {
+    max-width: $mw;
+    width: $w;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@mixin inner($mw: 1200px, $w: percentage(math.div(1180, 1280))) {
+    max-width: $mw;
+    width: $w;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@mixin title-main($t) {
+    font-size: rem(28);
+    line-height: math.div(40, 28);
+    margin: rem(80) 0 rem(30);
+    text-align: center;
+
+    @include mq(sp) {
+        font-size: rem(40);
+        line-height: math.div(40, 60);
+        margin: rem(120) 0 rem(50);
+        text-align: center;
+    }
+}
+
+@mixin title-sub($ts) {
+    font-size: 18px;
+    line-height: math.div(27, 18);
+    margin-bottom: rem(30);
+    text-align: center;
+
+    @include mq(sp) {
+        font-size: rem(22);
+        line-height: math.div(34, 22);
+        margin-bottom: rem(30);
+        text-align: center;
+    }
+}
+
+@mixin viewmore($m) {
+
+    display: block;
+    width: 100%;
+    text-align: right;
+    margin-top: rem(30);
+
+    span {
+        position: relative;
+        display: inline-block;
+        padding: 4px 0;
+        font-size: rem(14);
+        text-decoration: none;
+        overflow: visible;
+        z-index: 3;
+    }
+
+    /* 下線（左→右） */
+    span::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 2px;
+        width: 0;
+        background: currentColor;
+        transition: width 0.35s ease;
+        transform-origin: left;
+        z-index: 1;
+    }
+
+    /* キラン（光） */
+    span::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -60%;
+        width: 40%;
+        height: 100%;
+        background: linear-gradient(to right,
+                rgba(58, 45, 38, 0) 0%,
+                rgba(255, 255, 255, 0.9) 50%,
+                rgba(58, 45, 38, 0) 100%);
+        transform: skewX(-20deg);
+        transition: left 0.35s ease;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    /* hover 動作 */
+    &:hover span::after {
+        width: 100%;
+    }
+
+    &:hover span::before {
+        left: 100%;
+    }
+
+    /* ホバー時の文字の“強めのフラッシュ”（必要なら） */
+    &:hover span {
+        color: $color-text;
+        opacity: 0.85;
+        transition: opacity 0.2s ease;
+    }
+
+    @include mq(sp) {
+        display: block;
+        width: 100%;
+        text-align: right;
+        margin-top: rem(50);
+
+        span {
+            font-size: rem(16);
+        }
+
+    }
+}
+
+@mixin hover($h) {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 3px; // 下線用
+    overflow: hidden; // ← ★これが超重要！
+
+    color: currentColor;
+    text-decoration: none;
+
+    /* 下線（左→右） */
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: currentColor;
+        transition: width 0.35s ease;
+    }
+
+    /* キラン（光） */
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -50%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.9) 50%,
+                rgba(255, 255, 255, 0) 100%);
+        transform: skewX(-20deg);
+        transition: left 0.35s ease;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    &:hover::after {
+        width: 100%;
+    }
+
+    &:hover::before {
+        left: 100%;
+    }
+
+    &:hover {
+        opacity: 0.85;
+    }
+
+    /* SP */
+    @include mq(sp) {
+        font-size: rem(16);
+        padding-bottom: 5px;
+    }
+}
+
+
+body {
+    color: $color-text;
+    font-size: rem(16);
+    font-family: $font-family-gothic;
+    line-height: math.div(28, 16);
+    letter-spacing: ls(50);
+}
+
+:focus-visible {
+    /* ブラウザ標準の青枠を出す */
+    outline: revert;
+    outline-offset: 2px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: bottom;
+}
+
+a {
+    text-decoration: none;
+}
+
+// =================================================================
+//  Common
+// =================================================================
+
+.header {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: rem(20) 0;
+    z-index: 10;
+
+    &__inner {
+        @include header-inner();
+        display: grid;
+        grid-auto-flow: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__logo {
+        width: rem(60);
+        height: auto;
+        object-fit: cover;
+
+        @include mq(sp) {
+            width: rem(100);
+        }
+    }
+}
+
+.drawer {
+    position: relative;
+
+    &__toggle {
+        position: fixed;
+        top: percentage(math.div(40, 850));
+        right: percentage(math.div(50, 1280));
+        width: 20px;
+        height: 20px;
+        z-index: 1000;
+        cursor: pointer;
+
+        @include mq(sp) {
+            width: 30px;
+            height: 30px;
+        }
+
+        span {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: $color-text;
+            left: 0;
+            transition: .7s;
+            border-radius: 2px;
+
+            @include mq(sp) {
+                height: 3px;
+            }
+        }
+
+        span:nth-child(1) {
+            top: rem(4);
+        }
+
+        span:nth-child(2) {
+            top: rem(13);
+        }
+
+        span:nth-child(3) {
+            top: rem(22);
+        }
+    }
+
+    &__close {
+        position: fixed;
+        top: rem(20);
+        right: rem(20);
+        display: none;
+        z-index: 1100;
+        cursor: pointer;
+        font-size: rem(30);
+    }
+
+    &__mask {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 900;
+    }
+
+    &__nav {
+        position: fixed;
+        top: 0;
+        right: -280px;
+        width: 280px;
+        height: 100vh;
+        background: #fff;
+        transition: right .7s;
+        padding: rem(40) rem(20);
+        z-index: 1000;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    &__item {
+        font-size: 14px;
+        text-decoration: none;
+        color: $color-text;
+
+        position: relative;
+        display: inline-block;
+        text-decoration: none;
+        padding-bottom: 3px;
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background: currentColor;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform .3s ease;
+        }
+
+        &.is-active::after,
+        &:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+    }
+
+    &.is-open {
+        .drawer__nav {
+            right: 0;
+        }
+
+        .drawer__mask {
+            display: block;
+        }
+
+        .drawer__close {
+            display: block;
+        }
+
+        .drawer__toggle {
+            display: none;
+        }
+    }
+}
+
+.flash-effect {
+    position: fixed;
+    inset: 0;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2000;
+    transition: opacity 0.2s ease;
+
+}
+
+.flash-effect.is-active {
+    opacity: 1;
+}
+
+.inqury__btn {
+    color: #fff;
+    font-size: rem(14);
+    line-height: math.div(20, 14);
+    text-decoration: none;
+    text-align: center;
+    background-color: $color-accent;
+    border: 2px solid $color-bg;
+    padding: rem(15) 0;
+    display: block;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    transition: .7s;
+    transform: translateY(-50%);
+    z-index: 1000;
+    cursor: pointer;
+    overflow: hidden;
+    text-orientation: mixed;
+
+    @include mq(sp) {
+        display: inline-block;
+        right: 0;
+        bottom: 10%;
+        width: rem(60);
+        height: rem(150);
+        padding: rem(20) rem(10);
+        writing-mode: vertical-rl;
+        overflow-wrap: break-word;
+    }
+
+    &:hover {
+        background-color: $color-main;
+    }
+}
+
+.footer {
+    padding: rem(120) 0;
+    background-color: $color-main;
+
+    &__inner {
+        @include inner();
+    }
+
+    &__about {
+        display: flex;
+        flex-direction: column;
+        gap: rem(15);
+        font-size: rem(14);
+        line-height: math.div(22, 14);
+        margin-bottom: rem(40);
+    }
+
+    &__copy {
+        font-size: rem(12);
+        line-height: math.div(18, 12);
+        text-align: center;
+        display: flex;
+        gap: rem(30);
+    }
+
+    &__img {
+        width: rem(120);
+        height: auto;
+        object-fit: cover;
+    }
+}
+
+
+.btn {
+    display: inline-block;
+    position: relative;
+    padding: rem(15) rem(20);
+    border-right: rem(50) solid #e89a67;
+    background-color: #f5f5f5;
+    color: $color-text;
+    text-decoration: none;
+
+    &::before {
+        position: absolute;
+        bottom: rem(-6);
+        right: rem(-60);
+        z-index: -1;
+        transform: rotate(5deg);
+        width: 100%;
+        height: 50%;
+        background-color: #d0d0d0;
+        content: "";
+        filter: blur(4px);
+    }
+
+    @include mq() {
+        padding: rem(20) rem(40);
+        border-right: rem(80) solid #e89a67;
+    }
+}
+
+.bg-birds {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    background: #fff;
+}
+
+/* コンテンツを前面にしたい場合 */
+header,
+main,
+footer {
+    position: relative;
+    z-index: 1;
+}
+
+/* 横切り（基準移動） */
+.bg-birds__fly {
+    position: absolute;
+    left: 0;
+    will-change: transform;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+/* 左→右 / 右→左（横方向は親で担当） */
+.bg-birds__fly--lr {
+    animation-name: bird-fly-lr;
+}
+
+.bg-birds__fly--rl {
+    animation-name: bird-fly-rl;
+}
+
+/* 4レーン（高さ・速度・ズレ） */
+.bg-birds__fly:nth-child(1) {
+    top: 12%;
+    animation-duration: 22s;
+    animation-delay: -2s;
+}
+
+.bg-birds__fly:nth-child(2) {
+    top: 34%;
+    animation-duration: 28s;
+    animation-delay: -12s;
+}
+
+.bg-birds__fly:nth-child(3) {
+    top: 58%;
+    animation-duration: 26s;
+    animation-delay: -6s;
+}
+
+.bg-birds__fly:nth-child(4) {
+    top: 80%;
+    animation-duration: 30s;
+    animation-delay: -18s;
+}
+
+/* カーブ（ゆるいS字）＝中間レイヤーで担当 */
+.bg-birds__curve {
+    display: inline-block;
+    will-change: transform;
+    animation: bird-curve 5.6s ease-in-out infinite;
+}
+
+/* カーブの個体差（同じだと機械っぽいのでズラす） */
+.bg-birds__curve--a {
+    animation-duration: 6.4s;
+    animation-delay: -1.2s;
+}
+
+.bg-birds__curve--b {
+    animation-duration: 7.2s;
+    animation-delay: -2.8s;
+}
+
+.bg-birds__curve--c {
+    animation-duration: 6.8s;
+    animation-delay: -3.6s;
+}
+
+.bg-birds__curve--d {
+    animation-duration: 7.6s;
+    animation-delay: -1.9s;
+}
+
+/* 鳥っぽい：上下ふわふわ＋ちょい傾き */
+.bg-birds__float {
+    display: inline-block;
+    will-change: transform;
+    animation: bird-wobble 3.8s ease-in-out infinite;
+}
+
+/* 鳥本体：小刻みな浮遊（微スケール） */
+.bg-birds__bird {
+    width: rem(70);
+    display: block;
+    transform-origin: 40% 60%;
+    will-change: transform;
+    animation: bird-bob 1.9s ease-in-out infinite;
+}
+
+/* 色の差（白い鳥は控えめ） */
+.bg-birds__bird--blue {
+    opacity: 0.9;
+}
+
+.bg-birds__bird--white {
+    opacity: 0.6;
+}
+
+/* 横移動 */
+@keyframes bird-fly-lr {
+    0% {
+        transform: translateX(-20vw);
+    }
+
+    100% {
+        transform: translateX(120vw);
+    }
+}
+
+@keyframes bird-fly-rl {
+    0% {
+        transform: translateX(120vw);
+    }
+
+    100% {
+        transform: translateX(-20vw);
+    }
+}
+
+/* ゆるいカーブ飛行（横方向は親がやるので、ここはXをいじらずYと傾きだけ） */
+@keyframes bird-curve {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    25% {
+        transform: translateY(rem(-10)) rotate(-1deg);
+    }
+
+    50% {
+        transform: translateY(rem(2)) rotate(1deg);
+    }
+
+    75% {
+        transform: translateY(rem(-8)) rotate(-1deg);
+    }
+
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+}
+
+/* 鳥っぽい揺れ（少しだけ） */
+@keyframes bird-wobble {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    35% {
+        transform: translateY(rem(-8)) rotate(1deg);
+    }
+
+    70% {
+        transform: translateY(rem(-2)) rotate(-1deg);
+    }
+
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+}
+
+/* 小刻み浮遊 */
+@keyframes bird-bob {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(rem(-3)) scale(1.01);
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* アクセシビリティ */
+@media (prefers-reduced-motion: reduce) {
+
+    .bg-birds__fly,
+    .bg-birds__curve,
+    .bg-birds__float,
+    .bg-birds__bird {
+        animation: none !important;
+    }
+}
+
+
+// =================================================================
+//  index.html
+// =================================================================
+
+.style {
+    &__inner {
+        @include inner();
+    }
+
+    &__title {
+        @include title-main(style);
+    }
+
+    &__subtitle {
+        @include title-sub(style);
+    }
+
+    &__text {
+
+        font-size: rem(14);
+        line-height: math.div(26, 14);
+
+        p {
+            text-align: center;
+        }
+
+        @include mq(sp) {
+            font-size: rem(16);
+            line-height: math.div(40, 16);
+            max-width: rem(800);
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+}
+
+.gallery {
+    &__inner {
+        @include inner();
+    }
+
+    &__title {
+
+        @include title-main(gallery);
+    }
+
+    &__kinds {
+        margin-top: rem(50);
+    }
+}
+
+.ceremony {
+    &__title {
+        @include title-sub(ceremony);
+    }
+
+    &__list {
+        display: grid;
+        row-gap: rem(30);
+
+        &--column {
+            margin-top: rem(30);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            grid-column-gap: rem(20);
+            grid-row-gap: rem(20);
+            align-items: center;
+
+            .ceremony__item1 {
+                grid-area: 1 / 1 / 3 / 2;
+            }
+
+            .ceremony__item2 {
+                grid-area: 1 / 2 / 2 / 3;
+            }
+
+            .ceremony__item3 {
+                grid-area: 2 / 2 / 3 / 3;
+            }
+        }
+
+        @include mq() {
+            grid-auto-flow: column;
+            column-gap: rem(50);
+
+            &--column {
+                margin-top: rem(50);
+                grid-column-gap: rem(50);
+                grid-row-gap: rem(50);
+            }
+        }
+    }
+
+    &__more {
+        @include viewmore(ceremony);
+    }
+}
+
+.reception {
+
+    &__title {
+        @include title-sub(reception);
+    }
+
+    &__list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        grid-column-gap: rem(20);
+        grid-row-gap: rem(20);
+        align-items: center;
+
+
+        .reception__item1 {
+            grid-area: 1 / 1 / 2 / 2;
+        }
+
+        .reception_item2 {
+            grid-area: 2 / 1 / 3 / 2;
+        }
+
+        .reception__item3 {
+            grid-area: 1 / 2 / 3 / 3;
+        }
+
+        &--column {
+            display: grid;
+            row-gap: rem(30);
+            margin-top: rem(30);
+        }
+
+        @include mq() {
+
+            margin-top: rem(50);
+            grid-column-gap: rem(50);
+            grid-row-gap: rem(50);
+
+            &--column {
+                grid-auto-flow: column;
+                column-gap: rem(50);
+            }
+        }
+    }
+
+    &__more {
+        @include viewmore(reception);
+    }
+}
+
+.decoration {
+    &__title {
+        @include title-sub(decoration);
+    }
+
+    &__list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: rem(30);
+
+        @include mq() {
+            gap: rem(50);
+        }
+    }
+
+    &__more {
+        @include viewmore(decoration);
+    }
+}
+
+.plan {
+    padding-top: rem(80);
+
+    &__inner {
+        @include inner();
+        display: flex;
+        flex-direction: column; // ボタン→鳥 の縦並び
+        align-items: flex-start; // ← もしこれになっていると左端に固定されます！
+
+        @include mq(sp) {
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 5.9%; // 鳥と付箋の間のスペース
+        }
+    }
+
+    &__bird {
+        display: none;
+        width: 60px;
+        height: auto;
+
+        @include mq(birdgap) {
+            display: block;
+            width: 100px;
+        }
+
+        &--sp {
+            width: 60px;
+            height: auto;
+            order: 2; // ボタンの下へ移動
+            transform: rotate(20deg); // ← 上を向く（右端側が上になる角度）
+            align-self: flex-end; // 右端に寄せる
+            margin-right: 0;
+
+            @include mq(birdgap) {
+                width: 100px;
+                order: 0;
+                transform: none;
+                align-self: auto;
+            }
+        }
+
+    }
+}
+
+.photographer {
+    &__inner {
+        @include inner();
+    }
+
+    &__title {
+        @include title-main(photographer);
+    }
+
+    &__photo {
+        width: rem(150);
+        height: auto;
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+
+        @include mq() {
+            width: rem(360);
+        }
+    }
+
+    &__profile {
+
+        @include mq(sp) {
+            width: 800px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: rem(80);
+        }
+    }
+
+    &__text {
+        text-align: center;
+
+        @include mq() {
+            text-align: left;
+        }
+    }
+
+    &__name {
+        margin: rem(30) 0 rem(15);
+    }
+}
+
+.voice {
+    &__inner {
+        @include inner();
+    }
+
+    &__title {
+        @include title-main(voice);
+    }
+
+    &__content {
+
+        @include mq () {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            column-gap: rem(50);
+        }
+    }
+
+    &__group {
+        margin-top: rem(30);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: rem(25);
+    }
+
+    &__name {
+        text-align: center;
+
+        @include mq() {
+            font-size: rem(18);
+        }
+    }
+}
+
+.inquiry {
+    margin: rem(80) 0;
+
+    @include mq() {
+        margin: rem(120) 0;
+    }
+
+    &__inner {
+        @include inner();
+    }
+
+    &__title {
+        font-size: rem(28);
+        line-height: math.div(40, 28);
+        margin: rem(50) 0 rem(30);
+        text-align: center;
+
+        @include mq(sp) {
+            font-size: rem(40);
+            line-height: math.div(40, 60);
+            text-align: center;
+        }
+    }
+
+    &__subtitle {
+        @include title-sub(inquiry);
+    }
+
+    &__box {
+
+        @include mq(sp) {
+            max-width: rem(900);
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 percentage(math.div(100, 900));
+            border: 2px solid #F1E5DD;
+            background: $color-bg;
+            filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.25));
+        }
+    }
+
+    &__check {
+        display: block;
+        padding: rem(10) 0;
+    }
+
+    &__check .dummy {
+        display: none;
+
+        @include mq() {
+            display: block;
+            width: 1px;
+            height: 1px;
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column; // スマホは縦
+        gap: rem(8);
+        margin-bottom: rem(30);
+        text-align: center;
+
+        input,
+        textarea {
+            width: 100%;
+            border: none;
+            background: $color-accent;
+            padding: rem(14);
+            border-radius: rem(4);
+            color: #fff;
+            outline: none;
+
+            &::placeholder {
+                color: rgba(255, 255, 255, 0.7);
+            }
+        }
+
+        textarea {
+            height: rem(180);
+            resize: vertical;
+        }
+
+        // ---------------------------------------------------
+        // PC（800px〜）：横並びに切り替え
+        // ---------------------------------------------------
+        @include mq(desktop) {
+            flex-direction: row;
+            align-items: flex-start;
+            gap: rem(40);
+            text-align: left;
+
+            p {
+                width: rem(140);
+                flex-shrink: 0;
+                padding-top: rem(8); // 入力欄の高さと揃える
+            }
+        }
+    }
+
+    // ------------------------------------
+    // 送信ボタン
+    // ------------------------------------
+
+    &__submit {
+        text-align: center;
+        margin-bottom: rem(60);
+
+        @include mq() {
+            margin-bottom: rem(80);
+        }
+    }
+
+    &__submit-btn {
+        display: inline-block;
+        margin: 0 auto;
+        background-color: $color-accent;
+        border: 3px solid #F1E5DD;
+        color: #fff;
+
+        // ← 余白を小さめに調整
+        padding: rem(8) rem(12);
+
+        border-radius: rem(4);
+        font-size: rem(14);
+        cursor: pointer;
+        transition: .3s;
+
+        &:hover {
+            opacity: .8;
+            background-color: #fff;
+            color: $color-accent;
+        }
+    }
+}
+
+/* ===== チェックボックス ===== */
+/* input を隠す */
+.checkbox__input[type="checkbox"] {
+    appearance: none;
+    width: 0.3rem;
+    height: 0.3rem;
+    border: 2px solid $color-accent;
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    z-index: 2; // ← 上にあるチェックはこれが無いと押せない
+}
+
+/* チェックが付いた時だけチェックマーク表示 */
+.checkbox__input:checked~.checkbox__box::after {
+    opacity: 1;
+}
+
+.checkbox {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    z-index: 3; // input を最前面へ
+
+    &__input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        pointer-events: none;
+        z-index: 4;
+    }
+
+    &__box {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: rem(30);
+        height: rem(30);
+        border: 2px solid $color-accent;
+        border-radius: 0.6rem;
+        font-size: rem(14); // ← 効くようになる
+        cursor: pointer;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0.9rem;
+            height: 0.5rem;
+            border-left: 2px solid $color-accent;
+            border-bottom: 2px solid $color-accent;
+            transform: translate(-50%, -60%) rotate(-45deg);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+    }
+
+    &__input:checked~.checkbox__box::after {
+        opacity: 1;
+    }
+}
+
+.checkbox label {
+    position: relative;
+    z-index: 2;
+}
+
+
+
+/* ===== 下の確認リンク ===== */
+.btn--confirmation {
+    display: inline-block;
+    font-size: rem(14) !important;
+    color: $color-accent;
+    position: relative;
+    text-decoration: none;
+    overflow: hidden;
+    z-index: 10; // ← 上げた
+    margin: rem(20) 0 !important;
+
+    @include hover(inquiry);
+
+    &::before {
+        z-index: 5; // ← 本体より下に調整
+        opacity: 0.6;
+        mix-blend-mode: screen;
+    }
+
+    &::after {
+        z-index: 4;
+    }
+}
+
+/* ---------------------------------------------------------------
+    Card (Basic Plan Box)
+---------------------------------------------------------------- */
+
+.card {
+    background: #fff;
+    border: 3px solid $color-line;
+    box-shadow: 2px 4px 4px 0 rgba(0, 0, 0, 0.25);
+    padding: rem(20) rem(10);
+    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    &__title {
+        font-size: rem(16);
+        line-height: 1.4;
+        margin-bottom: rem(20);
+        font-weight: 500;
+        color: $color-text;
+    }
+
+    &__text {
+        font-size: rem(22);
+        line-height: math.div(32, 22);
+        font-weight: bold;
+        margin-bottom: rem(20);
+        color: $color-text;
+    }
+
+    &__icon {
+
+        &--wrap {
+            width: rem(100);
+            height: rem(80); // ★見た目基準の高さ
+            margin: auto; // 縦横中央
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            @include mq() {
+                width: rem(150);
+                height: rem(120);
+            }
+        }
+
+        width: 100%;
+        height: 100%;
+        object-fit: contain; // ★切らずに収める
+        display: block;
+    }
+
+    @include mq(desktop) {
+        padding: rem(40) rem(30);
+        width: rem(300);
+
+        &__title {
+            font-size: rem(24);
+        }
+
+        &__text {
+            font-size: rem(42);
+        }
+
+        &__icon {
+            width: rem(150);
+        }
+    }
+}
+
+
+/* ================================================================
+    Basic Plan
+================================================================ */
+
+.basicplan {
+    padding: rem(40) 0;
+    color: $color-text;
+
+    &__inner {
+        @include inner();
+    }
+
+    &__title {
+        @include title-main(basicplan);
+    }
+
+    &__list {
+        display: grid;
+        grid-auto-flow: column;
+        justify-content: center;
+        align-items: stretch;
+        column-gap: rem(20);
+        margin-top: rem(20);
+
+        @include mq(desktop) {
+            justify-content: center;
+            column-gap: rem(50);
+        }
+    }
+
+    &__item {
+        width: rem(180);
+
+        @include mq() {
+            width: rem(320);
+        }
+    }
+
+    &__notes {
+        font-size: rem(14);
+        text-align: center;
+        margin-top: rem(40);
+        color: $color-text;
+
+        @include mq() {
+            font-size: rem(16);
+            margin-top: rem(60);
+        }
+    }
+}
+
+
+.summary {
+    &__inner {
+        @include inner();
+    }
+
+    &__title {
+        @include title-main(summary);
+    }
+
+    &__text {
+        text-align: center;
+
+        @include mq() {
+            display: flex;
+            justify-content: center;
+            text-align: left;
+        }
+
+        &--inner {
+            display: grid;
+            row-gap: rem(20);
+
+            @include mq() {
+                display: flex;
+                flex-direction: column;
+                /* ← これが重要 */
+                gap: rem(10)
+            }
+        }
+    }
+}
+
+.option {
+    &__inner {
+        @include inner();
+    }
+
+    &__title {
+        @include title-main(option);
+    }
+
+    &__subtitle {
+        @include title-sub(option);
+        margin-top: rem(50);
+
+        @include mq() {
+            margin-top: rem(60);
+        }
+    }
+
+    &__text {
+        margin-top: rem(30);
+        display: grid;
+        row-gap: rem(20);
+
+        @include mq() {
+            display: flex;
+            justify-content: center;
+            margin-top: rem(60);
+        }
+
+        &--inner {
+            display: flex;
+            flex-direction: column;
+            /* ← これが重要 */
+            gap: rem(10)
+        }
+
+        p:nth-child(even) {
+            margin-top: rem(10);
+            line-break: strict;
+            overflow-wrap: break-word;
+            display: flex;
+            flex-direction: column;
+            /* ← これが重要 */
+            gap: rem(10)
+        }
+    }
+
+    &__album {
+
+        .option__list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            grid-column-gap: rem(20);
+            grid-row-gap: rem(30);
+            align-items: stretch;
+
+            .option__item1 {
+                grid-area: 1 / 1 / 2 / 2;
+            }
+
+            .option__item2 {
+                grid-area: 1 / 2 / 2 / 3;
+            }
+
+            .option__item3 {
+                width: rem(180);
+                grid-area: 2 / 1 / 3 / 3;
+
+                @include mq() {
+                    width: rem(340);
+                    grid-area: auto;
+                }
+            }
+
+            @include mq(desktop) {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: none;
+                column-gap: rem(50);
+            }
+        }
+
+        .card {
+            @include mq() {
+                width: rem(340);
+            }
+        }
+    }
+
+    &__usb {
+        .card {
+            margin-right: auto;
+            margin-left: auto;
+            width: rem(170);
+
+            @include mq() {
+                width: rem(320);
+            }
+        }
+    }
+
+    &__afterparty {
+
+        .option__list {
+            display: grid;
+            grid-auto-flow: column;
+            justify-content: center;
+            align-items: stretch;
+            column-gap: rem(20);
+            margin-top: rem(20);
+
+            @include mq(desktop) {
+                justify-content: center;
+                column-gap: rem(50);
+            }
+        }
+
+        .card {
+            @include mq() {
+                width: rem(320);
+            }
+        }
+    }
+}
+
+
+.otheroption {
+    &__inner {
+        @include inner();
+    }
+
+    &__title {
+        @include title-main(otheroption);
+    }
+
+    &__list {
+        width: fit-content;
+        margin: 0 auto;
+        text-align: left;
+    }
+
+    &__item {
+        margin-top: rem(20);
+    }
+}
+
+.other-photograph {
+
+    margin-bottom: rem(120);
+
+    &__inner {
+        @include inner();
+    }
+
+    &__title {
+        @include title-main(other-photograph);
+    }
+
+    &__subtitle {
+        @include title-sub(other-photograph);
+
+        @include mq() {
+            line-height: 1.4;
+            min-height: calc(1.4em * 2);
+        }
+    }
+
+    &__list {
+
+        display: grid;
+        row-gap: rem(50);
+        align-items: stretch;
+
+        @include mq(desktop) {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            justify-content: center;
+        }
+
+        @include mq(other-photograph) {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            justify-content: center;
+            column-gap: rem(50);
+        }
+    }
+
+    &__content {
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+    }
+
+    &__item {
+        margin-right: auto;
+        margin-left: auto;
+        width: rem(170);
+
+        @include mq() {
+            width: rem(300);
+        }
+    }
+
+    &__item3 {
+        margin-right: auto;
+        margin-left: auto;
+        width: rem(174);
+
+        @include mq() {
+            width: rem(310);
+        }
+    }
+
+    &__text {
+        margin-top: rem(30);
+    }
+}
+
+// =================================================================
+//  Order（ご注文の流れ）
+// =================================================================
+
+// .order {
+//     padding-bottom: rem(80);
+
+//     &__inner {
+//         @include inner();
+//     }
+
+//     &__title {
+//         @include title-main(order);
+//     }
+
+//     &__content {
+//         width: rem(220);
+//         min-height: rem(220);
+//         background: $color-accent;
+//         border-radius: rem(50);
+//         border: 3px solid $color-line;
+//         margin-right: auto;
+//         margin-left: auto;
+//         padding: rem(24) rem(20);
+//         text-align: center;
+//         color: #fff;
+
+//         display: flex;
+//         flex-direction: column;
+//         justify-content: center;
+//         align-items: center;
+
+//         // カード間余白
+//         &:not(:last-of-type) {
+//             margin-bottom: rem(24);
+//         }
+//     }
+
+//     &__icon {
+//         width: rem(48);
+//         height: auto;
+//         margin-bottom: rem(12);
+//     }
+
+//     &__detail {
+//         font-size: rem(16);
+//         font-weight: bold;
+//         line-height: math.div(24, 16);
+//         margin-bottom: rem(10);
+//     }
+
+//     &__text {
+//         font-size: rem(14);
+//         line-height: math.div(22, 14);
+//         opacity: 0.95;
+//         margin-bottom: rem(10);
+//     }
+// }
+
+// .arrow {
+//     position: relative;
+//     height: rem(40);
+//     margin: rem(8) 0 rem(16);
+
+//     &::before {
+//         content: "";
+//         position: absolute;
+//         top: 0;
+//         left: 50%;
+//         transform: translateX(-50%);
+//         width: 1px;
+//         height: 100%;
+//         background-image: repeating-linear-gradient(to bottom,
+//                 $color-arrow,
+//                 $color-arrow 4px,
+//                 transparent 4px,
+//                 transparent 8px);
+//     }
+
+//     &::after {
+//         content: "";
+//         position: absolute;
+//         bottom: 0;
+//         left: 50%;
+//         transform: translateX(-50%) rotate(45deg);
+//         width: rem(8);
+//         height: rem(8);
+//         border-right: 2px solid $color-arrow;
+//         border-bottom: 2px solid $color-arrow;
+//     }
+// }
+
+// =================================================================
+// Order（ご注文の流れ）
+// =================================================================
+
+// =================================================================
+// Order（ご注文の流れ）
+// =================================================================
+
+.order {
+    padding-bottom: rem(80);
+
+    &__inner {
+        @include inner();
+    }
+
+    &__title {
+        @include title-main(order);
+    }
+
+    // -------------------------------------------------
+    // Flow（カード＋矢印の土台）
+    // -------------------------------------------------
+    &__flow {
+        position: relative;
+
+        @include mq(desktop) {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: rem(18);
+            max-width: rem(900);
+            margin: 0 auto;
+        }
+    }
+
+    // -------------------------------------------------
+    // カード
+    // -------------------------------------------------
+    &__content {
+        width: rem(220);
+        min-height: rem(220);
+        background: $color-accent;
+        border-radius: rem(50);
+        border: 3px solid $color-line;
+        margin: 0 auto rem(24);
+        padding: rem(24) rem(20);
+        text-align: center;
+        color: #fff;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        @include mq(desktop) {
+            width: rem(300);
+            min-height: rem(300);
+            margin: 0 0 rem(150);
+        }
+
+        // 左（奇数）
+        @include mq(desktop) {
+            &:nth-of-type(odd) {
+                justify-self: end;
+                margin-right: rem(40);
+            }
+        }
+
+        // 右（偶数）
+        @include mq(desktop) {
+            &:nth-of-type(even) {
+                justify-self: start;
+                margin-left: rem(40);
+                transform: translateY(rem(180)); // ← 微調整はここ
+            }
+        }
+    }
+
+    &__icon {
+        width: rem(48);
+        margin-bottom: rem(12);
+
+        @include mq(desktop) {
+            width: rem(64);
+        }
+    }
+
+    &__detail {
+        font-size: rem(16);
+        font-weight: bold;
+        line-height: math.div(24, 16);
+        margin-bottom: rem(10);
+
+        @include mq(desktop) {
+            font-size: rem(20);
+        }
+    }
+
+    &__text {
+        font-size: rem(14);
+        line-height: math.div(22, 14);
+        opacity: 0.95;
+    }
+
+    // -------------------------------------------------
+    // 矢印レイヤー（PC専用）
+    // -------------------------------------------------
+    &__arrows {
+        display: none;
+
+        @include mq(desktop) {
+            display: block;
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+    }
+}
+
+// =================================================================
+// Arrow（PC only）
+// =================================================================
+
+.arrow {
+    display: none;
+
+    @include mq(desktop) {
+        display: block;
+        position: absolute;
+        width: rem(140);
+        height: 1px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: repeating-linear-gradient(to right,
+                    $color-arrow,
+                    $color-arrow 4px,
+                    transparent 4px,
+                    transparent 8px);
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            bottom: -4px;
+            width: rem(8);
+            height: rem(8);
+            border-right: 2px solid $color-arrow;
+            border-bottom: 2px solid $color-arrow;
+            transform: rotate(-45deg);
+        }
+    }
+}
+
+// -------------------------------------------------
+// 矢印の位置（order__flow 基準で安定）
+// -------------------------------------------------
+@include mq(desktop) {
+    .order__flow {
+
+        .arrow:nth-child(1) {
+            top: rem(150);
+            left: 44%;
+            transform: rotate(28deg);
+        }
+
+        .arrow:nth-child(2) {
+            top: rem(415);
+            left: 40%;
+            transform: rotate(-207deg);
+        }
+
+        .arrow:nth-child(3) {
+            top: rem(596);
+            left: 44%;
+            transform: rotate(29deg);
+        }
+
+        .arrow:nth-child(4) {
+            top: rem(872);
+            left: 40%;
+            transform: rotate(-203deg);
+        }
+
+        .arrow:nth-child(5) {
+            top: rem(1220);
+            left: 40%;
+            transform: rotate(16deg);
+        }
+    }
+}
+
+// =================================================================
+// Order / SP arrow（縦）
+// =================================================================
+
+.order__content+.order__content {
+    position: relative;
+    margin-top: rem(92); // ← 48 + 30px 分確保
+}
+
+.order__content+.order__content::before {
+    content: "";
+    position: absolute;
+    top: rem(-62); // ← 矢印全体を上に
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: rem(32);
+    background-image: repeating-linear-gradient(to bottom,
+            $color-arrow,
+            $color-arrow 4px,
+            transparent 4px,
+            transparent 8px);
+}
+
+.order__content+.order__content::after {
+    content: "";
+    position: absolute;
+    top: rem(-35); // ← 矢印先端も30px分ずらす
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: rem(8);
+    height: rem(8);
+    border-right: 2px solid $color-arrow;
+    border-bottom: 2px solid $color-arrow;
+}
+
+@include mq(desktop) {
+    .order__content+.order__content {
+        margin-top: 0;
+    }
+
+    .order__content+.order__content::before,
+    .order__content+.order__content::after {
+        content: none;
+    }
+}
+
+// =================================================================
+//  FAQ
+// =================================================================
+
+.faq {
+    padding: rem(80) 0;
+
+    @include mq() {
+        padding: rem(120) 0;
+    }
+
+
+    &__inner {
+        @include inner();
+    }
+
+    &__title {
+        @include title-main(faq);
+    }
+
+    &__subtitle {
+        @include title-sub(faq);
+        margin-top: rem(60);
+
+        @include mq(sp) {
+            margin-top: rem(80);
+        }
+    }
+}
+
+/* ===============================================================
+   disclosure（囲みカード＋Q/A丸アイコン）
+================================================================ */
+
+.disclosure {
+    border: 1px solid $color-main;
+    border-radius: rem(12);
+    margin-bottom: rem(20);
+    background: $color-bg;
+    overflow: hidden;
+
+    &:last-of-type {
+        margin-bottom: 0;
+    }
+
+    /* ----------------------------
+       summary（Q）
+    ---------------------------- */
+    &__summary {
+        list-style: none;
+        cursor: pointer;
+        position: relative;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: rem(16);
+
+        padding: rem(24) rem(40) rem(24) rem(64);
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+
+        @include mq(sp) {
+            padding: rem(32) rem(40) rem(32) rem(72);
+        }
+
+        /* Q 丸アイコン */
+        &::before {
+            content: "Q";
+            position: absolute;
+            top: 50%;
+            left: rem(20);
+            transform: translateY(-50%);
+
+            width: rem(28);
+            height: rem(28);
+            border-radius: 50%;
+            background: $color-main;
+            color: #fff;
+
+            font-size: rem(14);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            @include mq(sp) {
+                width: rem(32);
+                height: rem(32);
+                font-size: rem(15);
+            }
+        }
+    }
+
+    &__title {
+        font-size: rem(16);
+        line-height: math.div(26, 16);
+        color: $color-text;
+        font-family: $font-family-gothic;
+
+        @include mq(sp) {
+            font-size: rem(18);
+            line-height: math.div(30, 18);
+        }
+    }
+
+    /* ----------------------------
+       開閉アイコン（▼）
+    ---------------------------- */
+    &__icon {
+        width: rem(14);
+        height: rem(14);
+        border-right: 2px solid $color-arrow;
+        border-bottom: 2px solid $color-arrow;
+        transform: rotate(45deg);
+        transition: transform 0.3s ease;
+        flex-shrink: 0;
+    }
+
+    &[open] {
+        .disclosure__icon {
+            transform: rotate(-135deg);
+        }
+    }
+
+    /* ----------------------------
+       content（A）
+    ---------------------------- */
+    &__content {
+        position: relative;
+        padding: rem(8) rem(24) rem(32) rem(64);
+
+        color: $color-text;
+        font-size: rem(14);
+        line-height: math.div(24, 14);
+
+        /* A 丸アイコン */
+        &::before {
+            content: "A";
+            position: absolute;
+            top: rem(12);
+            left: rem(20);
+
+            width: rem(28);
+            height: rem(28);
+            border-radius: 50%;
+            background: $color-accent;
+            color: #fff;
+
+            font-size: rem(14);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            @include mq(sp) {
+                width: rem(32);
+                height: rem(32);
+                font-size: rem(15);
+            }
+        }
+
+        p {
+            margin-top: rem(12);
+        }
+
+        ul {
+            margin-top: rem(12);
+            padding-left: rem(18);
+
+            li {
+                list-style: disc;
+                margin-top: rem(6);
+            }
+        }
+
+        strong {
+            display: block;
+            margin-top: rem(20);
+            font-weight: 600;
+        }
+
+        @include mq(sp) {
+            font-size: rem(15);
+            line-height: math.div(26, 15);
+            padding-bottom: rem(40);
+        }
+    }
+
+    /* ----------------------------
+       open時のやさしい変化
+    ---------------------------- */
+    &[open] {
+        background: $bg-light;
+        border-color: $color-accent;
+    }
+}
+
+// =================================================================
+//  disclaimer
+// =================================================================
+
+.disclaimer {
+    color: $color-text;
+    padding: rem(60) 0 rem(90);
+
+    @include mq(desktop) {
+        padding: rem(90) 0 rem(120);
+    }
+
+    &__inner {
+        @include inner();
+    }
+
+    &__title {
+        @include title-main(disclaimer);
+    }
+
+    &__subtitle {
+        @include title-sub(disclaimer);
+    }
+
+    &__lead {
+        font-size: rem(16);
+        line-height: math.div(28, 16);
+        margin-top: rem(50);
+
+        @include mq(desktop) {
+            text-align: center;
+            margin: rem(60) 0;
+        }
+    }
+
+    &__text,
+    &__item {
+        font-size: rem(16);
+        line-height: math.div(28, 16);
+
+        @include mq() {
+            font-size: rem(16);
+            line-height: math.div(28, 16);
+            text-align: center;
+        }
+    }
+
+    &__line {
+        border: 0;
+        border-top: 1px solid $color-line;
+        margin: rem(50) auto;
+        width: 100%;
+
+        @include mq(desktop) {
+            margin-top: rem(60);
+        }
+    }
+
+    &__block {
+        padding: rem(4) 0;
+    }
+
+    &__note {
+        font-size: rem(14);
+        line-height: math.div(26, 14);
+        opacity: 0.9;
+        margin-top: rem(20);
+
+        @include mq(desktop) {
+            font-size: rem(14);
+            line-height: math.div(26, 14);
+            text-align: center;
+        }
+    }
+
+    &__accent {
+        font-size: rem(12);
+        line-height: math.div(24, 12);
+        opacity: 0.9;
+        margin-top: rem(50);
+        text-align: center;
+
+        @include mq(desktop) {
+            font-size: rem(14);
+            line-height: math.div(26, 14);
+            margin-top: rem(60);
+        }
+    }
+
+    &__list {
+        margin: 0;
+        display: grid;
+        gap: rem(12);
+
+        @include mq(desktop) {
+            padding-left: rem(22);
+            gap: rem(14);
+        }
+    }
+
+    &__table-wrap {
+        margin-top: rem(14);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    &__table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: rem(320);
+        background: $bg-light;
+
+        th,
+        td {
+            border: 1px solid $color-line;
+            padding: rem(10) rem(12);
+            font-size: rem(12);
+            line-height: math.div(20, 12);
+            vertical-align: middle;
+        }
+
+        th {
+            font-family: $font-family-gothic;
+            font-weight: 600;
+            text-align: left;
+            background: rgba(232, 154, 103, 0.12); // $color-mainの淡い版
+        }
+
+        @include mq(desktop) {
+
+            th,
+            td {
+                font-size: rem(14);
+                line-height: math.div(22, 14);
+                padding: rem(12) rem(14);
+            }
+        }
+    }
+
+    &__space {
+        height: rem(30);
+
+        @include mq(desktop) {
+            height: rem(40);
+        }
+    }
+}

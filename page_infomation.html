@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>infomation GLASSY-PHOTO</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/the-new-css-reset/css/reset.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <div class="bg-birds" aria-hidden="true">
+        <!-- left -> right：右向き = left.png -->
+        <span class="bg-birds__fly bg-birds__fly--lr">
+            <span class="bg-birds__curve bg-birds__curve--a">
+                <span class="bg-birds__float">
+                    <img src="/images/bluebird-left.png" alt="" class="bg-birds__bird bg-birds__bird--blue">
+                </span>
+            </span>
+        </span>
+
+        <span class="bg-birds__fly bg-birds__fly--lr">
+            <span class="bg-birds__curve bg-birds__curve--b">
+                <span class="bg-birds__float">
+                    <img src="/images/whitebird-left.png" alt="" class="bg-birds__bird bg-birds__bird--white">
+                </span>
+            </span>
+        </span>
+
+        <!-- right -> left：左向き = right.png -->
+        <span class="bg-birds__fly bg-birds__fly--rl">
+            <span class="bg-birds__curve bg-birds__curve--c">
+                <span class="bg-birds__float">
+                    <img src="/images/bluebird-right.png" alt="" class="bg-birds__bird bg-birds__bird--blue">
+                </span>
+            </span>
+        </span>
+
+        <span class="bg-birds__fly bg-birds__fly--rl">
+            <span class="bg-birds__curve bg-birds__curve--d">
+                <span class="bg-birds__float">
+                    <img src="/images/whitebird-right.png" alt="" class="bg-birds__bird bg-birds__bird--white">
+                </span>
+            </span>
+        </span>
+    </div>
+    <header class="header">
+        <div class="header__inner">
+            <h1 class="header__logo">
+                <a href="index.html"><img src="./images/logo.svg" alt="GLASSY-PHOTO" class="header__logo"></a>
+            </h1>
+            <div class="drawer">
+                <button class="drawer__toggle" aria-label="メニューを開く">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button class="drawer__close" aria-label="メニューを閉じる">
+                    ×
+                </button>
+                <div class="drawer__mask"></div>
+                <nav class="drawer__nav">
+                    <ul class="drawer__list">
+                        <li class="drawer__item"><a href="index.html">ホーム</a></li>
+                        <li class="drawer__item"><a href="#">フォトギャラリー</a></li>
+                        <li class="drawer__item"><a href="page_price.html">料金プラン</a></li>
+                        <li class="drawer__item"><a href="page_infomation.html">information</a></li>
+                        <li class="drawer__item"><a href="#">お問い合わせ</a></li>
+                    </ul>
+                </nav>
+                <div class="flash-effect"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="order">
+            <div class="order__inner">
+                <h2 class="order__title">ご注文の流れ</h2>
+                <div class="order__flow">
+                    <div class="order__content">
+                        <img src="/images/webp/mail-icon.webp" alt="" class="order__icon">
+                        <h3 class="order__detail">お問い合わせにて空き状況確認</h3>
+                        <p class="order__text">お気軽にご相談ください</p>
+                    </div>
+                    <div class="order__content">
+                        <img src="/images/webp/talk-icon.webp" alt="" class="order__icon">
+                        <h3 class="order__detail">ご対面と打ち合わせ</h3>
+                        <p class="order__text">事前にご対面日の調整をし、簡単な打ち合わせをを行います。</p>
+                    </div>
+                    <div class="order__content">
+                        <img src="/images/webp/document-icon.webp" alt="" class="order__icon">
+                        <h3 class="order__detail">正式なお申し込み</h3>
+                        <p class="order__text">打ち合わせ後、正式なお申し込み（カメラマンの日程確保）となります。</p>
+                    </div>
+                    <div class="order__content">
+                        <img src="/images/webp/camera-icon.webp" alt="" class="order__icon">
+                        <h3 class="order__detail">撮影当日</h3>
+                        <p class="order__text">心を込めて1枚、1枚丁寧に撮影します。</p>
+                    </div>
+                    <div class="order__content">
+                        <img src="/images/webp/jpeg-icon.webp" alt="" class="order__icon">
+                        <h3 class="order__detail">写真をデジタル現像</h3>
+                        <p class="order__text">撮影日より、1〜2ヶ月ほどお時間をいただきます。</p>
+                    </div>
+                    <div class="order__content">
+                        <img src="/images/webp/present-icon.webp" alt="" class="order__icon">
+                        <h3 class="order__detail">写真データの納品</h3>
+                        <p class="order__text">JPEG形式にて、納品させていただきます。その後、代金のお支払いとなります。</p>
+                    </div>
+                    <!-- PC専用 -->
+                    <div class="order__arrows">
+                        <span class="arrow"></span>
+                        <span class="arrow"></span>
+                        <span class="arrow"></span>
+                        <span class="arrow"></span>
+                        <span class="arrow"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="faq">
+            <div class="faq__inner">
+                <h2 class="faq__title">よくある質問</h2>
+                <!-- ① サービス全体について -->
+                <h3 class="faq__subtitle">① サービス全体について</h3>
+                <details class="disclosure">
+                    <summary class="disclosure__summary">
+                        <span class="disclosure__title">どうしてこんなに安くできるの？</span>
+                        <span class="disclosure__icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="disclosure__content">
+                        <p>
+                            会場業者を通さず お客様と私が直接やり取りするため、中間手数料がかからないからです。同じクオリティでも、会場経由と比べて約1/3の費用でご依頼いただけます。
+                        </p>
+                    </div>
+                </details>
+                <details class="disclosure">
+                    <summary class="disclosure__summary">
+                        <span class="disclosure__title">他社の写真家さんと何が違うの？</span>
+                        <span class="disclosure__icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="disclosure__content">
+                        <p>比較例として以下のような違いがあります。</p>
+                        <p><strong>一般カメラマン</strong></p>
+                        <ul>
+                            <li>料金：20万円〜</li>
+                            <li>撮影：200〜300枚</li>
+                            <li>納品：2〜3週間</li>
+                            <li>カメラマン：日によってばらつきあり</li>
+                        </ul>
+                        <p><strong>GLASSY PHOTO</strong></p>
+                        <ul>
+                            <li>料金：10万円〜</li>
+                            <li>撮影：800枚以上</li>
+                            <li>納品：データ即日（最短）</li>
+                            <li>カメラマン：指名制で一貫対応</li>
+                            <li>自由度：ヒアリング重視で柔軟対応</li>
+                        </ul>
+                    </div>
+                </details>
+                <!-- ② 出張・対応エリアについて -->
+                <h3 class="faq__subtitle">② 出張・対応エリアについて</h3>
+                <details class="disclosure">
+                    <summary class="disclosure__summary">
+                        <span class="disclosure__title">出張撮影はどこまで来てもらえる？</span>
+                        <span class="disclosure__icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="disclosure__content">
+                        <p>
+                            全国どこでも伺います。主なエリアは岐阜・愛知・三重・静岡・長野・滋賀・福井など中部地方ですが、
+                            ご希望があれば沖縄・北海道・海外リゾートも撮影可能です。
+                        </p>
+                    </div>
+                </details>
+                <details class="disclosure">
+                    <summary class="disclosure__summary">
+                        <span class="disclosure__title">出張撮影に別途料金はかかる？</span>
+                        <span class="disclosure__icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="disclosure__content">
+                        <p>
+                            岐阜・愛知（名古屋近郊）は 無料 です。それ以外の地域は移動費・宿泊費のみ実費でのご負担をお願いしています。
+                        </p>
+                    </div>
+                </details>
+                <details class="disclosure">
+                    <summary class="disclosure__summary">
+                        <span class="disclosure__title">結婚式の会場はどこでも大丈夫？</span>
+                        <span class="disclosure__icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="disclosure__content">
+                        <p>
+                            式場によって「外部カメラマンNG」「追加料金が必要」など規定が異なります。事前に式場へご確認をお願いします。もし不可の場合でも、多くの式場は「ゲストとしての撮影」は可能です。
+                        </p>
+                    </div>
+                </details>
+                <!-- ③ 撮影内容・クオリティについて -->
+                <h3 class="faq__subtitle">③ 撮影内容・クオリティについて</h3>
+                <details class="disclosure">
+                    <summary class="disclosure__summary">
+                        <span class="disclosure__title">どこからどこまで写真撮影するの？</span>
+                        <span class="disclosure__icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="disclosure__content">
+                        <p>
+                            プランによりますが、一般的な挙式＋披露宴プランでは、準備シーンから送賓まで撮影します。
+                        </p>
+                    </div>
+                </details>
+                <details class="disclosure">
+                    <summary class="disclosure__summary">
+                        <span class="disclosure__title">写真データは何枚もらえる？</span>
+                        <span class="disclosure__icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="disclosure__content">
+                        <p>
+                            撮影は約1200枚以上。そこから厳選し、800〜1000枚前後をデータで納品します。
+                        </p>
+                    </div>
+                </details>
+                <details class="disclosure">
+                    <summary class="disclosure__summary">
+                        <span class="disclosure__title">教会の中でも撮影できるの？</span>
+                        <span class="disclosure__icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="disclosure__content">
+                        <p>
+                            式場によって規制があります。こちらも、事前に式場へご確認ください。
+                        </p>
+                    </div>
+                </details>
+                <!-- ④ 打合せ・要望について -->
+                <h3 class="faq__subtitle">④ 打合せ・要望について</h3>
+                <details class="disclosure">
+                    <summary class="disclosure__summary">
+                        <span class="disclosure__title">事前の打合せはどうするの？</span>
+                        <span class="disclosure__icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="disclosure__content">
+                        <p>
+                            基本はメールで行います。希望があれば 電話・オンライン・面談（岐阜周辺）も可能 です。
+                        </p>
+                    </div>
+                </details>
+                <!-- ⑤ 料金・支払い・キャンセルについて -->
+                <h3 class="faq__subtitle">⑤ 料金・支払い・キャンセルについて</h3>
+                <details class="disclosure">
+                    <summary class="disclosure__summary">
+                        <span class="disclosure__title">支払い方法は？</span>
+                        <span class="disclosure__icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="disclosure__content">
+                        <ul>
+                            <li>銀行振込</li>
+                            <li>クレジットカード（手数料無料）</li>
+                        </ul>
+                    </div>
+                </details>
+                <details class="disclosure">
+                    <summary class="disclosure__summary">
+                        <span class="disclosure__title">キャンセル料はかかりますか？</span>
+                        <span class="disclosure__icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="disclosure__content">
+                        <ul>
+                            <li>撮影7日前〜：100%</li>
+                            <li>8〜14日前：80%</li>
+                            <li>15〜30日前：50%</li>
+                            <li>31日前まで：無料</li>
+                        </ul>
+                    </div>
+                </details>
+                <!-- ⑥ 納品・スケジュールについて -->
+                <h3 class="faq__subtitle">⑥ 納品・スケジュールについて</h3>
+                <details class="disclosure">
+                    <summary class="disclosure__summary">
+                        <span class="disclosure__title">納品時期は？</span>
+                        <span class="disclosure__icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="disclosure__content">
+                        <p>
+                            挙式から約2ヶ月以内 にお届けします。
+                        </p>
+                    </div>
+                </details>
+                <details class="disclosure">
+                    <summary class="disclosure__summary">
+                        <span class="disclosure__title">納品ってどうやってしてくれるの？</span>
+                        <span class="disclosure__icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="disclosure__content">
+                        <ul>
+                            <li>ダウンロード（人気）</li>
+                            <li>USBメモリー</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__about">
+                <a href="page_pledge.html">免責・誓約について</a>
+                <a href="page_pledge.html">転用・転載・引用・著作権について</a>
+                <a href="page_pledge.html">個人情報保護について</a>
+            </div>
+            <div class="footer__copy">
+                <small>&copy;結婚式に持ち込む写真カメラマン GLASSY-PHOTO
+                </small>
+                <img src="./images/webp/photographer_img.webp" alt="" class="footer__img">
+            </div>
+        </div>
+    </footer>
+    <script src="./js/script.js"></script>
+</body>
+
+</html>

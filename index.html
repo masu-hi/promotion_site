@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLASSY-PHOTO</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/the-new-css-reset/css/reset.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <div class="bg-birds" aria-hidden="true">
+        <!-- left -> right：右向き = left.png -->
+        <span class="bg-birds__fly bg-birds__fly--lr">
+            <span class="bg-birds__curve bg-birds__curve--a">
+                <span class="bg-birds__float">
+                    <img src="/images/bluebird-left.png" alt="" class="bg-birds__bird bg-birds__bird--blue">
+                </span>
+            </span>
+        </span>
+
+        <span class="bg-birds__fly bg-birds__fly--lr">
+            <span class="bg-birds__curve bg-birds__curve--b">
+                <span class="bg-birds__float">
+                    <img src="/images/whitebird-left.png" alt="" class="bg-birds__bird bg-birds__bird--white">
+                </span>
+            </span>
+        </span>
+
+        <!-- right -> left：左向き = right.png -->
+        <span class="bg-birds__fly bg-birds__fly--rl">
+            <span class="bg-birds__curve bg-birds__curve--c">
+                <span class="bg-birds__float">
+                    <img src="/images/bluebird-right.png" alt="" class="bg-birds__bird bg-birds__bird--blue">
+                </span>
+            </span>
+        </span>
+
+        <span class="bg-birds__fly bg-birds__fly--rl">
+            <span class="bg-birds__curve bg-birds__curve--d">
+                <span class="bg-birds__float">
+                    <img src="/images/whitebird-right.png" alt="" class="bg-birds__bird bg-birds__bird--white">
+                </span>
+            </span>
+        </span>
+    </div>
+    <header class="header">
+        <div class="header__inner">
+            <h1 class="header__logo">
+                <a href="index.html"><img src="./images/logo.svg" alt="GLASSY-PHOTO" class="header__logo"></a>
+            </h1>
+            <div class="drawer">
+                <button class="drawer__toggle" aria-label="メニューを開く">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button class="drawer__close" aria-label="メニューを閉じる">
+                    ×
+                </button>
+                <div class="drawer__mask"></div>
+                <nav class="drawer__nav">
+                    <ul class="drawer__list">
+                        <li class="drawer__item"><a href="index.html">ホーム</a></li>
+                        <li class="drawer__item"><a href="#">フォトギャラリー</a></li>
+                        <li class="drawer__item"><a href="page_price.html">料金プラン</a></li>
+                        <li class="drawer__item"><a href="page_infomation.html">information</a></li>
+                        <li class="drawer__item"><a href="#">お問い合わせ</a></li>
+                    </ul>
+                </nav>
+                <div class="flash-effect"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <a href="#" class="inqury__btn">お問い合わせはこちら</a>
+        <section class="mainvisual">
+            <img src="./images/photo/ceremony/ceremony34.jpg" alt="" class="mainvisual__photo">
+        </section>
+        <section class="style">
+            <div class="style__inner">
+                <h2 class="style__title">Style</h2>
+                <h3 class="style__subtitle">その一瞬を、永遠の笑顔に。</h3>
+                <div class="style__text">
+                    <p>その一瞬を、永遠の笑顔に。結婚式の一日は、笑顔や涙、たくさんの想いであふれています。</p>
+                    <p>私はその自然な瞬間を大切に、一枚一枚ていねいに撮影します。</p>
+                    <p>カメラマンは私ひとり。</p>
+                    <p>だからこそ、お二人にしっかり寄り添いながら、心を込めて撮ることができます。</p>
+                    <p>撮影枚数に制限はなく、挙式から披露宴、送賓まで大切な場面をすべて残します。</p>
+                    <p>10年以上の経験を活かし、見返すたびに温かい気持ちになれる写真をお届けします。</p>
+                    <p>お二人の特別な一日が、10年後も笑顔で思い出せるように――。</p>
+                </div>
+            </div>
+        </section>
+        <section class="gallery">
+            <div class="gallery__inner">
+                <h2 class="gallery__title">フォトギャラリー</h2>
+                <div class="gallery__kinds ceremony">
+                    <h3 class="ceremony__title">セレモニー</h3>
+                    <div class="ceremony__list">
+                        <img src="./images/photo/ceremony/ceremony1.jpg" alt="セレモニーの写真" class="ceremony__item">
+                        <img src="./images/photo/ceremony/ceremony2.jpg" alt="セレモニーの写真" class="ceremony__item">
+                    </div>
+                    <div class="ceremony__list--column">
+                        <img src="./images/photo/ceremony/ceremony3.jpg" alt="セレモニーの写真" class="ceremony__item1">
+                        <img src="./images/photo/ceremony/ceremony4.jpg" alt="セレモニーの写真" class="ceremony__item2">
+                        <img src="./images/photo/ceremony/ceremony5.jpg" alt="セレモニーの写真" class="ceremony__item3">
+                    </div>
+                    <a href="#" class="ceremony__more"><span>viewmore</span></a>
+                </div>
+                <div class="gallery__kinds reception">
+                    <h3 class="reception__title">レセプション</h3>
+                    <div class="reception__list">
+                        <img src="./images/photo/reception/reception1.jpg" alt="レセプションの写真" class="reception__item1">
+                        <img src="./images/photo/reception/reception2.jpg" alt="レセプションの写真" class="reception__item2">
+                        <img src="./images/photo/reception/reception3.jpg" alt="レセプションの写真" class="reception__item3">
+                    </div>
+                    <div class="reception__list--column">
+                        <img src="./images/photo/reception/reception4.jpg" alt="レセプションの写真" class="reception__item">
+                        <img src="./images/photo/reception/reception5.jpg" alt="レセプションの写真" class="reception__item">
+                    </div>
+                    <a href="#" class="reception__more"><span>viewmore</span></a>
+                </div>
+                <div class="gallery__kinds decoration">
+                    <h3 class="decoration__title">会場・装飾</h3>
+                    <div class="decoration__list">
+                        <img src="./images/photo/place&decoration/place&decoration1.jpg" alt="会場と装飾の写真"
+                            class="decoration__item">
+                        <img src="./images/photo/place&decoration/place&decoration2.jpg" alt="会場と装飾の写真"
+                            class="decoration__item">
+                        <img src="./images/photo/place&decoration/place&decoration3.jpg" alt="会場と装飾の写真"
+                            class="decoration__item">
+                        <img src="./images/photo/place&decoration/place&decoration4.jpg" alt="会場と装飾の写真"
+                            class="decoration__item">
+                    </div>
+                    <a href="#" class="decoration__more"><span>viewmore</span></a>
+                </div>
+        </section>
+
+        <div class="plan">
+            <div class="plan__inner">
+                <img src="./images/webp/bluebird-left.webp" alt="" class="plan__bird">
+                <a href="#" class="btn">料金プランについてはこちら</a>
+                <img src="./images/webp/bluebird-right.webp" alt="" class="plan__bird--sp">
+            </div>
+        </div>
+        <section class="photographer">
+            <div class="photographer__inner">
+                <h2 class="photographer__title">フォトグラファー</h2>
+                <div class="photographer__profile">
+                    <img src="./images/webp/photographer_img.webp" alt="カメラマンの写真" class="photographer__photo">
+                    <div class="photographer__text">
+                        <h3 class="photographer__name">河合満彦 Michihiko Kawai</h3>
+                        <p class="photographer__description">
+                            大切な一日を、自然なままに。結婚式を中心に撮影するカメラマンです。おふたりの笑顔や、何気ない瞬間の温かさをそっと写真と動画に残します。リラックスした空気の中で、心からの表情を引き出す撮影を大切にしています。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="voice">
+            <div class="voice__inner">
+                <h2 class="voice__title">お客様の声</h2>
+                <div class="voice__content">
+                    <div class="voice__group">
+                        <p class="voice__name">Mご夫妻</p>
+                        <p class="voice__text">
+                            初めてお会いした瞬間から笑顔が素敵で、色々とお気遣いを頂き、安心して挙式披露宴をする事が出来ました。送付いただいた写真を確認いたしました。素敵な写真をたくさん撮っていただきありがとうございました。前撮りのような写真もたくさん撮っていただき、二人ともすごく満足しております。家族や親戚にも見せようと思います!妹も数年内には、三重県にて挙式をします。その際には是非またGLASSY-PHOTO様にお願いしたいと思っております。本当にありがとうございました。
+                        </p>
+                    </div>
+                    <div class="voice__group">
+                        <p class="voice__name">Oご夫妻</p>
+                        <p class="voice__text">
+                            こんなにたくさんのよい写真を撮っていただきとても満足しております。ありがとうございます。また私たちの写真だけでなく、ゲストのカメラのシャッターを切っていただいたことも感謝いたします。友人からもカメラマンさんが良かったとの声がたくさん出ております。この度は本当にありがとうございました。また何かのご縁がありましたらよろしくお願いいたします。
+                        </p>
+                    </div>
+                    <div class="voice__group">
+                        <p class="voice__name">Kご夫妻</p>
+                        <p class="voice__text">
+                            また、素早い編集もありがとうございます。当日お話はあまりできませんでしたが、想定以上にしっかり撮影していただき、とてもうれしく、とても良い式となりました。僕ら含め親族、関係者みんながGLASSY-PHOTOさんのことを高く評価しております。なかなか、僕が次依頼できることがあるかわかりませんが知人、友人に何かあれば勧めさせていただきます。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="inquiry">
+            <div class="inquiry__inner">
+                <div class="inquiry__box">
+                    <h2 class="inquiry__title">お問い合わせ</h2>
+                    <h3 class="inquiry__subtitle">結婚式写真撮影のご相談・ご注文フォーム</h3>
+                    <div class="inquiry__check">
+                        <label class="checkbox">
+                            <input id="check1" type="checkbox" class="checkbox__input">
+                            <span class="checkbox__box"></span>
+                            <span class="checkbox__text">- 免責・誓約事項 - に同意する</span>
+                        </label>
+                    </div>
+
+                    <div class="inquiry__check">
+                        <label class="checkbox">
+                            <input id="check2" type="checkbox" class="checkbox__input"> <!-- ← ID を変える -->
+                            <span class="checkbox__box"></span>
+                            <span class="checkbox__text">- 個人情報保護方針 - に同意する</span>
+                        </label>
+                    </div>
+                    <a href="#" class="btn--confirmation">
+                        免責・誓約事項、個人情報保護方針に関するご確認はこちら
+                    </a>
+                    <label class="inquiry__content">
+                        <p class="inquiry__name">お名前</p>
+                        <input type="text" name="name" class="inquiry__name--column">
+                    </label>
+                    <label class="inquiry__content">
+                        <p class="inquiry__email">メールアドレス</p>
+                        <input type="email" name="email" autocomplete="email" required class="inquiry__email--column" />
+                    </label>
+                    <label class="inquiry__content">
+                        <p class="inquiry__day">挙式披露宴日</p>
+                        <input type="date" name="day" class="inquiry__day--column">
+                    </label>
+                    <label class="inquiry__content">
+                        <p class="inquiry__place">会場</p>
+                        <input type="text" name="place" class="inquiry__place--column">
+                    </label>
+                    <label class="inquiry__content">
+                        <p class="inquiry__text">お問い合わせ内容</p>
+                        <textarea name="message" class="inquiry__text--column"></textarea>
+                    </label>
+                    <div class="inquiry__submit">
+                        <input type="submit" value="お問い合わせ内容を確認" class="inquiry__submit-btn">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__about">
+                <a href="page_pledge.html">免責・誓約について</a>
+                <a href="page_pledge.html">転用・転載・引用・著作権について</a>
+                <a href="page_pledge.html">個人情報保護について</a>
+            </div>
+            <div class="footer__copy">
+                <small>&copy;結婚式に持ち込む写真カメラマン GLASSY-PHOTO
+                </small>
+                <img src="./images/webp/photographer_img.webp" alt="" class="footer__img">
+            </div>
+        </div>
+    </footer>
+    <script src="./js/script.js"></script>
+</body>
+
+</html>
