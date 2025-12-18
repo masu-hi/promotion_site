@@ -449,42 +449,6 @@ a {
     opacity: 1;
 }
 
-.inqury__btn {
-    color: #fff;
-    font-size: rem(14);
-    line-height: math.div(20, 14);
-    text-decoration: none;
-    text-align: center;
-    background-color: $color-accent;
-    border: 2px solid $color-bg;
-    padding: rem(15) 0;
-    display: block;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    transition: .7s;
-    transform: translateY(-50%);
-    z-index: 1000;
-    cursor: pointer;
-    overflow: hidden;
-    text-orientation: mixed;
-
-    @include mq(sp) {
-        display: inline-block;
-        right: 0;
-        bottom: 10%;
-        width: rem(60);
-        height: rem(150);
-        padding: rem(20) rem(10);
-        writing-mode: vertical-rl;
-        overflow-wrap: break-word;
-    }
-
-    &:hover {
-        background-color: $color-main;
-    }
-}
-
 .footer {
     padding: rem(120) 0;
     background-color: $color-main;
@@ -514,6 +478,93 @@ a {
         width: rem(120);
         height: auto;
         object-fit: cover;
+    }
+}
+
+.inquiry-float {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999; // 鳩はボタンより下にする（文字に被せない）
+}
+
+/* ボタンは最前面 & クリック可能 */
+.inqury__btn {
+    position: fixed;
+    z-index: 1000;
+    pointer-events: auto;
+
+    color: #fff;
+    font-size: rem(14);
+    line-height: math.div(20, 14);
+    text-decoration: none;
+    text-align: center;
+    background-color: $color-accent;
+    border: 2px solid $color-bg;
+    padding: rem(15) 0;
+
+    &:hover {
+        background-color: $color-main;
+    }
+}
+
+/* 鳩：共通（歪み対策込み） */
+.inquiry-float__bird {
+    position: fixed;
+    display: block;
+    height: auto;
+    opacity: 1;
+
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+}
+
+/* =========================
+  スマホ（〜479px）：その場でふわふわ
+  ※あなたのmqがmin-widthなので、ここが“スマホ”になります
+========================= */
+.inquiry-float__bird {
+    width: rem(50); // ←スマホは小さく
+    right: rem(28); // ←縦ボタンの左に寄せる（要微調整）
+    bottom: 5%; // ←ボタン付近
+    animation: inquiry-bird-float 3.8s ease-in-out infinite;
+}
+
+@keyframes inquiry-bird-float {
+    0% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+
+    50% {
+        transform: translate3d(0, rem(-8), 0) rotate(-1deg);
+    }
+
+    100% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+}
+
+/* =========================
+  PC（800px〜）：右→左に流し続ける
+========================= */
+@include mq(desktop) {
+    .inquiry-float__bird {
+        width: rem(70); // ←PCは少し大きめ
+        right: -12vw; // ←画面外スタート（近すぎると急に出る）
+        bottom: rem(80); // ←下すぎて見えない問題を回避（ここ重要）
+        animation: inquiry-bird-fly 22s linear infinite;
+        animation-delay: -6s; // ←更新直後から“途中の位置”で飛ばす
+    }
+}
+
+@keyframes inquiry-bird-fly {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+
+    100% {
+        transform: translate3d(-140vw, 0, 0);
     }
 }
 

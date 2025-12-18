@@ -178,42 +178,6 @@ a {
   opacity: 1;
 }
 
-.inqury__btn {
-  color: #fff;
-  font-size: 0.875rem;
-  line-height: 1.4285714286;
-  text-decoration: none;
-  text-align: center;
-  background-color: #D9877A;
-  border: 2px solid #fff;
-  padding: 0.9375rem 0;
-  display: block;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  transition: 0.7s;
-  transform: translateY(-50%);
-  z-index: 1000;
-  cursor: pointer;
-  overflow: hidden;
-  text-orientation: mixed;
-}
-@media (min-width: 480px) {
-  .inqury__btn {
-    display: inline-block;
-    right: 0;
-    bottom: 10%;
-    width: 3.75rem;
-    height: 9.375rem;
-    padding: 1.25rem 0.625rem;
-    writing-mode: vertical-rl;
-    overflow-wrap: break-word;
-  }
-}
-.inqury__btn:hover {
-  background-color: #E89A67;
-}
-
 .footer {
   padding: 7.5rem 0;
   background-color: #E89A67;
@@ -246,6 +210,108 @@ a {
      object-fit: cover;
 }
 
+.inquiry-float {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* ボタンは最前面 & クリック可能 */
+.inqury__btn {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: auto;
+  color: #fff;
+  font-size: 0.875rem;
+  line-height: 1.4285714286;
+  text-decoration: none;
+  text-align: center;
+  background-color: #D9877A;
+  border: 2px solid #fff;
+  padding: 0.9375rem 0;
+}
+.inqury__btn:hover {
+  background-color: #E89A67;
+}
+
+/* 鳩：共通（歪み対策込み） */
+.inquiry-float__bird {
+  position: fixed;
+  display: block;
+  height: auto;
+  opacity: 1;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+/* =========================
+  スマホ（〜479px）：その場でふわふわ
+  ※あなたのmqがmin-widthなので、ここが“スマホ”になります
+========================= */
+.inquiry-float__bird {
+  width: 3.125rem;
+  right: 1.75rem;
+  bottom: 5%;
+  -webkit-animation: inquiry-bird-float 3.8s ease-in-out infinite;
+          animation: inquiry-bird-float 3.8s ease-in-out infinite;
+}
+
+@-webkit-keyframes inquiry-bird-float {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -0.5rem, 0) rotate(-1deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+
+@keyframes inquiry-bird-float {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -0.5rem, 0) rotate(-1deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+/* =========================
+  PC（800px〜）：右→左に流し続ける
+========================= */
+@media (min-width: 800px) {
+  .inquiry-float__bird {
+    width: 4.375rem;
+    right: -12vw;
+    bottom: 5rem;
+    -webkit-animation: inquiry-bird-fly 22s linear infinite;
+            animation: inquiry-bird-fly 22s linear infinite;
+    -webkit-animation-delay: -6s;
+            animation-delay: -6s;
+  }
+}
+@-webkit-keyframes inquiry-bird-fly {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-140vw, 0, 0);
+  }
+}
+@keyframes inquiry-bird-fly {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-140vw, 0, 0);
+  }
+}
 .btn {
   display: inline-block;
   position: relative;
