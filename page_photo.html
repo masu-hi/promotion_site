@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>フォトギャラリー GLASSY-PHOTO</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/the-new-css-reset/css/reset.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <div class="bg-birds" aria-hidden="true">
+        <!-- left -> right：右向き = left.webp -->
+        <span class="bg-birds__fly bg-birds__fly--lr">
+            <span class="bg-birds__curve bg-birds__curve--a">
+                <span class="bg-birds__float">
+                    <img src="../images/webp/bluebird-left.webp" alt="" class="bg-birds__bird bg-birds__bird--blue">
+                </span>
+            </span>
+        </span>
+
+        <span class="bg-birds__fly bg-birds__fly--lr">
+            <span class="bg-birds__curve bg-birds__curve--b">
+                <span class="bg-birds__float">
+                    <img src="../images/webp/whitebird-left.webp" alt="" class="bg-birds__bird bg-birds__bird--white">
+                </span>
+            </span>
+        </span>
+
+        <!-- right -> left：左向き = right.webp -->
+        <span class="bg-birds__fly bg-birds__fly--rl">
+            <span class="bg-birds__curve bg-birds__curve--c">
+                <span class="bg-birds__float">
+                    <img src="../images/webp/bluebird-right.webp" alt="" class="bg-birds__bird bg-birds__bird--blue">
+                </span>
+            </span>
+        </span>
+
+        <span class="bg-birds__fly bg-birds__fly--rl">
+            <span class="bg-birds__curve bg-birds__curve--d">
+                <span class="bg-birds__float">
+                    <img src="../images/webp/whitebird-right.webp" alt="" class="bg-birds__bird bg-birds__bird--white">
+                </span>
+            </span>
+        </span>
+    </div>
+    <header class="header">
+        <div class="header__inner">
+            <h1 class="header__logo">
+                <a href="index.html"><img src="./images/logo.svg" alt="GLASSY-PHOTO" class="header__logo"></a>
+            </h1>
+            <div class="drawer">
+                <button class="drawer__toggle" aria-label="メニューを開く">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button class="drawer__close" aria-label="メニューを閉じる">
+                    ×
+                </button>
+                <div class="drawer__mask"></div>
+                <nav class="drawer__nav">
+                    <ul class="drawer__list">
+                        <li class="drawer__item"><a href="index.html">ホーム</a></li>
+                        <li class="drawer__item"><a href="page_photo.html">フォトギャラリー</a></li>
+                        <li class="drawer__item"><a href="page_price.html">料金プラン</a></li>
+                        <li class="drawer__item"><a href="page_infomation.html">information</a></li>
+                        <li class="drawer__item"><a href="#">お問い合わせ</a></li>
+                    </ul>
+                </nav>
+                <div class="flash-effect"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="gallery">
+            <div class="gallery__inner">
+                <h2 class="gallery__title">フォトギャラリー</h2>
+                <!-- ▼ カテゴリ切り替え -->
+                <div class="gallery__tabs" role="tablist" aria-label="フォトギャラリーのカテゴリー">
+                    <button class="gallery__tab is-active" type="button" role="tab" aria-selected="true"
+                        aria-controls="gallery-panel-ceremony" data-gallery-tab="ceremony">
+                        セレモニー
+                    </button>
+                    <button class="gallery__tab" type="button" role="tab" aria-selected="false"
+                        aria-controls="gallery-panel-reception" data-gallery-tab="reception">
+                        レセプション
+                    </button>
+                    <button class="gallery__tab" type="button" role="tab" aria-selected="false"
+                        aria-controls="gallery-panel-decoration" data-gallery-tab="decoration">
+                        会場・装飾
+                    </button>
+                </div>
+
+                <!-- ▼ パネル（ここが切り替わる） -->
+                <div class="gallery__panels">
+                    <div class="gallery__panel is-active" id="gallery-panel-ceremony" role="tabpanel"
+                        data-gallery-panel="ceremony">
+                        <div class="gallery__kinds ceremony">
+                            <h3 class="ceremony__title">セレモニー</h3>
+                            <p class="gallery__note">※写真をタップするとズームします。</p>
+
+                            <div class="ceremony__list">
+                                <img src="./images/photo/ceremony/ceremony1.webp" alt="セレモニーの写真" class="ceremony__item"
+                                    data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/ceremony/ceremony2.webp" alt="セレモニーの写真" class="ceremony__item"
+                                    data-gallery-open loading="lazy" decoding="async">
+                            </div>
+
+                            <div class="ceremony__list--column">
+                                <img src="./images/photo/ceremony/ceremony3.webp" alt="セレモニーの写真" class="ceremony__item1"
+                                    data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/ceremony/ceremony4.webp" alt="セレモニーの写真" class="ceremony__item2"
+                                    data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/ceremony/ceremony5.webp" alt="セレモニーの写真" class="ceremony__item3"
+                                    data-gallery-open loading="lazy" decoding="async">
+                            </div>
+                            <div class="ceremony__list">
+                                <img src="./images/photo/ceremony/ceremony6.webp" alt="セレモニーの写真" class="ceremony__item"
+                                    data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/ceremony/ceremony7.webp" alt="セレモニーの写真" class="ceremony__item"
+                                    data-gallery-open loading="lazy" decoding="async">
+                            </div>
+                            <div class="ceremony__list--column">
+                                <img src="./images/photo/ceremony/ceremony8.webp" alt="セレモニーの写真" class="ceremony__item1"
+                                    data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/ceremony/ceremony9.webp" alt="セレモニーの写真" class="ceremony__item2"
+                                    data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/ceremony/ceremony10.webp" alt="セレモニーの写真"
+                                    class="ceremony__item3" data-gallery-open loading="lazy" decoding="async">
+                            </div>
+                            <div class="ceremony__list">
+                                <img src="./images/photo/ceremony/ceremony11.webp" alt="セレモニーの写真" class="ceremony__item"
+                                    data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/ceremony/ceremony12.webp" alt="セレモニーの写真" class="ceremony__item"
+                                    data-gallery-open loading="lazy" decoding="async">
+                            </div>
+                            <div class="ceremony__list--column">
+                                <img src="./images/photo/ceremony/ceremony14.webp" alt="セレモニーの写真"
+                                    class="ceremony__item1" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/ceremony/ceremony13.webp" alt="セレモニーの写真"
+                                    class="ceremony__item2" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/ceremony/ceremony15.webp" alt="セレモニーの写真"
+                                    class="ceremony__item3" data-gallery-open loading="lazy" decoding="async">
+                            </div>
+                            <div class="ceremony__list">
+                                <img src="./images/photo/ceremony/ceremony19.webp" alt="セレモニーの写真" class="ceremony__item"
+                                    data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/ceremony/ceremony20.webp" alt="セレモニーの写真" class="ceremony__item"
+                                    data-gallery-open loading="lazy" decoding="async">
+                            </div>
+                            <div class="ceremony__list--column">
+                                <img src="./images/photo/ceremony/ceremony16.webp" alt="セレモニーの写真"
+                                    class="ceremony__item1" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/ceremony/ceremony17.webp" alt="セレモニーの写真"
+                                    class="ceremony__item2" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/ceremony/ceremony18.webp" alt="セレモニーの写真"
+                                    class="ceremony__item3" data-gallery-open loading="lazy" decoding="async">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery__panel" id="gallery-panel-reception" role="tabpanel"
+                        data-gallery-panel="reception" hidden>
+                        <div class="gallery__kinds reception">
+                            <h3 class="reception__title">レセプション</h3>
+
+                            <div class="reception__list">
+                                <img src="./images/photo/reception/reception1.webp" alt="レセプションの写真"
+                                    class="reception__item1" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/reception/reception2.webp" alt="レセプションの写真"
+                                    class="reception__item2" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/reception/reception3.webp" alt="レセプションの写真"
+                                    class="reception__item3" data-gallery-open loading="lazy" decoding="async">
+                            </div>
+
+                            <div class="reception__list--column">
+                                <img src="./images/photo/reception/reception4.webp" alt="レセプションの写真"
+                                    class="reception__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/reception/reception5.webp" alt="レセプションの写真"
+                                    class="reception__item" data-gallery-open loading="lazy" decoding="async">
+                            </div>
+
+                            <div class="reception__list">
+                                <img src="./images/photo/reception/reception7.webp" alt="レセプションの写真"
+                                    class="reception__item1" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/reception/reception8.webp" alt="レセプションの写真"
+                                    class="reception__item2" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/reception/reception6.webp" alt="レセプションの写真"
+                                    class="reception__item3" data-gallery-open loading="lazy" decoding="async">
+                            </div>
+
+                            <div class="reception__list--column">
+                                <img src="./images/photo/reception/reception9.webp" alt="レセプションの写真"
+                                    class="reception__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/reception/reception10.webp" alt="レセプションの写真"
+                                    class="reception__item" data-gallery-open loading="lazy" decoding="async">
+                            </div>
+                            <div class="reception__list">
+                                <img src="./images/photo/reception/reception12.webp" alt="レセプションの写真"
+                                    class="reception__item1" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/reception/reception13.webp" alt="レセプションの写真"
+                                    class="reception__item2" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/reception/reception11.webp" alt="レセプションの写真"
+                                    class="reception__item3" data-gallery-open loading="lazy" decoding="async">
+                            </div>
+                            <div class="reception__list--column">
+                                <img src="./images/photo/reception/reception14.webp" alt="レセプションの写真"
+                                    class="reception__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/reception/reception15.webp" alt="レセプションの写真"
+                                    class="reception__item" data-gallery-open loading="lazy" decoding="async">
+                            </div>
+                            <div class="reception__list">
+                                <img src="./images/photo/reception/reception17.webp" alt="レセプションの写真"
+                                    class="reception__item1" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/reception/reception18.webp" alt="レセプションの写真"
+                                    class="reception__item2" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/reception/reception16.webp" alt="レセプションの写真"
+                                    class="reception__item3" data-gallery-open loading="lazy" decoding="async">
+                            </div>
+                            <div class="reception__list--column">
+                                <img src="./images/photo/reception/reception19.webp" alt="レセプションの写真"
+                                    class="reception__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/reception/reception20.webp" alt="レセプションの写真"
+                                    class="reception__item" data-gallery-open loading="lazy" decoding="async">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery__panel" id="gallery-panel-decoration" role="tabpanel"
+                        data-gallery-panel="decoration" hidden>
+                        <div class="gallery__kinds decoration">
+                            <h3 class="decoration__title">会場・装飾</h3>
+
+                            <div class="decoration__list">
+                                <img src="./images/photo/place&decoration/place&decoration1.webp" alt="会場と装飾の写真"
+                                    class="decoration__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/place&decoration/place&decoration2.webp" alt="会場と装飾の写真"
+                                    class="decoration__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/place&decoration/place&decoration3.webp" alt="会場と装飾の写真"
+                                    class="decoration__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/place&decoration/place&decoration4.webp" alt="会場と装飾の写真"
+                                    class="decoration__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/place&decoration/place&decoration5.webp" alt="会場と装飾の写真"
+                                    class="decoration__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/place&decoration/place&decoration6.webp" alt="会場と装飾の写真"
+                                    class="decoration__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/place&decoration/place&decoration7.webp" alt="会場と装飾の写真"
+                                    class="decoration__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/place&decoration/place&decoration8.webp" alt="会場と装飾の写真"
+                                    class="decoration__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/place&decoration/place&decoration9.webp" alt="会場と装飾の写真"
+                                    class="decoration__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/place&decoration/place&decoration10.webp" alt="会場と装飾の写真"
+                                    class="decoration__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/place&decoration/place&decoration11.webp" alt="会場と装飾の写真"
+                                    class="decoration__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/place&decoration/place&decoration12.webp" alt="会場と装飾の写真"
+                                    class="decoration__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/place&decoration/place&decoration13.webp" alt="会場と装飾の写真"
+                                    class="decoration__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/place&decoration/place&decoration14.webp" alt="会場と装飾の写真"
+                                    class="decoration__item" data-gallery-open loading="lazy" decoding="async">
+                                <img src="./images/photo/place&decoration/place&decoration15.webp" alt="会場と装飾の写真"
+                                    class="decoration__item" data-gallery-open loading="lazy" decoding="async">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ▼ 画像モックアップ（モーダル） -->
+                    <div class="gallery-modal" id="galleryModal" aria-hidden="true">
+                        <button class="gallery-modal__bg" type="button" data-gallery-close aria-label="閉じる"></button>
+
+                        <div class="gallery-modal__content" role="dialog" aria-modal="true" aria-label="画像の拡大表示">
+                            <figure class="gallery-modal__figure">
+                                <img class="gallery-modal__img" src="" alt="">
+                                <button class="gallery-modal__close" type="button" data-gallery-close
+                                    aria-label="閉じる"></button>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__about">
+                <a href="page_pledge.html">免責・誓約事項、個人情報保護方針について</a>
+            </div>
+            <div class="footer__copy">
+                <small>&copy;結婚式に持ち込む写真カメラマン GLASSY-PHOTO
+                </small>
+                <img src="./images/webp/photographer_img.webp" alt="" class="footer__img">
+            </div>
+        </div>
+    </footer>
+    <script src="./js/script.js"></script>
+</body>
+
+</html>

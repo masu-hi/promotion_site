@@ -458,9 +458,6 @@ a {
     }
 
     &__about {
-        display: flex;
-        flex-direction: column;
-        gap: rem(15);
         font-size: rem(14);
         line-height: math.div(22, 14);
         margin-bottom: rem(40);
@@ -481,90 +478,138 @@ a {
     }
 }
 
-.inquiry-float {
+/* クリックはボタンに、動きはラッパーに */
+.inquiry-carry {
     position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 999; // 鳩はボタンより下にする（文字に被せない）
-}
-
-/* ボタンは最前面 & クリック可能 */
-.inqury__btn {
-    position: fixed;
+    right: -18vw; // 画面外スタート
+    bottom: rem(90); // 見える高さに
     z-index: 1000;
     pointer-events: auto;
 
-    color: #fff;
-    font-size: rem(14);
-    line-height: math.div(20, 14);
-    text-decoration: none;
-    text-align: center;
-    background-color: $color-accent;
-    border: 2px solid $color-bg;
-    padding: rem(15) 0;
-
-    &:hover {
-        background-color: $color-main;
-    }
-}
-
-/* 鳩：共通（歪み対策込み） */
-.inquiry-float__bird {
-    position: fixed;
-    display: block;
-    height: auto;
-    opacity: 1;
-
-    backface-visibility: hidden;
-    transform: translate3d(0, 0, 0);
+    // 横に流れる（ループ）
+    animation: carry-fly 22s linear infinite;
+    animation-delay: -8s; // リロード直後から途中位置に
     will-change: transform;
 }
 
-/* =========================
-  スマホ（〜479px）：その場でふわふわ
-  ※あなたのmqがmin-widthなので、ここが“スマホ”になります
-========================= */
-.inquiry-float__bird {
-    width: rem(50); // ←スマホは小さく
-    right: rem(28); // ←縦ボタンの左に寄せる（要微調整）
-    bottom: 5%; // ←ボタン付近
-    animation: inquiry-bird-float 3.8s ease-in-out infinite;
+/* ふわっとカーブ（S字） */
+.inquiry-carry__anim {
+    display: inline-flex;
+    align-items: center;
+    will-change: transform;
+    animation: carry-curve 6.6s ease-in-out infinite;
 }
 
-@keyframes inquiry-bird-float {
+/* ボタン自体 */
+.inquiry-carry__btn {
+    display: inline-block;
+    color: #fff;
+    text-align: center;
+    background-color: $color-accent;
+    border: 2px solid $color-bg;
+    font-size: rem(14);
+    padding: rem(10) rem(20);
+    transition: background-color .3s;
+}
+
+/* 鳩（右側で咥える・左向き） */
+.inquiry-carry__bird {
+    height: auto;
+    margin-left: rem(-25); // 咥え代（食い込ませたい時はさらにマイナス）
+    transform-origin: 50% 50%;
+    transform: translateY(rem(15)) scaleX(-1); // ←下を咥える + 左向き
+
+    will-change: transform;
+    animation: carry-bird 2.4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.inquiry-carry {
+    right: rem(12);
+    bottom: rem(24); // ←下の方へ
+    animation: none; // ←流さない
+}
+
+.inquiry-carry__bird {
+    width: rem(52); // ←小さめ
+    margin-left: rem(-18);
+    transform: translateY(rem(10)) scaleX(-1);
+    animation: carry-bird 2.8s ease-in-out infinite;
+}
+
+@include mq(desktop) {
+    .inquiry-carry {
+        right: -18vw;
+        bottom: rem(90);
+        animation: carry-fly 22s linear infinite;
+    }
+
+    .inquiry-carry__bird {
+        width: rem(92);
+        margin-left: rem(-30);
+    }
+}
+
+/* hoverで “鳥＋ボタン” を止める & ボタン色変更 */
+.inquiry-carry:hover {
+    animation-play-state: paused;
+}
+
+.inquiry-carry:hover .inquiry-carry__anim,
+.inquiry-carry:hover .inquiry-carry__bird {
+    animation-play-state: paused;
+}
+
+.inquiry-carry:hover .inquiry-carry__btn {
+    background-color: $color-main;
+}
+
+/* 左へ流れてループ */
+@keyframes carry-fly {
     0% {
-        transform: translate3d(0, 0, 0) rotate(0deg);
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-140vw);
+    }
+}
+
+/* ゆるいカーブ飛行（上下＋傾き） */
+@keyframes carry-curve {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    25% {
+        transform: translateY(rem(-10)) rotate(-1deg);
     }
 
     50% {
-        transform: translate3d(0, rem(-8), 0) rotate(-1deg);
+        transform: translateY(rem(3)) rotate(1deg);
+    }
+
+    75% {
+        transform: translateY(rem(-8)) rotate(-1deg);
     }
 
     100% {
-        transform: translate3d(0, 0, 0) rotate(0deg);
+        transform: translateY(0) rotate(0deg);
     }
 }
 
-/* =========================
-  PC（800px〜）：右→左に流し続ける
-========================= */
-@include mq(desktop) {
-    .inquiry-float__bird {
-        width: rem(70); // ←PCは少し大きめ
-        right: -12vw; // ←画面外スタート（近すぎると急に出る）
-        bottom: rem(80); // ←下すぎて見えない問題を回避（ここ重要）
-        animation: inquiry-bird-fly 22s linear infinite;
-        animation-delay: -6s; // ←更新直後から“途中の位置”で飛ばす
-    }
-}
-
-@keyframes inquiry-bird-fly {
+/* 鳥っぽいふわふわ（※scaleX(-1) を維持） */
+@keyframes carry-bird {
     0% {
-        transform: translate3d(0, 0, 0);
+        transform: translateY(rem(8)) scaleX(-1);
+    }
+
+    50% {
+        transform: translateY(rem(2)) rotate(1deg) scaleX(-1);
     }
 
     100% {
-        transform: translate3d(-140vw, 0, 0);
+        transform: translateY(rem(8)) scaleX(-1);
     }
 }
 
@@ -837,18 +882,190 @@ footer {
 }
 
 .gallery {
+    padding-bottom: rem(80);
+
+    @include mq() {
+        padding-bottom: rem(120);
+    }
+
     &__inner {
         @include inner();
     }
 
     &__title {
-
         @include title-main(gallery);
     }
 
-    &__kinds {
-        margin-top: rem(50);
+    &__note {
+        font-size: rem(14);
+        line-height: math.div(26, 14);
+        text-align: right;
     }
+
+    // ▼ tabs：モバイルは固定＆右寄せ
+    &__tabs {
+        position: fixed;
+        left: 0;
+        right: 0;
+
+        // header直下に固定（ヘッダーの高さに合わせて調整）
+        // 例）ヘッダーが80pxなら top: rem(80);
+        top: var(--header-height, #{rem(80)});
+        z-index: 50;
+
+        display: flex;
+        justify-content: flex-end; // 右寄せ
+        align-items: center;
+        gap: rem(12); // 10〜15px相当
+        padding: rem(10) rem(16);
+
+        background: transparent; // ← 背景色なし
+        border: none; // 枠も不要ならnone（残したいなら 1px solid〜に戻してOK）
+    }
+
+    &__tab {
+        appearance: none;
+        border: 1px solid $color-line;
+        background: transparent; // 背景なし
+        color: $color-text;
+        font-size: rem(13);
+        line-height: 1;
+        padding: rem(9) rem(12);
+        border-radius: rem(999);
+        cursor: pointer;
+        transition: background 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+
+        &:hover {
+            transform: translateY(rem(-1));
+        }
+
+        &.is-active {
+            // 選択中は分かるように（背景色を入れたくないならここも透明にできます）
+            background: $color-main;
+            border-color: $color-main;
+            color: $color-bg;
+        }
+
+        @include mq(sp) {
+            font-size: rem(14);
+            padding: rem(10) rem(14);
+        }
+    }
+
+    // ▼ panels：固定tabsに隠れないように余白を確保
+    &__panels {
+        // tabsの高さ分だけ下げる（必要なら数値調整）
+        padding-top: rem(64);
+        margin-top: rem(20);
+    }
+
+    &__panel {
+        display: none;
+
+        &.is-active {
+            display: block;
+        }
+    }
+
+    &__kinds {
+        margin-top: 0;
+    }
+
+    // ▼ デスクトップは今の見た目に戻す（固定解除＋中央寄せ）
+    @include mq() {
+        &__tabs {
+            position: static;
+            top: auto;
+            z-index: auto;
+
+            display: grid;
+            grid-auto-flow: column;
+            justify-content: center;
+            gap: rem(12);
+            padding: rem(12);
+
+            background: transparent; // 背景なし（希望通り）
+            border-radius: rem(999);
+            margin-top: rem(30);
+        }
+
+        &__panels {
+            padding-top: 0;
+            margin-top: rem(40);
+        }
+    }
+}
+
+
+.gallery-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1200; // drawerより上に
+    display: none;
+
+    &.is-open {
+        display: block;
+    }
+
+    &__bg {
+        position: absolute;
+        inset: 0;
+        border: 0;
+        background: rgba(232, 154, 103, .2); // $color-main透過
+        cursor: pointer;
+    }
+
+    &__content {
+        position: absolute;
+        inset: rem(16);
+        display: grid;
+        place-items: center;
+    }
+
+    &__figure {
+        margin: 0;
+        position: relative;
+        max-width: min(100%, rem(980));
+        width: 100%;
+    }
+
+    &__img {
+        width: 100%;
+        max-height: 85vh;
+        object-fit: contain;
+        display: block;
+        border-radius: rem(12);
+        background: $color-bg;
+    }
+
+}
+
+$icon-close: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 6 L18 18 M18 6 L6 18' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E";
+
+.gallery-modal__close {
+    position: absolute;
+    top: rem(10);
+    right: rem(10);
+
+    width: rem(44);
+    height: rem(44);
+    padding: 0;
+    border-radius: rem(999);
+
+    border: 2px solid rgba(255, 255, 255, 0.65);
+    background-color: rgba(58, 45, 38, 0.45);
+
+    cursor: pointer;
+
+    /* テキストは使わない */
+    font-size: 0;
+    line-height: 0;
+
+    /* SVG × */
+    background-image: url(#{$icon-close}) !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: rem(22) rem(22) !important;
 }
 
 .ceremony {
@@ -859,6 +1076,7 @@ footer {
     &__list {
         display: grid;
         row-gap: rem(30);
+        margin-top: rem(30);
 
         &--column {
             margin-top: rem(30);
@@ -885,6 +1103,7 @@ footer {
         @include mq() {
             grid-auto-flow: column;
             column-gap: rem(50);
+            margin-top: rem(50);
 
             &--column {
                 margin-top: rem(50);
@@ -972,6 +1191,10 @@ footer {
 
 .plan {
     padding-top: rem(80);
+
+    @include mq() {
+        padding-top: rem(120);
+    }
 
     &__inner {
         @include inner();

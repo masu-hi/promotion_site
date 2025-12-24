@@ -189,9 +189,6 @@ a {
   margin-right: auto;
 }
 .footer__about {
-  display: flex;
-  flex-direction: column;
-  gap: 0.9375rem;
   font-size: 0.875rem;
   line-height: 1.5714285714;
   margin-bottom: 2.5rem;
@@ -210,106 +207,169 @@ a {
      object-fit: cover;
 }
 
-.inquiry-float {
+/* クリックはボタンに、動きはラッパーに */
+.inquiry-carry {
   position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 999;
-}
-
-/* ボタンは最前面 & クリック可能 */
-.inqury__btn {
-  position: fixed;
+  right: -18vw;
+  bottom: 5.625rem;
   z-index: 1000;
   pointer-events: auto;
-  color: #fff;
-  font-size: 0.875rem;
-  line-height: 1.4285714286;
-  text-decoration: none;
-  text-align: center;
-  background-color: #D9877A;
-  border: 2px solid #fff;
-  padding: 0.9375rem 0;
-}
-.inqury__btn:hover {
-  background-color: #E89A67;
-}
-
-/* 鳩：共通（歪み対策込み） */
-.inquiry-float__bird {
-  position: fixed;
-  display: block;
-  height: auto;
-  opacity: 1;
-  -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
-  transform: translate3d(0, 0, 0);
+  -webkit-animation: carry-fly 22s linear infinite;
+          animation: carry-fly 22s linear infinite;
+  -webkit-animation-delay: -8s;
+          animation-delay: -8s;
   will-change: transform;
 }
 
-/* =========================
-  スマホ（〜479px）：その場でふわふわ
-  ※あなたのmqがmin-widthなので、ここが“スマホ”になります
-========================= */
-.inquiry-float__bird {
-  width: 3.125rem;
-  right: 1.75rem;
-  bottom: 5%;
-  -webkit-animation: inquiry-bird-float 3.8s ease-in-out infinite;
-          animation: inquiry-bird-float 3.8s ease-in-out infinite;
+/* ふわっとカーブ（S字） */
+.inquiry-carry__anim {
+  display: inline-flex;
+  align-items: center;
+  will-change: transform;
+  -webkit-animation: carry-curve 6.6s ease-in-out infinite;
+          animation: carry-curve 6.6s ease-in-out infinite;
 }
 
-@-webkit-keyframes inquiry-bird-float {
-  0% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-  }
-  50% {
-    transform: translate3d(0, -0.5rem, 0) rotate(-1deg);
-  }
-  100% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-  }
+/* ボタン自体 */
+.inquiry-carry__btn {
+  display: inline-block;
+  color: #fff;
+  text-align: center;
+  background-color: #D9877A;
+  border: 2px solid #fff;
+  font-size: 0.875rem;
+  padding: 0.625rem 1.25rem;
+  transition: background-color 0.3s;
 }
 
-@keyframes inquiry-bird-float {
-  0% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-  }
-  50% {
-    transform: translate3d(0, -0.5rem, 0) rotate(-1deg);
-  }
-  100% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-  }
+/* 鳩（右側で咥える・左向き） */
+.inquiry-carry__bird {
+  height: auto;
+  margin-left: -1.5625rem;
+  transform-origin: 50% 50%;
+  transform: translateY(0.9375rem) scaleX(-1);
+  will-change: transform;
+  -webkit-animation: carry-bird 2.4s ease-in-out infinite;
+          animation: carry-bird 2.4s ease-in-out infinite;
+  pointer-events: none;
 }
-/* =========================
-  PC（800px〜）：右→左に流し続ける
-========================= */
+
+.inquiry-carry {
+  right: 0.75rem;
+  bottom: 1.5rem;
+  -webkit-animation: none;
+          animation: none;
+}
+
+.inquiry-carry__bird {
+  width: 3.25rem;
+  margin-left: -1.125rem;
+  transform: translateY(0.625rem) scaleX(-1);
+  -webkit-animation: carry-bird 2.8s ease-in-out infinite;
+          animation: carry-bird 2.8s ease-in-out infinite;
+}
+
 @media (min-width: 800px) {
-  .inquiry-float__bird {
-    width: 4.375rem;
-    right: -12vw;
-    bottom: 5rem;
-    -webkit-animation: inquiry-bird-fly 22s linear infinite;
-            animation: inquiry-bird-fly 22s linear infinite;
-    -webkit-animation-delay: -6s;
-            animation-delay: -6s;
+  .inquiry-carry {
+    right: -18vw;
+    bottom: 5.625rem;
+    -webkit-animation: carry-fly 22s linear infinite;
+            animation: carry-fly 22s linear infinite;
+  }
+  .inquiry-carry__bird {
+    width: 5.75rem;
+    margin-left: -1.875rem;
   }
 }
-@-webkit-keyframes inquiry-bird-fly {
+/* hoverで “鳥＋ボタン” を止める & ボタン色変更 */
+.inquiry-carry:hover {
+  -webkit-animation-play-state: paused;
+          animation-play-state: paused;
+}
+
+.inquiry-carry:hover .inquiry-carry__anim,
+.inquiry-carry:hover .inquiry-carry__bird {
+  -webkit-animation-play-state: paused;
+          animation-play-state: paused;
+}
+
+.inquiry-carry:hover .inquiry-carry__btn {
+  background-color: #E89A67;
+}
+
+/* 左へ流れてループ */
+@-webkit-keyframes carry-fly {
   0% {
-    transform: translate3d(0, 0, 0);
+    transform: translateX(0);
   }
   100% {
-    transform: translate3d(-140vw, 0, 0);
+    transform: translateX(-140vw);
   }
 }
-@keyframes inquiry-bird-fly {
+@keyframes carry-fly {
   0% {
-    transform: translate3d(0, 0, 0);
+    transform: translateX(0);
   }
   100% {
-    transform: translate3d(-140vw, 0, 0);
+    transform: translateX(-140vw);
+  }
+}
+/* ゆるいカーブ飛行（上下＋傾き） */
+@-webkit-keyframes carry-curve {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-0.625rem) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(0.1875rem) rotate(1deg);
+  }
+  75% {
+    transform: translateY(-0.5rem) rotate(-1deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+@keyframes carry-curve {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-0.625rem) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(0.1875rem) rotate(1deg);
+  }
+  75% {
+    transform: translateY(-0.5rem) rotate(-1deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+/* 鳥っぽいふわふわ（※scaleX(-1) を維持） */
+@-webkit-keyframes carry-bird {
+  0% {
+    transform: translateY(0.5rem) scaleX(-1);
+  }
+  50% {
+    transform: translateY(0.125rem) rotate(1deg) scaleX(-1);
+  }
+  100% {
+    transform: translateY(0.5rem) scaleX(-1);
+  }
+}
+@keyframes carry-bird {
+  0% {
+    transform: translateY(0.5rem) scaleX(-1);
+  }
+  50% {
+    transform: translateY(0.125rem) rotate(1deg) scaleX(-1);
+  }
+  100% {
+    transform: translateY(0.5rem) scaleX(-1);
   }
 }
 .btn {
@@ -657,6 +717,14 @@ footer {
   }
 }
 
+.gallery {
+  padding-bottom: 5rem;
+}
+@media (min-width: 800px) {
+  .gallery {
+    padding-bottom: 7.5rem;
+  }
+}
 .gallery__inner {
   max-width: 1200px;
   width: 92.1875%;
@@ -677,8 +745,143 @@ footer {
     text-align: center;
   }
 }
+.gallery__note {
+  font-size: 0.875rem;
+  line-height: 1.8571428571;
+  text-align: right;
+}
+.gallery__tabs {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: var(--header-height, 5rem);
+  z-index: 50;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 1rem;
+  background: transparent;
+  border: none;
+}
+.gallery__tab {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: 1px solid #E8D7C8;
+  background: transparent;
+  color: #3A2D26;
+  font-size: 0.8125rem;
+  line-height: 1;
+  padding: 0.5625rem 0.75rem;
+  border-radius: 62.4375rem;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+}
+.gallery__tab:hover {
+  transform: translateY(-0.0625rem);
+}
+.gallery__tab.is-active {
+  background: #E89A67;
+  border-color: #E89A67;
+  color: #fff;
+}
+@media (min-width: 480px) {
+  .gallery__tab {
+    font-size: 0.875rem;
+    padding: 0.625rem 0.875rem;
+  }
+}
+.gallery__panels {
+  padding-top: 4rem;
+  margin-top: 1.25rem;
+}
+.gallery__panel {
+  display: none;
+}
+.gallery__panel.is-active {
+  display: block;
+}
 .gallery__kinds {
-  margin-top: 3.125rem;
+  margin-top: 0;
+}
+@media (min-width: 800px) {
+  .gallery__tabs {
+    position: static;
+    top: auto;
+    z-index: auto;
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: transparent;
+    border-radius: 62.4375rem;
+    margin-top: 1.875rem;
+  }
+  .gallery__panels {
+    padding-top: 0;
+    margin-top: 2.5rem;
+  }
+}
+
+.gallery-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: none;
+}
+.gallery-modal.is-open {
+  display: block;
+}
+.gallery-modal__bg {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(232, 154, 103, 0.2);
+  cursor: pointer;
+}
+.gallery-modal__content {
+  position: absolute;
+  inset: 1rem;
+  display: grid;
+  place-items: center;
+}
+.gallery-modal__figure {
+  margin: 0;
+  position: relative;
+  max-width: min(100%, 61.25rem);
+  width: 100%;
+}
+.gallery-modal__img {
+  width: 100%;
+  max-height: 85vh;
+  -o-object-fit: contain;
+     object-fit: contain;
+  display: block;
+  border-radius: 0.75rem;
+  background: #fff;
+}
+
+.gallery-modal__close {
+  position: absolute;
+  top: 0.625rem;
+  right: 0.625rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border-radius: 62.4375rem;
+  border: 2px solid rgba(255, 255, 255, 0.65);
+  background-color: rgba(58, 45, 38, 0.45);
+  cursor: pointer;
+  /* テキストは使わない */
+  font-size: 0;
+  line-height: 0;
+  /* SVG × */
+  background-image: url(data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 6 L18 18 M18 6 L6 18' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E) !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 1.375rem 1.375rem !important;
 }
 
 .ceremony__title {
@@ -698,6 +901,7 @@ footer {
 .ceremony__list {
   display: grid;
   row-gap: 1.875rem;
+  margin-top: 1.875rem;
 }
 .ceremony__list--column {
   margin-top: 1.875rem;
@@ -722,6 +926,7 @@ footer {
     grid-auto-flow: column;
     -moz-column-gap: 3.125rem;
          column-gap: 3.125rem;
+    margin-top: 3.125rem;
   }
   .ceremony__list--column {
     margin-top: 3.125rem;
@@ -1004,6 +1209,11 @@ footer {
 
 .plan {
   padding-top: 5rem;
+}
+@media (min-width: 800px) {
+  .plan {
+    padding-top: 7.5rem;
+  }
 }
 .plan__inner {
   max-width: 1200px;
