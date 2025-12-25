@@ -81,7 +81,12 @@
             <img src="./images/webp/whitebird-left.webp" alt="" class="inquiry-carry__bird">
         </div>
         <section class="mainvisual">
-            <img src="./images/photo/ceremony/ceremony10.webp" alt="" class="mainvisual__photo">
+            <picture>
+                <source media="(width >= 640px)" srcset="./images/photo/ceremony/ceremony10.webp"
+                    class="mainvisual_photo">
+                <source media="(width < 640px)" srcset="./images/webp/mainvisual_sp.webp" class="mainvisual_photo">
+                <img src="./images/photo/ceremony/ceremony10.webp" alt="" class="mainvisual_photo">
+            </picture>
         </section>
         <section class="style">
             <div class="style__inner">
