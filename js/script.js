@@ -70,14 +70,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // ★ここだけあなたの画像パスに合わせて変えてOK
         // 例：/images/webp/ など
-        let src = "/images/webp/whitebird-spring.webp";
+        let src = "images/webp/whitebird-spring.webp";
 
         if (month >= 6 && month <= 8) {
-            src = "/images/webp/whitebird-summer.webp";
+            src = "images/webp/whitebird-summer.webp";
         } else if (month >= 9 && month <= 11) {
-            src = "/images/webp/whitebird-autumn.webp";
+            src = "images/webp/whitebird-autumn.webp";
         } else if (month === 12 || month <= 2) {
-            src = "/images/webp/whitebird-winter.webp";
+            src = "images/webp/whitebird-winter.webp";
         }
 
         // 既に同じなら何もしない（無駄な再読み込み防止）
