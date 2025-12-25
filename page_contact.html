@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLASSY-PHOTO</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/the-new-css-reset/css/reset.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <div class="bg-birds" aria-hidden="true">
+        <!-- left -> right：右向き = left.webp -->
+        <span class="bg-birds__fly bg-birds__fly--lr">
+            <span class="bg-birds__curve bg-birds__curve--a">
+                <span class="bg-birds__float">
+                    <img src="./images/webp/bluebird-left.webp" alt="" class="bg-birds__bird bg-birds__bird--blue">
+                </span>
+            </span>
+        </span>
+
+        <!-- right -> left：左向き = right.webp -->
+
+        <span class="bg-birds__fly bg-birds__fly--rl">
+            <span class="bg-birds__curve bg-birds__curve--d">
+                <span class="bg-birds__float">
+                    <img src="./images/webp/whitebird-right.webp" alt="" class="bg-birds__bird bg-birds__bird--white">
+                </span>
+            </span>
+        </span>
+    </div>
+    <header class="header">
+        <div class="header__inner">
+            <h1 class="header__logo">
+                <a href="index.html"><img src="./images/webp/logo_maruver.webp" alt="GLASSY-PHOTO"
+                        class="header__logo"></a>
+            </h1>
+            <div class="drawer">
+                <button class="drawer__toggle" aria-label="メニューを開く">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button class="drawer__close" aria-label="メニューを閉じる">
+                    ×
+                </button>
+                <div class="drawer__mask"></div>
+                <nav class="drawer__nav">
+                    <ul class="drawer__list">
+                        <li class="drawer__item"><a href="index.html">ホーム</a></li>
+                        <li class="drawer__item"><a href="page_photo.html">フォトギャラリー</a></li>
+                        <li class="drawer__item"><a href="page_price.html">料金プラン</a></li>
+                        <li class="drawer__item"><a href="page_infomation.html">information</a></li>
+                        <li class="drawer__item"><a href="page_contact.html">お問い合わせ</a></li>
+                    </ul>
+                </nav>
+                <div class="flash-effect"></div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <section class="inquiry">
+            <div class="inquiry__inner">
+                <div class="inquiry__box">
+                    <h2 class="inquiry__title">お問い合わせ</h2>
+                    <h3 class="inquiry__subtitle">結婚式写真撮影のご相談・ご注文フォーム</h3>
+                    <div class="inquiry__check">
+                        <label class="checkbox">
+                            <input id="check1" type="checkbox" class="checkbox__input">
+                            <span class="checkbox__box"></span>
+                            <span class="checkbox__text">- 免責・誓約事項 - に同意する</span>
+                        </label>
+                    </div>
+
+                    <div class="inquiry__check">
+                        <label class="checkbox">
+                            <input id="check2" type="checkbox" class="checkbox__input"> <!-- ← ID を変える -->
+                            <span class="checkbox__box"></span>
+                            <span class="checkbox__text">- 個人情報保護方針 - に同意する</span>
+                        </label>
+                    </div>
+                    <a href="#" class="btn--confirmation">
+                        免責・誓約事項、個人情報保護方針に関するご確認はこちら
+                    </a>
+                    <label class="inquiry__content">
+                        <p class="inquiry__name">お名前</p>
+                        <input type="text" name="name" class="inquiry__name--column">
+                    </label>
+                    <label class="inquiry__content">
+                        <p class="inquiry__email">メールアドレス</p>
+                        <input type="email" name="email" autocomplete="email" required class="inquiry__email--column" />
+                    </label>
+                    <label class="inquiry__content">
+                        <p class="inquiry__day">挙式披露宴日</p>
+                        <input type="date" name="day" class="inquiry__day--column">
+                    </label>
+                    <label class="inquiry__content">
+                        <p class="inquiry__place">会場</p>
+                        <input type="text" name="place" class="inquiry__place--column">
+                    </label>
+                    <label class="inquiry__content">
+                        <p class="inquiry__text">お問い合わせ内容</p>
+                        <textarea name="message" class="inquiry__text--column"></textarea>
+                    </label>
+                    <div class="inquiry__submit">
+                        <input type="submit" value="お問い合わせ内容を確認" class="inquiry__submit-btn">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__about">
+                <a href="page_pledge.html">免責・誓約事項、個人情報保護方針について</a>
+            </div>
+            <div class="footer__copy">
+                <small>&copy;結婚式に持ち込む写真カメラマン GLASSY-PHOTO
+                </small>
+                <img src="./images/webp/photographer_img.webp" alt="" class="footer__img">
+            </div>
+        </div>
+    </footer>
+    <script src="./js/script.js"></script>
+</body>
+
+</html>
