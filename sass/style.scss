@@ -478,29 +478,44 @@ a {
     }
 }
 
-/* クリックはボタンに、動きはラッパーに */
+/* =========================
+   お問い合わせ：鳩がボタンをくわえて移動
+   - SP：右下で「ふわふわ」固定
+   - PC：右→左に流れつつ「ふわふわ」＆ hoverで停止＋色変化
+========================= */
+
+/* ▼ ここだけ触れば位置調整できる */
+:root {
+    --carry-bottom-sp: #{rem(24)}; // SPの下位置
+    --carry-right-sp: #{rem(12)}; // SPの右位置
+    --carry-bottom-pc: #{rem(90)}; // PCの下位置
+    --carry-start-right-pc: -18vw; // PCの開始位置（画面外）
+}
+
+/* 外枠（横移動はここ） */
 .inquiry-carry {
     position: fixed;
-    right: -18vw; // 画面外スタート
-    bottom: rem(90); // 見える高さに
+    right: var(--carry-right-sp);
+    bottom: var(--carry-bottom-sp);
     z-index: 1000;
     pointer-events: auto;
 
-    // 横に流れる（ループ）
-    animation: carry-fly 22s linear infinite;
-    animation-delay: -8s; // リロード直後から途中位置に
+    /* SPは流さない */
+    animation: none;
     will-change: transform;
 }
 
-/* ふわっとカーブ（S字） */
+/* 中身の塊（鳩＋ボタンをまとめてふわふわさせる） */
 .inquiry-carry__anim {
     display: inline-flex;
     align-items: center;
     will-change: transform;
-    animation: carry-curve 6.6s ease-in-out infinite;
+
+    /* ★ここで「塊ごと」ふわふわ */
+    animation: carry-pack-float 3.2s ease-in-out infinite;
 }
 
-/* ボタン自体 */
+/* ボタン */
 .inquiry-carry__btn {
     display: inline-block;
     color: #fff;
@@ -509,48 +524,60 @@ a {
     border: 2px solid $color-bg;
     font-size: rem(14);
     padding: rem(10) rem(20);
+    border-radius: 999px;
     transition: background-color .3s;
 }
 
 /* 鳩（右側で咥える・左向き） */
 .inquiry-carry__bird {
+    --bite-y: #{rem(10)}; // ←咥える高さ（下げたいほど数字を大きく）
+
     height: auto;
-    margin-left: rem(-25); // 咥え代（食い込ませたい時はさらにマイナス）
-    transform-origin: 50% 50%;
-    transform: translateY(rem(15)) scaleX(-1); // ←下を咥える + 左向き
-
-    will-change: transform;
-    animation: carry-bird 2.4s ease-in-out infinite;
-    pointer-events: none;
-}
-
-.inquiry-carry {
-    right: rem(12);
-    bottom: rem(24); // ←下の方へ
-    animation: none; // ←流さない
-}
-
-.inquiry-carry__bird {
-    width: rem(52); // ←小さめ
     margin-left: rem(-18);
-    transform: translateY(rem(10)) scaleX(-1);
-    animation: carry-bird 2.8s ease-in-out infinite;
+    width: rem(52);
+
+    transform-origin: 50% 50%;
+    will-change: transform;
+    pointer-events: none;
+
+    animation: carry-bird 2.4s ease-in-out infinite;
+
+    position: relative;
+
+    &::after {
+        content: "🌸";
+        position: absolute;
+        left: -6px;
+        top: 60%;
+        font-size: rem(14);
+        transform: translateY(-50%);
+        animation: flower-float 2.8s ease-in-out infinite;
+    }
 }
 
+/* =========================
+   PC（800px〜）：右→左に流す
+========================= */
 @include mq(desktop) {
     .inquiry-carry {
-        right: -18vw;
-        bottom: rem(90);
+        right: var(--carry-start-right-pc);
+        bottom: var(--carry-bottom-pc);
+
+        /* 横移動（ループ） */
         animation: carry-fly 22s linear infinite;
+        animation-delay: -8s;
     }
 
-    .inquiry-carry__bird {
-        width: rem(92);
-        margin-left: rem(-30);
+    @include mq(desktop) {
+        .inquiry-carry__bird {
+            --bite-y: #{rem(13)}; // PCは深めに
+            width: rem(92);
+            margin-left: rem(-10);
+        }
     }
 }
 
-/* hoverで “鳥＋ボタン” を止める & ボタン色変更 */
+/* hover：塊も横移動も止める ＋ ボタン色 */
 .inquiry-carry:hover {
     animation-play-state: paused;
 }
@@ -564,7 +591,25 @@ a {
     background-color: $color-main;
 }
 
-/* 左へ流れてループ */
+/* -------------------------
+   animations
+------------------------- */
+
+@keyframes carry-bird {
+    0% {
+        transform: translateY(var(--bite-y));
+    }
+
+    50% {
+        transform: translateY(calc(var(--bite-y) - #{rem(4)})) rotate(1deg);
+    }
+
+    100% {
+        transform: translateY(var(--bite-y));
+    }
+}
+
+/* PCの横移動（右→左、ループ） */
 @keyframes carry-fly {
     0% {
         transform: translateX(0);
@@ -575,22 +620,18 @@ a {
     }
 }
 
-/* ゆるいカーブ飛行（上下＋傾き） */
-@keyframes carry-curve {
+/* ★鳩＋ボタン「塊ごと」ふわふわ（鳥っぽく少し傾ける） */
+@keyframes carry-pack-float {
     0% {
         transform: translateY(0) rotate(0deg);
     }
 
-    25% {
+    30% {
         transform: translateY(rem(-10)) rotate(-1deg);
     }
 
-    50% {
-        transform: translateY(rem(3)) rotate(1deg);
-    }
-
-    75% {
-        transform: translateY(rem(-8)) rotate(-1deg);
+    60% {
+        transform: translateY(rem(4)) rotate(1deg);
     }
 
     100% {
@@ -598,18 +639,32 @@ a {
     }
 }
 
-/* 鳥っぽいふわふわ（※scaleX(-1) を維持） */
-@keyframes carry-bird {
+/* 鳩だけ：微妙な揺れ（羽ばたき感）※scaleX(-1)維持 */
+@keyframes carry-bird-wiggle {
     0% {
-        transform: translateY(rem(8)) scaleX(-1);
+        transform: translateY(rem(10)) scaleX(-1);
     }
 
     50% {
-        transform: translateY(rem(2)) rotate(1deg) scaleX(-1);
+        transform: translateY(rem(6)) rotate(1deg) scaleX(-1);
     }
 
     100% {
-        transform: translateY(rem(8)) scaleX(-1);
+        transform: translateY(rem(10)) scaleX(-1);
+    }
+}
+
+@keyframes flower-float {
+    0% {
+        transform: translateY(-50%) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-54%) rotate(3deg);
+    }
+
+    100% {
+        transform: translateY(-50%) rotate(0deg);
     }
 }
 
