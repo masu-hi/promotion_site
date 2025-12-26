@@ -30,6 +30,7 @@ $font-family-mincho: "Times New Roman", Times, "Hiragino Mincho ProN", "Yu Minch
 // --- Breakpoints ---
 $breakpoints: (
     other-photograph: 1080px,
+    gnav:920px,
     desktop: 800px,
     sp: 480px,
     birdgap: 640px
@@ -292,6 +293,7 @@ a {
         grid-auto-flow: column;
         justify-content: space-between;
         align-items: center;
+        position: relative;
     }
 
     &__logo {
@@ -305,8 +307,46 @@ a {
     }
 }
 
+/* =========================
+   PCナビ（800px以上で表示）
+========================= */
+.pcnav {
+    display: none; // ←SPでは非表示
+
+    @include mq(gnav) {
+        display: block;
+    }
+
+    &__list {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: rem(70); // ←ここで横の間隔調整
+        padding: rem(24) 0;
+    }
+
+    &__item {
+        font-size: rem(16);
+        line-height: 1;
+
+        a {
+            color: $color-text;
+            text-decoration: none;
+            @include hover(pcnav); // ←下線＋キラン（あなたのmixinを使用）
+        }
+    }
+}
+
+/* =========================
+   Drawer（SPだけ表示）
+========================= */
 .drawer {
     position: relative;
+
+    /* ✅ PCではdrawer一式を非表示 */
+    @include mq(desktop) {
+        display: none;
+    }
 
     &__toggle {
         position: fixed;
@@ -371,7 +411,7 @@ a {
         position: fixed;
         top: 0;
         right: -280px;
-        width: 280px;
+        width: min(80vw, 280px);
         height: 100vh;
         background: #fff;
         transition: right .7s;
@@ -382,36 +422,17 @@ a {
     &__list {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: rem(20);
     }
 
     &__item {
-        font-size: 14px;
-        text-decoration: none;
+        font-size: rem(14);
         color: $color-text;
 
-        position: relative;
-        display: inline-block;
-        text-decoration: none;
-        padding-bottom: 3px;
-
-        &::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: 2px;
-            background: currentColor;
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform .3s ease;
-        }
-
-        &.is-active::after,
-        &:hover::after {
-            transform: scaleX(1);
-            transform-origin: left;
+        a {
+            color: inherit;
+            text-decoration: none;
+            @include hover(drawer); // ←キラン＋下線
         }
     }
 
@@ -434,6 +455,7 @@ a {
     }
 }
 
+/* フラッシュ */
 .flash-effect {
     position: fixed;
     inset: 0;
@@ -442,7 +464,6 @@ a {
     pointer-events: none;
     z-index: 2000;
     transition: opacity 0.2s ease;
-
 }
 
 .flash-effect.is-active {
@@ -518,10 +539,10 @@ a {
 /* ボタン */
 .inquiry-carry__btn {
     display: inline-block;
-    color: #fff;
+    color: $color-text;
     text-align: center;
-    background-color: $color-accent;
-    border: 2px solid $color-bg;
+    background-color: $color-bg;
+    border: 2px solid $color-main;
     font-size: rem(14);
     padding: rem(10) rem(20);
     border-radius: 999px;

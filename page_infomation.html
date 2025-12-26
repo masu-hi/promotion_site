@@ -51,17 +51,28 @@
                 <a href="index.html"><img src="./images/webp/logo_maruver.webp" alt="GLASSY-PHOTO"
                         class="header__logo"></a>
             </h1>
+            <nav class="pcnav" aria-label="グローバルナビゲーション">
+                <ul class="pcnav__list">
+                    <li class="pcnav__item"><a href="index.html">ホーム</a></li>
+                    <li class="pcnav__item"><a href="page_photo.html">フォトギャラリー</a></li>
+                    <li class="pcnav__item"><a href="page_price.html">料金プラン</a></li>
+                    <li class="pcnav__item"><a href="page_infomation.html">information</a></li>
+                    <li class="pcnav__item"><a href="page_contact.html">お問い合わせ</a></li>
+                </ul>
+            </nav>
+
             <div class="drawer">
                 <button class="drawer__toggle" aria-label="メニューを開く">
                     <span></span>
                     <span></span>
                     <span></span>
                 </button>
-                <button class="drawer__close" aria-label="メニューを閉じる">
-                    ×
-                </button>
+
+                <button class="drawer__close" aria-label="メニューを閉じる">×</button>
+
                 <div class="drawer__mask"></div>
-                <nav class="drawer__nav">
+
+                <nav class="drawer__nav" aria-label="ドロワーメニュー">
                     <ul class="drawer__list">
                         <li class="drawer__item"><a href="index.html">ホーム</a></li>
                         <li class="drawer__item"><a href="page_photo.html">フォトギャラリー</a></li>
@@ -70,6 +81,7 @@
                         <li class="drawer__item"><a href="page_contact.html">お問い合わせ</a></li>
                     </ul>
                 </nav>
+
                 <div class="flash-effect"></div>
             </div>
         </div>
