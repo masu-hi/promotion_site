@@ -304,9 +304,56 @@ a {
   margin-right: auto;
 }
 .footer__about {
-  font-size: 0.875rem;
   line-height: 1.5714285714;
   margin-bottom: 2.5rem;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 3px;
+  overflow: hidden;
+  color: currentColor;
+  text-decoration: none;
+  /* 下線（左→右） */
+  /* キラン（光） */
+  /* SP */
+  font-size: 0.875rem;
+}
+.footer__about::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: width 0.35s ease;
+}
+.footer__about::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.9) 50%, rgba(255, 255, 255, 0) 100%);
+  transform: skewX(-20deg);
+  transition: left 0.35s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+.footer__about:hover::after {
+  width: 100%;
+}
+.footer__about:hover::before {
+  left: 100%;
+}
+.footer__about:hover {
+  opacity: 0.85;
+}
+@media (min-width: 480px) {
+  .footer__about {
+    font-size: 1rem;
+    padding-bottom: 5px;
+  }
 }
 .footer__copy {
   font-size: 0.75rem;
@@ -324,65 +371,84 @@ a {
 
 /* =========================
    お問い合わせ：鳩がボタンをくわえて移動
-   - SP：右下で「ふわふわ」固定
-   - PC：右→左に流れつつ「ふわふわ」＆ hoverで停止＋色変化
+   - SP：右下で「ふわふわ」固定（SPは変えない）
+   - PC：往復（Uターン）＋戻りだけ鳩反転＋ hoverで停止＋色変化
 ========================= */
 /* ▼ ここだけ触れば位置調整できる */
 :root {
   --carry-bottom-sp: 1.5rem;
   --carry-right-sp: 0.75rem;
   --carry-bottom-pc: 5.625rem;
-  --carry-start-right-pc: -18vw;
+  /* ★Uターン距離用：JSが上書きしてくれる保険 */
+  --carry-w: 260px;
+  /* ★鳩の向き：-1 = 左向き / 1 = 右向き（PCで切替） */
+  --carry-dir: -1;
+  --carry-edge-gap: 20px;
+  /* ← 端から少し内側にしたい時の余白 */
 }
 
-/* 外枠（横移動はここ） */
+/* =========================
+   共通（SP/PC）
+========================= */
+/* 外枠（位置固定） */
 .inquiry-carry {
   position: fixed;
   right: var(--carry-right-sp);
   bottom: var(--carry-bottom-sp);
   z-index: 1000;
   pointer-events: auto;
-  /* SPは流さない */
+  /* SPは動かさない */
   -webkit-animation: none;
           animation: none;
   will-change: transform;
 }
 
-/* 中身の塊（鳩＋ボタンをまとめてふわふわさせる） */
+/* 中身の塊（鳩＋ボタン）＝「塊ごと」ふわふわ */
 .inquiry-carry__anim {
   display: inline-flex;
   align-items: center;
-  will-change: transform;
-  /* ★ここで「塊ごと」ふわふわ */
-  -webkit-animation: carry-pack-float 3.2s ease-in-out infinite;
-          animation: carry-pack-float 3.2s ease-in-out infinite;
+  /* ★ 鳩の位置を変数で制御 */
+  flex-direction: var(--bird-order, row);
+  -webkit-animation: carry-pack-float 3.6s ease-in-out infinite;
+          animation: carry-pack-float 3.6s ease-in-out infinite;
 }
 
-/* ボタン */
+/* ボタン：縦読み防止＆はみ出し防止 */
 .inquiry-carry__btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: #3A2D26;
   text-align: center;
   background-color: #fff;
   border: 2px solid #E89A67;
   font-size: 0.875rem;
-  padding: 0.625rem 1.25rem;
+  line-height: 1;
+  /* 高さを安定 */
+  padding: 0.8125rem 1.125rem;
   border-radius: 999px;
+  /* ★縦読み（折り返し）を防ぐ */
+  white-space: nowrap;
+  /* ★文字が枠からはみ出す事故を防ぐ */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
   transition: background-color 0.3s;
 }
 
-/* 鳩（右側で咥える・左向き） */
+/* 鳩：右側で咥える（左向きが基本） */
 .inquiry-carry__bird {
-  --bite-y: 0.625rem;
   height: auto;
-  margin-left: -1.125rem;
-  width: 3.25rem;
-  transform-origin: 50% 50%;
-  will-change: transform;
+  width: 3.75rem;
   pointer-events: none;
+  position: relative;
+  /* SPは向きを固定（反転させない） */
+  transform: none;
+  /* 上下ふわふわだけ */
   -webkit-animation: carry-bird 2.4s ease-in-out infinite;
           animation: carry-bird 2.4s ease-in-out infinite;
-  position: relative;
+  /* SPの食い込み */
+  margin-left: -0.875rem;
 }
 .inquiry-carry__bird::after {
   content: "🌸";
@@ -395,28 +461,7 @@ a {
           animation: flower-float 2.8s ease-in-out infinite;
 }
 
-/* =========================
-   PC（800px〜）：右→左に流す
-========================= */
-@media (min-width: 800px) {
-  .inquiry-carry {
-    right: var(--carry-start-right-pc);
-    bottom: var(--carry-bottom-pc);
-    /* 横移動（ループ） */
-    -webkit-animation: carry-fly 22s linear infinite;
-            animation: carry-fly 22s linear infinite;
-    -webkit-animation-delay: -8s;
-            animation-delay: -8s;
-  }
-}
-@media (min-width: 800px) and (min-width: 800px) {
-  .inquiry-carry__bird {
-    --bite-y: 0.8125rem;
-    width: 5.75rem;
-    margin-left: -0.625rem;
-  }
-}
-/* hover：塊も横移動も止める ＋ ボタン色 */
+/* hover：PCでもSPでも止まる＋色変化（PCは移動も止まる） */
 .inquiry-carry:hover {
   -webkit-animation-play-state: paused;
           animation-play-state: paused;
@@ -432,58 +477,93 @@ a {
   background-color: #E89A67;
 }
 
-/* -------------------------
+/* =========================
+   PC（800px〜）：往復（Uターン）
+   ※SPは一切変えない
+========================= */
+@media (min-width: 800px) {
+  .inquiry-carry {
+    /* SPの right を殺して、left基準に切り替える */
+    left: calc(100vw - var(--carry-w) - var(--carry-edge-gap));
+    right: auto;
+    bottom: var(--carry-bottom-pc);
+    /* ★左右端で往復（Uターン） */
+    -webkit-animation: carry-yo-yo 35s ease-in-out infinite;
+            animation: carry-yo-yo 35s ease-in-out infinite;
+    -webkit-animation-delay: -6s;
+            animation-delay: -6s;
+  }
+  .inquiry-carry.is-back .inquiry-carry__bird {
+    margin-left: 0;
+    margin-right: -0.625rem;
+  }
+  .inquiry-carry__bird {
+    --bite-y: 0.8125rem;
+    width: 5.75rem;
+    margin-left: -0.625rem;
+    transform: scaleX(var(--carry-dir));
+  }
+  /* PCのときはボタンが小さすぎると折り返し事故るので最低幅を保険 */
+  .inquiry-carry__btn {
+    min-width: 11.875rem;
+    /* 文字量に合わせて調整OK */
+    font-size: 0.875rem;
+    padding: 0.9375rem 1.25rem;
+  }
+  /* 通常（行き）：btn → bird（鳩右） */
+  .inquiry-carry__anim {
+    flex-direction: row;
+  }
+  /* 戻り：bird → btn（鳩左） */
+  .inquiry-carry.is-back .inquiry-carry__anim {
+    flex-direction: row-reverse;
+  }
+  /* 戻りの食い込み */
+  .inquiry-carry.is-back .inquiry-carry__bird {
+    margin-left: 0;
+    margin-right: -0.625rem;
+  }
+}
+/* =========================
    animations
-------------------------- */
+========================= */
+/* 鳩だけ上下（向きは transform: scaleX(var(--carry-dir)) で固定したいので
+   translateY だけを別にかけたい → ここでは「translateYのみ」にする */
 @-webkit-keyframes carry-bird {
   0% {
-    transform: translateY(var(--bite-y));
+    translate: 0 var(--bite-y);
   }
   50% {
-    transform: translateY(calc(var(--bite-y) - 0.25rem)) rotate(1deg);
+    translate: 0 calc(var(--bite-y) - 0.25rem);
   }
   100% {
-    transform: translateY(var(--bite-y));
+    translate: 0 var(--bite-y);
   }
 }
 @keyframes carry-bird {
   0% {
-    transform: translateY(var(--bite-y));
+    translate: 0 var(--bite-y);
   }
   50% {
-    transform: translateY(calc(var(--bite-y) - 0.25rem)) rotate(1deg);
+    translate: 0 calc(var(--bite-y) - 0.25rem);
   }
   100% {
-    transform: translateY(var(--bite-y));
+    translate: 0 var(--bite-y);
   }
 }
-/* PCの横移動（右→左、ループ） */
-@-webkit-keyframes carry-fly {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-140vw);
-  }
-}
-@keyframes carry-fly {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-140vw);
-  }
-}
-/* ★鳩＋ボタン「塊ごと」ふわふわ（鳥っぽく少し傾ける） */
+/* ★塊ごとふわふわ */
 @-webkit-keyframes carry-pack-float {
   0% {
     transform: translateY(0) rotate(0deg);
   }
-  30% {
-    transform: translateY(-0.625rem) rotate(-1deg);
+  25% {
+    transform: translateY(-0.75rem) rotate(-1.2deg);
   }
-  60% {
-    transform: translateY(0.25rem) rotate(1deg);
+  55% {
+    transform: translateY(0.3125rem) rotate(1.2deg);
+  }
+  80% {
+    transform: translateY(-0.5rem) rotate(-0.8deg);
   }
   100% {
     transform: translateY(0) rotate(0deg);
@@ -493,39 +573,69 @@ a {
   0% {
     transform: translateY(0) rotate(0deg);
   }
-  30% {
-    transform: translateY(-0.625rem) rotate(-1deg);
+  25% {
+    transform: translateY(-0.75rem) rotate(-1.2deg);
   }
-  60% {
-    transform: translateY(0.25rem) rotate(1deg);
+  55% {
+    transform: translateY(0.3125rem) rotate(1.2deg);
+  }
+  80% {
+    transform: translateY(-0.5rem) rotate(-0.8deg);
   }
   100% {
     transform: translateY(0) rotate(0deg);
   }
 }
-/* 鳩だけ：微妙な揺れ（羽ばたき感）※scaleX(-1)維持 */
-@-webkit-keyframes carry-bird-wiggle {
+/* ★PCのUターン（往復）＋戻りだけ鳩反転 */
+@-webkit-keyframes carry-yo-yo {
+  /* 右 → 左（行き）：鳩は右側（btn → bird） */
   0% {
-    transform: translateY(0.625rem) scaleX(-1);
+    transform: translateX(0);
+    --carry-dir: 1;
+    --bird-order: row;
   }
+  49.9% {
+    transform: translateX(calc(-100vw + var(--carry-w)));
+    --carry-dir: 1;
+    --bird-order: row;
+  }
+  /* 折り返し：左 → 右（戻り）：鳩を左側へ（bird → btn） */
   50% {
-    transform: translateY(0.375rem) rotate(1deg) scaleX(-1);
+    transform: translateX(calc(-100vw + var(--carry-w)));
+    --carry-dir: -1;
+    --bird-order: row-reverse;
   }
   100% {
-    transform: translateY(0.625rem) scaleX(-1);
+    transform: translateX(0);
+    --carry-dir: -1;
+    --bird-order: row-reverse;
   }
 }
-@keyframes carry-bird-wiggle {
+@keyframes carry-yo-yo {
+  /* 右 → 左（行き）：鳩は右側（btn → bird） */
   0% {
-    transform: translateY(0.625rem) scaleX(-1);
+    transform: translateX(0);
+    --carry-dir: 1;
+    --bird-order: row;
   }
+  49.9% {
+    transform: translateX(calc(-100vw + var(--carry-w)));
+    --carry-dir: 1;
+    --bird-order: row;
+  }
+  /* 折り返し：左 → 右（戻り）：鳩を左側へ（bird → btn） */
   50% {
-    transform: translateY(0.375rem) rotate(1deg) scaleX(-1);
+    transform: translateX(calc(-100vw + var(--carry-w)));
+    --carry-dir: -1;
+    --bird-order: row-reverse;
   }
   100% {
-    transform: translateY(0.625rem) scaleX(-1);
+    transform: translateX(0);
+    --carry-dir: -1;
+    --bird-order: row-reverse;
   }
 }
+/* 花 */
 @-webkit-keyframes flower-float {
   0% {
     transform: translateY(-50%) rotate(0deg);
@@ -556,6 +666,7 @@ a {
   background-color: #f5f5f5;
   color: #3A2D26;
   text-decoration: none;
+  transition: 0.7s;
 }
 .btn::before {
   position: absolute;
@@ -569,10 +680,17 @@ a {
   content: "";
   filter: blur(4px);
 }
+.btn:hover {
+  background-color: #E89A67;
+  border-right: 3.125rem solid #3A2D26;
+}
 @media (min-width: 800px) {
   .btn {
     padding: 1.25rem 2.5rem;
     border-right: 5rem solid #e89a67;
+  }
+  .btn:hover {
+    border-right: 5rem solid #3A2D26;
   }
 }
 
@@ -851,28 +969,27 @@ footer {
 .style__title {
   font-size: 1.75rem;
   line-height: 1.4285714286;
-  margin: 5rem 0 1.875rem;
+  margin: 6.25rem 0 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .style__title {
     font-size: 2.5rem;
     line-height: 0.6666666667;
-    margin: 7.5rem 0 3.125rem;
+    margin: 11.25rem 0 4.375rem;
     text-align: center;
   }
 }
 .style__subtitle {
   font-size: 18px;
   line-height: 1.5;
-  margin-bottom: 1.875rem;
+  margin-bottom: 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .style__subtitle {
     font-size: 1.375rem;
     line-height: 1.5454545455;
-    margin-bottom: 1.875rem;
     text-align: center;
   }
 }
@@ -910,14 +1027,14 @@ footer {
 .gallery__title {
   font-size: 1.75rem;
   line-height: 1.4285714286;
-  margin: 5rem 0 1.875rem;
+  margin: 6.25rem 0 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .gallery__title {
     font-size: 2.5rem;
     line-height: 0.6666666667;
-    margin: 7.5rem 0 3.125rem;
+    margin: 11.25rem 0 4.375rem;
     text-align: center;
   }
 }
@@ -1063,14 +1180,13 @@ footer {
 .ceremony__title {
   font-size: 18px;
   line-height: 1.5;
-  margin-bottom: 1.875rem;
+  margin-bottom: 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .ceremony__title {
     font-size: 1.375rem;
     line-height: 1.5454545455;
-    margin-bottom: 1.875rem;
     text-align: center;
   }
 }
@@ -1180,14 +1296,13 @@ footer {
 .reception__title {
   font-size: 18px;
   line-height: 1.5;
-  margin-bottom: 1.875rem;
+  margin-bottom: 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .reception__title {
     font-size: 1.375rem;
     line-height: 1.5454545455;
-    margin-bottom: 1.875rem;
     text-align: center;
   }
 }
@@ -1295,14 +1410,13 @@ footer {
 .decoration__title {
   font-size: 18px;
   line-height: 1.5;
-  margin-bottom: 1.875rem;
+  margin-bottom: 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .decoration__title {
     font-size: 1.375rem;
     line-height: 1.5454545455;
-    margin-bottom: 1.875rem;
     text-align: center;
   }
 }
@@ -1383,14 +1497,6 @@ footer {
   }
 }
 
-.plan {
-  padding-top: 5rem;
-}
-@media (min-width: 800px) {
-  .plan {
-    padding-top: 7.5rem;
-  }
-}
 .plan__inner {
   max-width: 1200px;
   width: 92.1875%;
@@ -1445,14 +1551,14 @@ footer {
 .photographer__title {
   font-size: 1.75rem;
   line-height: 1.4285714286;
-  margin: 5rem 0 1.875rem;
+  margin: 6.25rem 0 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .photographer__title {
     font-size: 2.5rem;
     line-height: 0.6666666667;
-    margin: 7.5rem 0 3.125rem;
+    margin: 11.25rem 0 4.375rem;
     text-align: center;
   }
 }
@@ -1498,14 +1604,14 @@ footer {
 .voice__title {
   font-size: 1.75rem;
   line-height: 1.4285714286;
-  margin: 5rem 0 1.875rem;
+  margin: 6.25rem 0 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .voice__title {
     font-size: 2.5rem;
     line-height: 0.6666666667;
-    margin: 7.5rem 0 3.125rem;
+    margin: 11.25rem 0 4.375rem;
     text-align: center;
   }
 }
@@ -1563,14 +1669,13 @@ footer {
 .inquiry__subtitle {
   font-size: 18px;
   line-height: 1.5;
-  margin-bottom: 1.875rem;
+  margin-bottom: 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .inquiry__subtitle {
     font-size: 1.375rem;
     line-height: 1.5454545455;
-    margin-bottom: 1.875rem;
     text-align: center;
   }
 }
@@ -1885,14 +1990,14 @@ footer {
 .basicplan__title {
   font-size: 1.75rem;
   line-height: 1.4285714286;
-  margin: 5rem 0 1.875rem;
+  margin: 6.25rem 0 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .basicplan__title {
     font-size: 2.5rem;
     line-height: 0.6666666667;
-    margin: 7.5rem 0 3.125rem;
+    margin: 11.25rem 0 4.375rem;
     text-align: center;
   }
 }
@@ -1942,14 +2047,14 @@ footer {
 .summary__title {
   font-size: 1.75rem;
   line-height: 1.4285714286;
-  margin: 5rem 0 1.875rem;
+  margin: 6.25rem 0 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .summary__title {
     font-size: 2.5rem;
     line-height: 0.6666666667;
-    margin: 7.5rem 0 3.125rem;
+    margin: 11.25rem 0 4.375rem;
     text-align: center;
   }
 }
@@ -1985,21 +2090,21 @@ footer {
 .option__title {
   font-size: 1.75rem;
   line-height: 1.4285714286;
-  margin: 5rem 0 1.875rem;
+  margin: 6.25rem 0 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .option__title {
     font-size: 2.5rem;
     line-height: 0.6666666667;
-    margin: 7.5rem 0 3.125rem;
+    margin: 11.25rem 0 4.375rem;
     text-align: center;
   }
 }
 .option__subtitle {
   font-size: 18px;
   line-height: 1.5;
-  margin-bottom: 1.875rem;
+  margin-bottom: 3.125rem;
   text-align: center;
   margin-top: 3.125rem;
 }
@@ -2007,7 +2112,6 @@ footer {
   .option__subtitle {
     font-size: 1.375rem;
     line-height: 1.5454545455;
-    margin-bottom: 1.875rem;
     text-align: center;
   }
 }
@@ -2122,14 +2226,14 @@ footer {
 .otheroption__title {
   font-size: 1.75rem;
   line-height: 1.4285714286;
-  margin: 5rem 0 1.875rem;
+  margin: 6.25rem 0 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .otheroption__title {
     font-size: 2.5rem;
     line-height: 0.6666666667;
-    margin: 7.5rem 0 3.125rem;
+    margin: 11.25rem 0 4.375rem;
     text-align: center;
   }
 }
@@ -2156,28 +2260,27 @@ footer {
 .other-photograph__title {
   font-size: 1.75rem;
   line-height: 1.4285714286;
-  margin: 5rem 0 1.875rem;
+  margin: 6.25rem 0 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .other-photograph__title {
     font-size: 2.5rem;
     line-height: 0.6666666667;
-    margin: 7.5rem 0 3.125rem;
+    margin: 11.25rem 0 4.375rem;
     text-align: center;
   }
 }
 .other-photograph__subtitle {
   font-size: 18px;
   line-height: 1.5;
-  margin-bottom: 1.875rem;
+  margin-bottom: 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .other-photograph__subtitle {
     font-size: 1.375rem;
     line-height: 1.5454545455;
-    margin-bottom: 1.875rem;
     text-align: center;
   }
 }
@@ -2248,14 +2351,14 @@ footer {
 .order__title {
   font-size: 1.75rem;
   line-height: 1.4285714286;
-  margin: 5rem 0 1.875rem;
+  margin: 6.25rem 0 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .order__title {
     font-size: 2.5rem;
     line-height: 0.6666666667;
-    margin: 7.5rem 0 3.125rem;
+    margin: 11.25rem 0 4.375rem;
     text-align: center;
   }
 }
@@ -2275,13 +2378,13 @@ footer {
 .order__content {
   width: 13.75rem;
   min-height: 13.75rem;
-  background: #D9877A;
+  background: #fff;
   border-radius: 3.125rem;
-  border: 3px solid #E8D7C8;
+  border: 4px solid #E89A67;
   margin: 0 auto 1.5rem;
   padding: 1.5rem 1.25rem;
   text-align: center;
-  color: #fff;
+  color: #3A2D26;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -2308,16 +2411,15 @@ footer {
   }
 }
 .order__icon {
-  width: 3rem;
-  margin-bottom: 0.75rem;
+  width: 3.4375rem;
+  margin-bottom: 1.125rem;
 }
 @media (min-width: 800px) {
   .order__icon {
-    width: 4rem;
+    width: 4.375rem;
   }
 }
 .order__detail {
-  font-size: 1rem;
   font-weight: bold;
   line-height: 1.5;
   margin-bottom: 0.625rem;
@@ -2439,11 +2541,11 @@ footer {
   }
 }
 .faq {
-  padding: 5rem 0;
+  margin-bottom: 5rem;
 }
 @media (min-width: 800px) {
   .faq {
-    padding: 7.5rem 0;
+    margin-bottom: 7.5rem;
   }
 }
 .faq__inner {
@@ -2455,21 +2557,21 @@ footer {
 .faq__title {
   font-size: 1.75rem;
   line-height: 1.4285714286;
-  margin: 5rem 0 1.875rem;
+  margin: 6.25rem 0 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .faq__title {
     font-size: 2.5rem;
     line-height: 0.6666666667;
-    margin: 7.5rem 0 3.125rem;
+    margin: 11.25rem 0 4.375rem;
     text-align: center;
   }
 }
 .faq__subtitle {
   font-size: 18px;
   line-height: 1.5;
-  margin-bottom: 1.875rem;
+  margin-bottom: 3.125rem;
   text-align: center;
   margin-top: 3.75rem;
 }
@@ -2477,7 +2579,6 @@ footer {
   .faq__subtitle {
     font-size: 1.375rem;
     line-height: 1.5454545455;
-    margin-bottom: 1.875rem;
     text-align: center;
   }
 }
@@ -2656,28 +2757,27 @@ footer {
 .disclaimer__title {
   font-size: 1.75rem;
   line-height: 1.4285714286;
-  margin: 5rem 0 1.875rem;
+  margin: 6.25rem 0 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .disclaimer__title {
     font-size: 2.5rem;
     line-height: 0.6666666667;
-    margin: 7.5rem 0 3.125rem;
+    margin: 11.25rem 0 4.375rem;
     text-align: center;
   }
 }
 .disclaimer__subtitle {
   font-size: 18px;
   line-height: 1.5;
-  margin-bottom: 1.875rem;
+  margin-bottom: 3.125rem;
   text-align: center;
 }
 @media (min-width: 480px) {
   .disclaimer__subtitle {
     font-size: 1.375rem;
     line-height: 1.5454545455;
-    margin-bottom: 1.875rem;
     text-align: center;
   }
 }

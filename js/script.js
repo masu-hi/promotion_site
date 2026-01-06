@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =========================
-    // Inquiry carry - season bird (花つき切り替え)
+    // ① 季節で鳩画像を切り替える
     // =========================
     const carry = document.querySelector(".inquiry-carry");
     const carryBird = document.querySelector(".inquiry-carry__bird");
@@ -68,8 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (carry && carryBird) {
         const month = new Date().getMonth() + 1;
 
-        // ★ここだけあなたの画像パスに合わせて変えてOK
-        // 例：/images/webp/ など
         let src = "images/webp/whitebird-spring.webp";
 
         if (month >= 6 && month <= 8) {
@@ -80,18 +78,10 @@ document.addEventListener("DOMContentLoaded", () => {
             src = "images/webp/whitebird-winter.webp";
         }
 
-        // 既に同じなら何もしない（無駄な再読み込み防止）
-        if (!carryBird.getAttribute("src") || carryBird.getAttribute("src") !== src) {
-            carryBird.setAttribute("src", src);
-        }
+        carryBird.src = src;
 
-        // 任意：季節クラスも付ける（CSSでちょい演出したい時用）
-        carry.classList.remove(
-            "is-spring",
-            "is-summer",
-            "is-autumn",
-            "is-winter"
-        );
+        // 季節クラス（CSS演出用・使わなくてもOK）
+        carry.classList.remove("is-spring", "is-summer", "is-autumn", "is-winter");
 
         const season =
             month >= 3 && month <= 5
@@ -103,6 +93,45 @@ document.addEventListener("DOMContentLoaded", () => {
                         : "winter";
 
         carry.classList.add(`is-${season}`);
+    }
+
+    // =========================
+    // ② carry の横幅を測って Uターン位置を正確にする
+    // =========================
+    const carryPack = document.querySelector(".inquiry-carry__anim");
+
+    const setCarryWidthVar = () => {
+        if (!carry || !carryPack) return;
+
+        const width = Math.ceil(carryPack.getBoundingClientRect().width);
+        carry.style.setProperty("--carry-w", `${width}px`);
+    };
+
+    // 初期化
+    setCarryWidthVar();
+
+    // リサイズ対応
+    window.addEventListener("resize", setCarryWidthVar);
+
+    // =========================
+    // PC：戻り(左→右)判定してクラスを付ける（鳩を左へ移動用）
+    // =========================
+    const carryEl = document.querySelector(".inquiry-carry");
+    if (carryEl) {
+        let lastLeft = null;
+
+        const loop = () => {
+            const left = carryEl.getBoundingClientRect().left;
+
+            if (lastLeft !== null) {
+                // leftが増える＝左→右（戻り）
+                carryEl.classList.toggle("is-back", left > lastLeft);
+            }
+            lastLeft = left;
+            requestAnimationFrame(loop);
+        };
+
+        requestAnimationFrame(loop);
     }
 
     // =========================
