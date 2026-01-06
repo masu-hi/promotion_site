@@ -448,7 +448,7 @@ a {
   -webkit-animation: carry-bird 2.4s ease-in-out infinite;
           animation: carry-bird 2.4s ease-in-out infinite;
   /* SPの食い込み */
-  margin-left: -0.875rem;
+  margin-left: -0.5rem;
 }
 .inquiry-carry__bird::after {
   content: "🌸";
