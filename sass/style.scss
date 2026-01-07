@@ -87,13 +87,13 @@ $breakpoints: (
 
 @mixin title-main($t) {
     font-size: rem(28);
-    line-height: math.div(40, 28);
+    line-height: math.div(48, 28);
     margin: rem(100) 0 rem(50);
     text-align: center;
 
     @include mq(sp) {
         font-size: rem(40);
-        line-height: math.div(40, 60);
+        line-height: math.div(56, 40);
         margin: rem(180) 0 rem(70);
         text-align: center;
     }
@@ -1713,7 +1713,7 @@ $icon-close: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
 
         @include mq(sp) {
             font-size: rem(40);
-            line-height: math.div(40, 60);
+            line-height: math.div(56, 40);
             text-align: center;
         }
     }
@@ -1820,6 +1820,165 @@ $icon-close: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
         border-radius: rem(4);
         font-size: rem(14);
         cursor: pointer;
+        transition: .3s;
+
+        &:hover {
+            opacity: .8;
+            background-color: #fff;
+            color: $color-accent;
+        }
+    }
+
+    &__required {
+        display: inline-block;
+        margin-left: rem(8);
+        font-size: rem(12);
+        padding: rem(2) rem(6);
+        border-radius: rem(999);
+        background: $bg-light;
+        border: 1px solid $color-line;
+        color: $color-text;
+    }
+
+    &--thanks {
+        text-align: center;
+    }
+}
+
+.confirm {
+    margin-top: rem(20);
+
+    &__list {
+        border: 2px solid $color-line;
+        background: $color-bg;
+        border-radius: rem(6);
+        overflow: hidden;
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: rem(8);
+        padding: rem(16);
+        border-bottom: 1px solid $color-line;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        @include mq(desktop) {
+            grid-template-columns: rem(180) 1fr;
+            align-items: start;
+            gap: rem(24);
+            padding: rem(18) rem(20);
+        }
+    }
+
+    &__term {
+        font-weight: 700;
+        color: $color-text;
+    }
+
+    &__desc {
+        color: $color-text;
+        background: $bg-light;
+        border: 1px solid $color-line;
+        border-radius: rem(4);
+        padding: rem(12);
+        line-height: 1.7;
+
+        &--message {
+            white-space: pre-wrap; // 改行を表示
+        }
+    }
+
+    &__actions {
+        margin-top: rem(24);
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: center;
+        gap: rem(12);
+        flex-wrap: wrap;
+        margin-bottom: rem(80);
+    }
+
+    &__btn {
+        display: inline-block;
+        border-radius: rem(4);
+        font-size: rem(14);
+        padding: rem(10) rem(14);
+        cursor: pointer;
+        transition: .3s;
+        border: 3px solid #F1E5DD;
+
+        &--back {
+            background: #fff;
+            color: $color-accent;
+
+            &:hover {
+                opacity: .8;
+            }
+        }
+
+        &--send {
+            background: $color-accent;
+            color: #fff;
+
+            &:hover {
+                opacity: .8;
+                background: #fff;
+                color: $color-accent;
+            }
+        }
+    }
+}
+
+.thanks {
+    margin-top: rem(20);
+
+    &__text {
+        font-size: rem(14);
+        line-height: 1.9;
+        color: $color-text;
+        background: $bg-light;
+        border: 1px solid $color-line;
+        border-radius: rem(6);
+        padding: rem(24);
+        margin-bottom: rem(24);
+
+        @include mq(sp) {
+            font-size: rem(16);
+            padding: rem(32);
+        }
+    }
+
+    &__note {
+        font-size: rem(12);
+        color: $color-text;
+        opacity: 0.8;
+        margin-bottom: rem(40);
+
+        @include mq(sp) {
+            font-size: rem(14);
+        }
+    }
+
+    &__actions {
+        text-align: center;
+        margin-bottom: rem(60);
+    }
+
+    &__btn {
+        display: inline-block;
+        background-color: $color-accent;
+        border: 3px solid #F1E5DD;
+        color: #fff;
+        padding: rem(10) rem(18);
+        border-radius: rem(4);
+        font-size: rem(14);
+        text-decoration: none;
         transition: .3s;
 
         &:hover {

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お問い合わせ確認画面 GLASSY-PHOTO</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/the-new-css-reset/css/reset.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+
+</head>
+
+<body>
+    <section class="inquiry inquiry--confirm">
+        <div class="inquiry__inner">
+            <div class="inquiry__box">
+                <h2 class="inquiry__title">お問い合わせ内容の確認</h2>
+                <h3 class="inquiry__subtitle">内容をご確認のうえ、送信してください</h3>
+
+                <div class="confirm">
+                    <dl class="confirm__list">
+                        <div class="confirm__row">
+                            <dt class="confirm__term">お名前</dt>
+                            <dd class="confirm__desc" id="cf-name"></dd>
+                        </div>
+
+                        <div class="confirm__row">
+                            <dt class="confirm__term">メールアドレス</dt>
+                            <dd class="confirm__desc" id="cf-email"></dd>
+                        </div>
+
+                        <div class="confirm__row">
+                            <dt class="confirm__term">挙式披露宴日</dt>
+                            <dd class="confirm__desc" id="cf-day"></dd>
+                        </div>
+
+                        <div class="confirm__row">
+                            <dt class="confirm__term">会場</dt>
+                            <dd class="confirm__desc" id="cf-place"></dd>
+                        </div>
+
+                        <div class="confirm__row">
+                            <dt class="confirm__term">お問い合わせ内容</dt>
+                            <dd class="confirm__desc confirm__desc--message" id="cf-message"></dd>
+                        </div>
+
+                        <div class="confirm__row">
+                            <dt class="confirm__term">同意</dt>
+                            <dd class="confirm__desc" id="cf-agree"></dd>
+                        </div>
+                    </dl>
+
+                    <!-- 送信（本番はここをPHPなどに） -->
+                    <form action="thanks.html" method="post" class="confirm__actions">
+                        <input type="hidden" name="name" id="hd-name">
+                        <input type="hidden" name="email" id="hd-email">
+                        <input type="hidden" name="day" id="hd-day">
+                        <input type="hidden" name="place" id="hd-place">
+                        <input type="hidden" name="message" id="hd-message">
+                        <input type="hidden" name="agree1" id="hd-agree1">
+                        <input type="hidden" name="agree2" id="hd-agree2">
+
+                        <div class="confirm__buttons">
+                            <button type="button" class="confirm__btn confirm__btn--back"
+                                onclick="history.back()">修正する</button>
+                            <button type="submit" class="confirm__btn confirm__btn--send">送信する</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // GETパラメータから表示（method=getでconfirm.htmlに来た想定）
+        const params = new URLSearchParams(location.search);
+
+        const name = params.get("name") ?? "";
+        const email = params.get("email") ?? "";
+        const day = params.get("day") ?? "";
+        const place = params.get("place") ?? "";
+        const message = params.get("message") ?? "";
+        const agree1 = params.get("agree1") ? "免責・誓約事項：同意済み" : "";
+        const agree2 = params.get("agree2") ? "個人情報保護方針：同意済み" : "";
+
+        // 表示（XSS対策としてtextContent）
+        document.getElementById("cf-name").textContent = name;
+        document.getElementById("cf-email").textContent = email;
+        document.getElementById("cf-day").textContent = day || "（未入力）";
+        document.getElementById("cf-place").textContent = place || "（未入力）";
+        document.getElementById("cf-message").textContent = message || "（未入力）";
+        document.getElementById("cf-agree").textContent = [agree1, agree2].filter(Boolean).join(" / ");
+
+        // hiddenへ詰める
+        document.getElementById("hd-name").value = name;
+        document.getElementById("hd-email").value = email;
+        document.getElementById("hd-day").value = day;
+        document.getElementById("hd-place").value = place;
+        document.getElementById("hd-message").value = message;
+        document.getElementById("hd-agree1").value = params.get("agree1") ? "1" : "";
+        document.getElementById("hd-agree2").value = params.get("agree2") ? "1" : "";
+
+        // 必須が空でconfirmに来た場合は戻す（保険）
+        if (!name || !email || !params.get("agree1") || !params.get("agree2")) {
+            alert("必須項目が未入力です。前の画面で入力してください。");
+            history.back();
+        }
+    </script>
+</body>
+
+</html>

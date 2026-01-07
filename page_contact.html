@@ -4,12 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLASSY-PHOTO</title>
+    <title>お問い合わせ GLASSY-PHOTO</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/the-new-css-reset/css/reset.min.css">
     <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body>
+    <div id="shutter" aria-hidden="true">
+        <div class="panel panel--left"></div>
+        <div class="panel panel--right"></div>
+        <div class="flash"></div>
+    </div>
     <div class="bg-birds" aria-hidden="true">
         <!-- left -> right：右向き = left.webp -->
         <span class="bg-birds__fly bg-birds__fly--lr">
@@ -77,47 +82,58 @@
                 <div class="inquiry__box">
                     <h2 class="inquiry__title">お問い合わせ</h2>
                     <h3 class="inquiry__subtitle">結婚式写真撮影のご相談・ご注文フォーム</h3>
-                    <div class="inquiry__check">
-                        <label class="checkbox">
-                            <input id="check1" type="checkbox" class="checkbox__input">
-                            <span class="checkbox__box"></span>
-                            <span class="checkbox__text">- 免責・誓約事項 - に同意する</span>
-                        </label>
-                    </div>
 
-                    <div class="inquiry__check">
-                        <label class="checkbox">
-                            <input id="check2" type="checkbox" class="checkbox__input"> <!-- ← ID を変える -->
-                            <span class="checkbox__box"></span>
-                            <span class="checkbox__text">- 個人情報保護方針 - に同意する</span>
+                    <form action="page_confirm.html" method="get" id="inquiryForm">
+                        <div class="inquiry__check">
+                            <label class="checkbox">
+                                <input id="check1" name="agree1" type="checkbox" class="checkbox__input" required>
+                                <span class="checkbox__box"></span>
+                                <span class="checkbox__text">- 免責・誓約事項 - に同意する</span>
+                            </label>
+                        </div>
+
+                        <div class="inquiry__check">
+                            <label class="checkbox">
+                                <input id="check2" name="agree2" type="checkbox" class="checkbox__input" required>
+                                <span class="checkbox__box"></span>
+                                <span class="checkbox__text">- 個人情報保護方針 - に同意する</span>
+                            </label>
+                        </div>
+
+                        <a href="#" class="btn--confirmation">
+                            免責・誓約事項、個人情報保護方針に関するご確認はこちら
+                        </a>
+
+                        <label class="inquiry__content">
+                            <p class="inquiry__name">お名前<span class="inquiry__required">必須</span></p>
+                            <input type="text" name="name" class="inquiry__name--column" required>
                         </label>
-                    </div>
-                    <a href="#" class="btn--confirmation">
-                        免責・誓約事項、個人情報保護方針に関するご確認はこちら
-                    </a>
-                    <label class="inquiry__content">
-                        <p class="inquiry__name">お名前</p>
-                        <input type="text" name="name" class="inquiry__name--column">
-                    </label>
-                    <label class="inquiry__content">
-                        <p class="inquiry__email">メールアドレス</p>
-                        <input type="email" name="email" autocomplete="email" required class="inquiry__email--column" />
-                    </label>
-                    <label class="inquiry__content">
-                        <p class="inquiry__day">挙式披露宴日</p>
-                        <input type="date" name="day" class="inquiry__day--column">
-                    </label>
-                    <label class="inquiry__content">
-                        <p class="inquiry__place">会場</p>
-                        <input type="text" name="place" class="inquiry__place--column">
-                    </label>
-                    <label class="inquiry__content">
-                        <p class="inquiry__text">お問い合わせ内容</p>
-                        <textarea name="message" class="inquiry__text--column"></textarea>
-                    </label>
-                    <div class="inquiry__submit">
-                        <input type="submit" value="お問い合わせ内容を確認" class="inquiry__submit-btn">
-                    </div>
+
+                        <label class="inquiry__content">
+                            <p class="inquiry__email">メールアドレス<span class="inquiry__required">必須</span></p>
+                            <input type="email" name="email" autocomplete="email" class="inquiry__email--column"
+                                required>
+                        </label>
+
+                        <label class="inquiry__content">
+                            <p class="inquiry__day">挙式披露宴日</p>
+                            <input type="date" name="day" class="inquiry__day--column">
+                        </label>
+
+                        <label class="inquiry__content">
+                            <p class="inquiry__place">会場</p>
+                            <input type="text" name="place" class="inquiry__place--column">
+                        </label>
+
+                        <label class="inquiry__content">
+                            <p class="inquiry__text">お問い合わせ内容</p>
+                            <textarea name="message" class="inquiry__text--column"></textarea>
+                        </label>
+
+                        <div class="inquiry__submit">
+                            <button type="submit" class="inquiry__submit-btn">お問い合わせ内容を確認</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </section>
