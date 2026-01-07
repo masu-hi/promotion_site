@@ -1695,10 +1695,10 @@ $icon-close: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
 }
 
 .inquiry {
-    margin: rem(80) 0;
+    margin: rem(100) 0;
 
     @include mq() {
-        margin: rem(120) 0;
+        margin: rem(180) 0;
     }
 
     &__inner {
@@ -1723,6 +1723,8 @@ $icon-close: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
     }
 
     &__box {
+
+        background: $color-bg;
 
         @include mq(sp) {
             max-width: rem(900);

@@ -1906,11 +1906,11 @@ footer {
 }
 
 .inquiry {
-  margin: 5rem 0;
+  margin: 6.25rem 0;
 }
 @media (min-width: 800px) {
   .inquiry {
-    margin: 7.5rem 0;
+    margin: 11.25rem 0;
   }
 }
 .inquiry__inner {
@@ -1944,6 +1944,9 @@ footer {
     line-height: 1.5454545455;
     text-align: center;
   }
+}
+.inquiry__box {
+  background: #fff;
 }
 @media (min-width: 480px) {
   .inquiry__box {
