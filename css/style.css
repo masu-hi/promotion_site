@@ -371,84 +371,123 @@ a {
 
 /* =========================
    お問い合わせ：鳩がボタンをくわえて移動
-   - SP：右下で「ふわふわ」固定（SPは変えない）
-   - PC：往復（Uターン）＋戻りだけ鳩反転＋ hoverで停止＋色変化
+   - SP：右下固定（ふわふわ）
+   - PC：往復（Uターン）＋戻りだけ鳩を左へ＆反転
 ========================= */
-/* ▼ ここだけ触れば位置調整できる */
 :root {
-  --carry-bottom-sp: 1.5rem;
+  --carry-bottom-sp: 1.25rem;
   --carry-right-sp: 0.75rem;
-  --carry-bottom-pc: 5.625rem;
-  /* ★Uターン距離用：JSが上書きしてくれる保険 */
-  --carry-w: 260px;
-  /* ★鳩の向き：-1 = 左向き / 1 = 右向き（PCで切替） */
-  --carry-dir: -1;
+  --carry-bottom-pc: 3.125rem;
   --carry-edge-gap: 20px;
-  /* ← 端から少し内側にしたい時の余白 */
+  /* ★JSが上書きしてくれる保険（鳩＋ボタンの横幅） */
+  --carry-w: 260px;
+  /* ★咥える高さ（上下） */
+  --bite-y-sp: 0.625rem;
+  --bite-y-pc: 0.75rem;
+  --bite-y-back: 0.75rem;
 }
 
-/* =========================
-   共通（SP/PC）
-========================= */
-/* 外枠（位置固定） */
+/* -------------------------
+   外枠（位置固定）
+------------------------- */
 .inquiry-carry {
   position: fixed;
   right: var(--carry-right-sp);
   bottom: var(--carry-bottom-sp);
   z-index: 1000;
   pointer-events: auto;
-  /* SPは動かさない */
   -webkit-animation: none;
           animation: none;
+  /* SPは移動しない */
   will-change: transform;
 }
 
-/* 中身の塊（鳩＋ボタン）＝「塊ごと」ふわふわ */
+/* -------------------------
+   中身（鳩＋ボタン）＝塊ごとふわふわ
+------------------------- */
 .inquiry-carry__anim {
   display: inline-flex;
   align-items: center;
-  /* ★ 鳩の位置を変数で制御 */
-  flex-direction: var(--bird-order, row);
   -webkit-animation: carry-pack-float 3.6s ease-in-out infinite;
           animation: carry-pack-float 3.6s ease-in-out infinite;
+  /* 基本（SP/PC行き）：ボタン→鳩（鳩が右） */
+  flex-direction: row;
 }
 
-/* ボタン：縦読み防止＆はみ出し防止 */
+/* 戻り（PCのみ）：鳩→ボタン（鳩が左） */
+@media (min-width: 800px) {
+  .inquiry-carry.is-back .inquiry-carry__anim {
+    flex-direction: row-reverse;
+  }
+}
+/* -------------------------
+   ボタン（縦読み防止）
+------------------------- */
 .inquiry-carry__btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: #3A2D26;
-  text-align: center;
   background-color: #fff;
   border: 2px solid #E89A67;
   font-size: 0.875rem;
   line-height: 1;
-  /* 高さを安定 */
-  padding: 0.8125rem 1.125rem;
+  padding: 0.9375rem 1.25rem;
+  /* ←縦パディング増やしたいならここ */
   border-radius: 999px;
-  /* ★縦読み（折り返し）を防ぐ */
   white-space: nowrap;
-  /* ★文字が枠からはみ出す事故を防ぐ */
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* 縦読み防止 */
   transition: background-color 0.3s;
 }
 
-/* 鳩：右側で咥える（左向きが基本） */
+@media (min-width: 800px) {
+  .inquiry-carry__btn {
+    min-width: 11.875rem;
+    /* PCで折り返し事故防止 */
+  }
+}
+/* -------------------------
+   鳩のラッパー（★食い込み調整はここが確実）
+------------------------- */
+.inquiry-carry__bird-wrap {
+  display: inline-block;
+  line-height: 0;
+  /* 余計な隙間防止 */
+  /* SP/PC行き：鳩が右側 → 左方向へ食い込ませる */
+  margin-left: -0.5rem;
+  /* ←SPの食い込みはここ */
+}
+
+/* PC行き（右→左）の食い込み */
+@media (min-width: 800px) {
+  .inquiry-carry__bird-wrap {
+    margin-left: -0.5rem;
+    /* ←PC行きの食い込みはここ */
+  }
+  /* PC戻り（左→右）：鳩が左側になるので、右方向へ食い込ませる */
+  .inquiry-carry.is-back .inquiry-carry__bird-wrap {
+    margin-left: 0;
+    margin-right: -0.4375rem;
+    /* ←PC戻りの食い込みはここ（ここが効く） */
+  }
+  /* ★戻りだけ鳩を反転（画像が左向き前提） */
+  .inquiry-carry.is-back .inquiry-carry__bird-wrap {
+    transform: scaleX(-1);
+  }
+}
+/* -------------------------
+   鳩（上下ふわふわだけ担当）
+   ※横位置は bird-wrap の margin で調整する
+------------------------- */
 .inquiry-carry__bird {
   height: auto;
-  width: 3.75rem;
+  width: 4.375rem;
   pointer-events: none;
   position: relative;
-  /* SPは向きを固定（反転させない） */
-  transform: none;
-  /* 上下ふわふわだけ */
+  /* ★SPは上下位置（咥える高さ） */
+  --bite-y: var(--bite-y-sp);
   -webkit-animation: carry-bird 2.4s ease-in-out infinite;
           animation: carry-bird 2.4s ease-in-out infinite;
-  /* SPの食い込み */
-  margin-left: -0.5rem;
 }
 .inquiry-carry__bird::after {
   content: "🌸";
@@ -461,7 +500,20 @@ a {
           animation: flower-float 2.8s ease-in-out infinite;
 }
 
-/* hover：PCでもSPでも止まる＋色変化（PCは移動も止まる） */
+@media (min-width: 800px) {
+  .inquiry-carry__bird {
+    width: 5.75rem;
+    --bite-y: var(--bite-y-pc);
+    /* PC行き */
+  }
+  .inquiry-carry.is-back .inquiry-carry__bird {
+    --bite-y: var(--bite-y-back);
+    /* PC戻り */
+  }
+}
+/* -------------------------
+   hover：止める＋色
+------------------------- */
 .inquiry-carry:hover {
   -webkit-animation-play-state: paused;
           animation-play-state: paused;
@@ -479,56 +531,23 @@ a {
 
 /* =========================
    PC（800px〜）：往復（Uターン）
-   ※SPは一切変えない
 ========================= */
 @media (min-width: 800px) {
   .inquiry-carry {
-    /* SPの right を殺して、left基準に切り替える */
     left: calc(100vw - var(--carry-w) - var(--carry-edge-gap));
     right: auto;
-    bottom: var(--carry-bottom-pc);
-    /* ★左右端で往復（Uターン） */
+    bottom: var(--carry-bottom-pc) !important;
+    /* 速度：遅くしたいなら秒数↑ */
     -webkit-animation: carry-yo-yo 35s ease-in-out infinite;
             animation: carry-yo-yo 35s ease-in-out infinite;
     -webkit-animation-delay: -6s;
             animation-delay: -6s;
   }
-  .inquiry-carry.is-back .inquiry-carry__bird {
-    margin-left: 0;
-    margin-right: -0.625rem;
-  }
-  .inquiry-carry__bird {
-    --bite-y: 0.8125rem;
-    width: 5.75rem;
-    margin-left: -0.625rem;
-    transform: scaleX(var(--carry-dir));
-  }
-  /* PCのときはボタンが小さすぎると折り返し事故るので最低幅を保険 */
-  .inquiry-carry__btn {
-    min-width: 11.875rem;
-    /* 文字量に合わせて調整OK */
-    font-size: 0.875rem;
-    padding: 0.9375rem 1.25rem;
-  }
-  /* 通常（行き）：btn → bird（鳩右） */
-  .inquiry-carry__anim {
-    flex-direction: row;
-  }
-  /* 戻り：bird → btn（鳩左） */
-  .inquiry-carry.is-back .inquiry-carry__anim {
-    flex-direction: row-reverse;
-  }
-  /* 戻りの食い込み */
-  .inquiry-carry.is-back .inquiry-carry__bird {
-    margin-left: 0;
-    margin-right: -0.625rem;
-  }
 }
 /* =========================
    animations
 ========================= */
-/* 鳩だけ上下（向きは transform: scaleX(var(--carry-dir)) で固定したいので
-   translateY だけを別にかけたい → ここでは「translateYのみ」にする */
+/* 鳩だけ上下（咥える位置） */
 @-webkit-keyframes carry-bird {
   0% {
     translate: 0 var(--bite-y);
@@ -551,7 +570,7 @@ a {
     translate: 0 var(--bite-y);
   }
 }
-/* ★塊ごとふわふわ */
+/* 塊ごとふわふわ */
 @-webkit-keyframes carry-pack-float {
   0% {
     transform: translateY(0) rotate(0deg);
@@ -586,56 +605,29 @@ a {
     transform: translateY(0) rotate(0deg);
   }
 }
-/* ★PCのUターン（往復）＋戻りだけ鳩反転 */
+/* PCの往復（Uターン） */
 @-webkit-keyframes carry-yo-yo {
-  /* 右 → 左（行き）：鳩は右側（btn → bird） */
   0% {
     transform: translateX(0);
-    --carry-dir: 1;
-    --bird-order: row;
   }
-  49.9% {
-    transform: translateX(calc(-100vw + var(--carry-w)));
-    --carry-dir: 1;
-    --bird-order: row;
-  }
-  /* 折り返し：左 → 右（戻り）：鳩を左側へ（bird → btn） */
   50% {
     transform: translateX(calc(-100vw + var(--carry-w)));
-    --carry-dir: -1;
-    --bird-order: row-reverse;
   }
   100% {
     transform: translateX(0);
-    --carry-dir: -1;
-    --bird-order: row-reverse;
   }
 }
 @keyframes carry-yo-yo {
-  /* 右 → 左（行き）：鳩は右側（btn → bird） */
   0% {
     transform: translateX(0);
-    --carry-dir: 1;
-    --bird-order: row;
   }
-  49.9% {
-    transform: translateX(calc(-100vw + var(--carry-w)));
-    --carry-dir: 1;
-    --bird-order: row;
-  }
-  /* 折り返し：左 → 右（戻り）：鳩を左側へ（bird → btn） */
   50% {
     transform: translateX(calc(-100vw + var(--carry-w)));
-    --carry-dir: -1;
-    --bird-order: row-reverse;
   }
   100% {
     transform: translateX(0);
-    --carry-dir: -1;
-    --bird-order: row-reverse;
   }
 }
-/* 花 */
 @-webkit-keyframes flower-float {
   0% {
     transform: translateY(-50%) rotate(0deg);
@@ -1539,6 +1531,144 @@ footer {
     order: 0;
     transform: none;
     align-self: auto;
+  }
+}
+.plan--price {
+  margin-top: 3.125rem;
+}
+@media (min-width: 800px) {
+  .plan--price {
+    margin-top: 5rem;
+  }
+}
+
+@-webkit-keyframes bird-bob-left {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-0.1875rem);
+  }
+  55% {
+    transform: translateY(0.125rem);
+  }
+  85% {
+    transform: translateY(-0.0625rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes bird-bob-left {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-0.1875rem);
+  }
+  55% {
+    transform: translateY(0.125rem);
+  }
+  85% {
+    transform: translateY(-0.0625rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@-webkit-keyframes bird-bob-right-sp {
+  0% {
+    transform: rotate(20deg) translateY(0);
+  }
+  25% {
+    transform: rotate(20deg) translateY(-0.1875rem);
+  }
+  55% {
+    transform: rotate(20deg) translateY(0.125rem);
+  }
+  85% {
+    transform: rotate(20deg) translateY(-0.0625rem);
+  }
+  100% {
+    transform: rotate(20deg) translateY(0);
+  }
+}
+@keyframes bird-bob-right-sp {
+  0% {
+    transform: rotate(20deg) translateY(0);
+  }
+  25% {
+    transform: rotate(20deg) translateY(-0.1875rem);
+  }
+  55% {
+    transform: rotate(20deg) translateY(0.125rem);
+  }
+  85% {
+    transform: rotate(20deg) translateY(-0.0625rem);
+  }
+  100% {
+    transform: rotate(20deg) translateY(0);
+  }
+}
+@-webkit-keyframes bird-bob-right-pc {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-0.1875rem);
+  }
+  55% {
+    transform: translateY(0.125rem);
+  }
+  85% {
+    transform: translateY(-0.0625rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes bird-bob-right-pc {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-0.1875rem);
+  }
+  55% {
+    transform: translateY(0.125rem);
+  }
+  85% {
+    transform: translateY(-0.0625rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.plan__bird, .plan__bird--sp {
+  will-change: transform;
+  transform-origin: 50% 60%;
+}
+.plan__inner:hover .plan__bird, .plan__inner:focus-within .plan__bird {
+  -webkit-animation: bird-bob-left 0.75s ease-in-out both;
+          animation: bird-bob-left 0.75s ease-in-out both;
+}
+.plan__inner:hover .plan__bird--sp, .plan__inner:focus-within .plan__bird--sp {
+  -webkit-animation: bird-bob-right-sp 0.75s ease-in-out both;
+          animation: bird-bob-right-sp 0.75s ease-in-out both;
+}
+@media (min-width: 640px) {
+  .plan__inner:hover .plan__bird--sp, .plan__inner:focus-within .plan__bird--sp {
+    -webkit-animation: bird-bob-right-pc 0.75s ease-in-out both;
+            animation: bird-bob-right-pc 0.75s ease-in-out both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plan__inner:hover .plan__bird,
+.plan__inner:hover .plan__bird--sp, .plan__inner:focus-within .plan__bird,
+.plan__inner:focus-within .plan__bird--sp {
+    -webkit-animation: none;
+            animation: none;
   }
 }
 

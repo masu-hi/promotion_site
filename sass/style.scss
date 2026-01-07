@@ -501,30 +501,28 @@ a {
 
 /* =========================
    お問い合わせ：鳩がボタンをくわえて移動
-   - SP：右下で「ふわふわ」固定（SPは変えない）
-   - PC：往復（Uターン）＋戻りだけ鳩反転＋ hoverで停止＋色変化
+   - SP：右下固定（ふわふわ）
+   - PC：往復（Uターン）＋戻りだけ鳩を左へ＆反転
 ========================= */
 
-/* ▼ ここだけ触れば位置調整できる */
 :root {
-    --carry-bottom-sp: #{rem(24)};
+    --carry-bottom-sp: #{rem(20)};
     --carry-right-sp: #{rem(12)};
-    --carry-bottom-pc: #{rem(90)};
+    --carry-bottom-pc: #{rem(50)};
+    --carry-edge-gap: 20px;
 
-    /* ★Uターン距離用：JSが上書きしてくれる保険 */
+    /* ★JSが上書きしてくれる保険（鳩＋ボタンの横幅） */
     --carry-w: 260px;
 
-    /* ★鳩の向き：-1 = 左向き / 1 = 右向き（PCで切替） */
-    --carry-dir: -1;
-    --carry-edge-gap: 20px;
-    /* ← 端から少し内側にしたい時の余白 */
+    /* ★咥える高さ（上下） */
+    --bite-y-sp: #{rem(10)}; // SP：下げたいほど数値を大きく
+    --bite-y-pc: #{rem(12)}; // PC（行き）
+    --bite-y-back: #{rem(12)}; // PC（戻り）
 }
 
-/* =========================
-   共通（SP/PC）
-========================= */
-
-/* 外枠（位置固定） */
+/* -------------------------
+   外枠（位置固定）
+------------------------- */
 .inquiry-carry {
     position: fixed;
     right: var(--carry-right-sp);
@@ -532,65 +530,107 @@ a {
     z-index: 1000;
     pointer-events: auto;
 
-    /* SPは動かさない */
     animation: none;
+    /* SPは移動しない */
     will-change: transform;
 }
 
-/* 中身の塊（鳩＋ボタン）＝「塊ごと」ふわふわ */
+/* -------------------------
+   中身（鳩＋ボタン）＝塊ごとふわふわ
+------------------------- */
 .inquiry-carry__anim {
     display: inline-flex;
     align-items: center;
-
-    /* ★ 鳩の位置を変数で制御 */
-    flex-direction: var(--bird-order, row);
-
     animation: carry-pack-float 3.6s ease-in-out infinite;
+
+    /* 基本（SP/PC行き）：ボタン→鳩（鳩が右） */
+    flex-direction: row;
 }
 
-/* ボタン：縦読み防止＆はみ出し防止 */
+/* 戻り（PCのみ）：鳩→ボタン（鳩が左） */
+@include mq(desktop) {
+    .inquiry-carry.is-back .inquiry-carry__anim {
+        flex-direction: row-reverse;
+    }
+}
+
+/* -------------------------
+   ボタン（縦読み防止）
+------------------------- */
 .inquiry-carry__btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
     color: $color-text;
-    text-align: center;
     background-color: $color-bg;
     border: 2px solid $color-main;
 
     font-size: rem(14);
     line-height: 1;
-    /* 高さを安定 */
-    padding: rem(13) rem(18);
+    padding: rem(15) rem(20);
+    /* ←縦パディング増やしたいならここ */
     border-radius: 999px;
 
-    /* ★縦読み（折り返し）を防ぐ */
     white-space: nowrap;
-
-    /* ★文字が枠からはみ出す事故を防ぐ */
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
+    /* 縦読み防止 */
     transition: background-color .3s;
 }
 
-/* 鳩：右側で咥える（左向きが基本） */
+@include mq(desktop) {
+    .inquiry-carry__btn {
+        min-width: rem(190);
+        /* PCで折り返し事故防止 */
+    }
+}
+
+/* -------------------------
+   鳩のラッパー（★食い込み調整はここが確実）
+------------------------- */
+.inquiry-carry__bird-wrap {
+    display: inline-block;
+    line-height: 0;
+    /* 余計な隙間防止 */
+
+    /* SP/PC行き：鳩が右側 → 左方向へ食い込ませる */
+    margin-left: rem(-8);
+    /* ←SPの食い込みはここ */
+}
+
+/* PC行き（右→左）の食い込み */
+@include mq(desktop) {
+    .inquiry-carry__bird-wrap {
+        margin-left: rem(-8);
+        /* ←PC行きの食い込みはここ */
+    }
+
+    /* PC戻り（左→右）：鳩が左側になるので、右方向へ食い込ませる */
+    .inquiry-carry.is-back .inquiry-carry__bird-wrap {
+        margin-left: 0;
+        margin-right: rem(-7);
+        /* ←PC戻りの食い込みはここ（ここが効く） */
+    }
+
+    /* ★戻りだけ鳩を反転（画像が左向き前提） */
+    .inquiry-carry.is-back .inquiry-carry__bird-wrap {
+        transform: scaleX(-1);
+    }
+}
+
+/* -------------------------
+   鳩（上下ふわふわだけ担当）
+   ※横位置は bird-wrap の margin で調整する
+------------------------- */
 .inquiry-carry__bird {
     height: auto;
-    width: rem(60);
+    width: rem(70);
     pointer-events: none;
     position: relative;
 
-    /* SPは向きを固定（反転させない） */
-    transform: none;
+    /* ★SPは上下位置（咥える高さ） */
+    --bite-y: var(--bite-y-sp);
 
-    /* 上下ふわふわだけ */
     animation: carry-bird 2.4s ease-in-out infinite;
-
-    /* SPの食い込み */
-    margin-left: rem(-8);
 
     &::after {
         content: "🌸";
@@ -603,7 +643,22 @@ a {
     }
 }
 
-/* hover：PCでもSPでも止まる＋色変化（PCは移動も止まる） */
+@include mq(desktop) {
+    .inquiry-carry__bird {
+        width: rem(92);
+        --bite-y: var(--bite-y-pc);
+        /* PC行き */
+    }
+
+    .inquiry-carry.is-back .inquiry-carry__bird {
+        --bite-y: var(--bite-y-back);
+        /* PC戻り */
+    }
+}
+
+/* -------------------------
+   hover：止める＋色
+------------------------- */
 .inquiry-carry:hover {
     animation-play-state: paused;
 }
@@ -619,54 +674,15 @@ a {
 
 /* =========================
    PC（800px〜）：往復（Uターン）
-   ※SPは一切変えない
 ========================= */
 @include mq(desktop) {
     .inquiry-carry {
-        /* SPの right を殺して、left基準に切り替える */
         left: calc(100vw - var(--carry-w) - var(--carry-edge-gap));
         right: auto;
-        bottom: var(--carry-bottom-pc);
-
-        /* ★左右端で往復（Uターン） */
+        bottom: var(--carry-bottom-pc) !important;
+        /* 速度：遅くしたいなら秒数↑ */
         animation: carry-yo-yo 35s ease-in-out infinite;
         animation-delay: -6s;
-    }
-
-    .inquiry-carry.is-back .inquiry-carry__bird {
-        margin-left: 0;
-        margin-right: rem(-10); // ← 左に来たときの食い込み
-    }
-
-    .inquiry-carry__bird {
-        --bite-y: #{rem(13)};
-        width: rem(92);
-        margin-left: rem(-10);
-        transform: scaleX(var(--carry-dir));
-    }
-
-    /* PCのときはボタンが小さすぎると折り返し事故るので最低幅を保険 */
-    .inquiry-carry__btn {
-        min-width: rem(190);
-        /* 文字量に合わせて調整OK */
-        font-size: rem(14);
-        padding: rem(15) rem(20);
-    }
-
-    /* 通常（行き）：btn → bird（鳩右） */
-    .inquiry-carry__anim {
-        flex-direction: row;
-    }
-
-    /* 戻り：bird → btn（鳩左） */
-    .inquiry-carry.is-back .inquiry-carry__anim {
-        flex-direction: row-reverse;
-    }
-
-    /* 戻りの食い込み */
-    .inquiry-carry.is-back .inquiry-carry__bird {
-        margin-left: 0;
-        margin-right: rem(-10);
     }
 }
 
@@ -674,8 +690,7 @@ a {
    animations
 ========================= */
 
-/* 鳩だけ上下（向きは transform: scaleX(var(--carry-dir)) で固定したいので
-   translateY だけを別にかけたい → ここでは「translateYのみ」にする */
+/* 鳩だけ上下（咥える位置） */
 @keyframes carry-bird {
     0% {
         translate: 0 var(--bite-y);
@@ -690,7 +705,7 @@ a {
     }
 }
 
-/* ★塊ごとふわふわ */
+/* 塊ごとふわふわ */
 @keyframes carry-pack-float {
     0% {
         transform: translateY(0) rotate(0deg);
@@ -713,37 +728,21 @@ a {
     }
 }
 
-/* ★PCのUターン（往復）＋戻りだけ鳩反転 */
+/* PCの往復（Uターン） */
 @keyframes carry-yo-yo {
-
-    /* 右 → 左（行き）：鳩は右側（btn → bird） */
     0% {
         transform: translateX(0);
-        --carry-dir: 1;
-        --bird-order: row; // ← btn が左、鳩が右
     }
 
-    49.9% {
-        transform: translateX(calc(-100vw + var(--carry-w)));
-        --carry-dir: 1;
-        --bird-order: row;
-    }
-
-    /* 折り返し：左 → 右（戻り）：鳩を左側へ（bird → btn） */
     50% {
         transform: translateX(calc(-100vw + var(--carry-w)));
-        --carry-dir: -1;
-        --bird-order: row-reverse; // ← ここが肝
     }
 
     100% {
         transform: translateX(0);
-        --carry-dir: -1;
-        --bird-order: row-reverse;
     }
 }
 
-/* 花 */
 @keyframes flower-float {
     0% {
         transform: translateY(-50%) rotate(0deg);
@@ -1386,6 +1385,124 @@ $icon-close: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
             }
         }
 
+    }
+
+    &--price {
+        margin-top: rem(50);
+
+        @include mq() {
+            margin-top: rem(80);
+        }
+    }
+}
+
+@keyframes bird-bob-left {
+    0% {
+        transform: translateY(0);
+    }
+
+    25% {
+        transform: translateY(rem(-3));
+    }
+
+    55% {
+        transform: translateY(rem(2));
+    }
+
+    85% {
+        transform: translateY(rem(-1));
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+// SP右鳩：rotate(20deg) を含めたまま揺らす（ここが崩れ防止）
+@keyframes bird-bob-right-sp {
+    0% {
+        transform: rotate(20deg) translateY(0);
+    }
+
+    25% {
+        transform: rotate(20deg) translateY(rem(-3));
+    }
+
+    55% {
+        transform: rotate(20deg) translateY(rem(2));
+    }
+
+    85% {
+        transform: rotate(20deg) translateY(rem(-1));
+    }
+
+    100% {
+        transform: rotate(20deg) translateY(0);
+    }
+}
+
+// birdgap以上：右鳩は transform:none に戻るので、それ用
+@keyframes bird-bob-right-pc {
+    0% {
+        transform: translateY(0);
+    }
+
+    25% {
+        transform: translateY(rem(-3));
+    }
+
+    55% {
+        transform: translateY(rem(2));
+    }
+
+    85% {
+        transform: translateY(rem(-1));
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.plan {
+
+    &__bird,
+    &__bird--sp {
+        will-change: transform;
+        transform-origin: 50% 60%;
+    }
+
+    &__inner {
+
+        &:hover,
+        &:focus-within {
+
+            // 左鳩（表示されるときだけ効く）
+            .plan__bird {
+                animation: bird-bob-left 0.75s ease-in-out both;
+            }
+
+            // 右鳩：SPはrotate保持、PCはrotateなし
+            .plan__bird--sp {
+                animation: bird-bob-right-sp 0.75s ease-in-out both;
+
+                @include mq(birdgap) {
+                    animation: bird-bob-right-pc 0.75s ease-in-out both;
+                }
+            }
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+        &__inner:hover,
+        &__inner:focus-within {
+
+            .plan__bird,
+            .plan__bird--sp {
+                animation: none;
+            }
+        }
     }
 }
 
