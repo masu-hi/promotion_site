@@ -1984,7 +1984,7 @@ footer {
 .inquiry__content textarea {
   width: 100%;
   border: none;
-  background: #D9877A;
+  background: #C06F62;
   padding: 0.875rem;
   border-radius: 0.25rem;
   color: #fff;
@@ -2026,7 +2026,7 @@ footer {
 .inquiry__submit-btn {
   display: inline-block;
   margin: 0 auto;
-  background-color: #D9877A;
+  background-color: #C06F62;
   border: 3px solid #F1E5DD;
   color: #fff;
   padding: 0.5rem 0.75rem;
@@ -2038,7 +2038,7 @@ footer {
 .inquiry__submit-btn:hover {
   opacity: 0.8;
   background-color: #fff;
-  color: #D9877A;
+  color: #C06F62;
 }
 .inquiry__required {
   display: inline-block;
@@ -2117,19 +2117,19 @@ footer {
 }
 .confirm__btn--back {
   background: #fff;
-  color: #D9877A;
+  color: #C06F62;
 }
 .confirm__btn--back:hover {
   opacity: 0.8;
 }
 .confirm__btn--send {
-  background: #D9877A;
+  background: #C06F62;
   color: #fff;
 }
 .confirm__btn--send:hover {
   opacity: 0.8;
   background: #fff;
-  color: #D9877A;
+  color: #C06F62;
 }
 
 .thanks {
@@ -2168,7 +2168,7 @@ footer {
 }
 .thanks__btn {
   display: inline-block;
-  background-color: #D9877A;
+  background-color: #C06F62;
   border: 3px solid #F1E5DD;
   color: #fff;
   padding: 0.625rem 1.125rem;
@@ -2180,7 +2180,7 @@ footer {
 .thanks__btn:hover {
   opacity: 0.8;
   background-color: #fff;
-  color: #D9877A;
+  color: #C06F62;
 }
 
 /* ===== チェックボックス ===== */
@@ -2191,7 +2191,7 @@ footer {
           appearance: none;
   width: 0.3rem;
   height: 0.3rem;
-  border: 2px solid #D9877A;
+  border: 2px solid #C06F62;
   border-radius: 3px;
   cursor: pointer;
   position: relative;
@@ -2226,7 +2226,7 @@ footer {
   position: relative;
   width: 1.875rem;
   height: 1.875rem;
-  border: 2px solid #D9877A;
+  border: 2px solid #C06F62;
   border-radius: 0.6rem;
   font-size: 0.875rem;
   cursor: pointer;
@@ -2238,8 +2238,8 @@ footer {
   left: 50%;
   width: 0.9rem;
   height: 0.5rem;
-  border-left: 2px solid #D9877A;
-  border-bottom: 2px solid #D9877A;
+  border-left: 2px solid #C06F62;
+  border-bottom: 2px solid #C06F62;
   transform: translate(-50%, -60%) rotate(-45deg);
   opacity: 0;
   transition: opacity 0.2s ease;
@@ -2257,7 +2257,7 @@ footer {
 .btn--confirmation {
   display: inline-block;
   font-size: 0.875rem !important;
-  color: #D9877A;
+  color: #C06F62;
   position: relative;
   text-decoration: none;
   overflow: hidden;
@@ -3107,7 +3107,7 @@ footer {
   width: 1.75rem;
   height: 1.75rem;
   border-radius: 50%;
-  background: #D9877A;
+  background: #C06F62;
   color: #fff;
   font-size: 0.875rem;
   font-weight: 600;
@@ -3147,7 +3147,7 @@ footer {
 }
 .disclosure[open] {
   background: #FFF9F6;
-  border-color: #D9877A;
+  border-color: #C06F62;
 }
 
 .disclaimer {
