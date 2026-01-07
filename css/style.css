@@ -369,6 +369,142 @@ a {
      object-fit: cover;
 }
 
+#shutter {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+#shutter.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.panel {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: #6F625B;
+}
+
+.panel--left {
+  left: 0;
+  transform: translateX(-100%);
+}
+
+.panel--right {
+  right: 0;
+  transform: translateX(100%);
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+}
+
+/* 再生 */
+#shutter.play .panel--left {
+  -webkit-animation: leftCloseOpen 1.05s ease-in-out forwards;
+          animation: leftCloseOpen 1.05s ease-in-out forwards;
+}
+
+#shutter.play .panel--right {
+  -webkit-animation: rightCloseOpen 1.05s ease-in-out forwards;
+          animation: rightCloseOpen 1.05s ease-in-out forwards;
+}
+
+#shutter.play .flash {
+  -webkit-animation: flash 1.05s ease-in-out forwards;
+          animation: flash 1.05s ease-in-out forwards;
+}
+
+/* 左右：開→閉→止→開 */
+@-webkit-keyframes leftCloseOpen {
+  0% {
+    transform: translateX(-100%);
+  }
+  30% {
+    transform: translateX(0);
+  }
+  60% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+@keyframes leftCloseOpen {
+  0% {
+    transform: translateX(-100%);
+  }
+  30% {
+    transform: translateX(0);
+  }
+  60% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+@-webkit-keyframes rightCloseOpen {
+  0% {
+    transform: translateX(100%);
+  }
+  30% {
+    transform: translateX(0);
+  }
+  60% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes rightCloseOpen {
+  0% {
+    transform: translateX(100%);
+  }
+  30% {
+    transform: translateX(0);
+  }
+  60% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+/* フラッシュ（閉じた瞬間を強調） */
+@-webkit-keyframes flash {
+  0%, 38% {
+    opacity: 0;
+  }
+  48% {
+    opacity: 1;
+  }
+  60%, 100% {
+    opacity: 0;
+  }
+}
+@keyframes flash {
+  0%, 38% {
+    opacity: 0;
+  }
+  48% {
+    opacity: 1;
+  }
+  60%, 100% {
+    opacity: 0;
+  }
+}
 /* =========================
    お問い合わせ：鳩がボタンをくわえて移動
    - SP：右下固定（ふわふわ）
