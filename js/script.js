@@ -105,36 +105,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // ① 季節で鳩画像を切り替える
     // =========================
     const carry = document.querySelector(".inquiry-carry");
-    const carryBird = document.querySelector(".inquiry-carry__bird");
+    const body = document.querySelector(".inquiry-carry__bird-body");
 
-    if (carry && carryBird) {
-        const month = new Date().getMonth() + 1;
-
+    if (carry && body) {
+        const m = new Date().getMonth() + 1;
         let src = "images/webp/whitebird-spring.webp";
-
-        if (month >= 6 && month <= 8) {
-            src = "images/webp/whitebird-summer.webp";
-        } else if (month >= 9 && month <= 11) {
-            src = "images/webp/whitebird-autumn.webp";
-        } else if (month === 12 || month <= 2) {
-            src = "images/webp/whitebird-winter.webp";
-        }
-
-        carryBird.src = src;
-
-        // 季節クラス（CSS演出用・使わなくてもOK）
-        carry.classList.remove("is-spring", "is-summer", "is-autumn", "is-winter");
-
-        const season =
-            month >= 3 && month <= 5
-                ? "spring"
-                : month >= 6 && month <= 8
-                    ? "summer"
-                    : month >= 9 && month <= 11
-                        ? "autumn"
-                        : "winter";
-
-        carry.classList.add(`is-${season}`);
+        if (m >= 6 && m <= 8) src = "images/webp/whitebird-summer.webp";
+        else if (m >= 9 && m <= 11) src = "images/webp/whitebird-autumn.webp";
+        else if (m === 12 || m <= 2) src = "images/webp/whitebird-winter.webp";
+        body.src = src;
     }
 
     // =========================

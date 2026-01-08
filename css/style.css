@@ -505,208 +505,138 @@ a {
     opacity: 0;
   }
 }
-/* =========================
-   お問い合わせ：鳩がボタンをくわえて移動
-   - SP：右下固定（ふわふわ）
-   - PC：往復（Uターン）＋戻りだけ鳩を左へ＆反転
-========================= */
 :root {
   --carry-bottom-sp: 1.25rem;
   --carry-right-sp: 0.75rem;
   --carry-bottom-pc: 3.125rem;
   --carry-edge-gap: 20px;
-  /* ★JSが上書きしてくれる保険（鳩＋ボタンの横幅） */
   --carry-w: 260px;
-  /* ★咥える高さ（上下） */
-  --bite-y-sp: 0.625rem;
-  --bite-y-pc: 0.75rem;
-  --bite-y-back: 0.75rem;
 }
 
-/* -------------------------
-   外枠（位置固定）
-------------------------- */
+/* ===== carry ===== */
 .inquiry-carry {
   position: fixed;
   right: var(--carry-right-sp);
   bottom: var(--carry-bottom-sp);
   z-index: 1000;
   pointer-events: auto;
-  -webkit-animation: none;
-          animation: none;
-  /* SPは移動しない */
   will-change: transform;
 }
-
-/* -------------------------
-   中身（鳩＋ボタン）＝塊ごとふわふわ
-------------------------- */
 .inquiry-carry__anim {
   display: inline-flex;
   align-items: center;
+  flex-direction: row;
   -webkit-animation: carry-pack-float 3.6s ease-in-out infinite;
           animation: carry-pack-float 3.6s ease-in-out infinite;
-  /* 基本（SP/PC行き）：ボタン→鳩（鳩が右） */
-  flex-direction: row;
 }
-
-/* 戻り（PCのみ）：鳩→ボタン（鳩が左） */
-@media (min-width: 800px) {
-  .inquiry-carry.is-back .inquiry-carry__anim {
-    flex-direction: row-reverse;
-  }
-}
-/* -------------------------
-   ボタン（縦読み防止）
-------------------------- */
 .inquiry-carry__btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: #3A2D26;
-  background-color: #fff;
+  background: #fff;
   border: 2px solid #E89A67;
   font-size: 0.875rem;
   line-height: 1;
   padding: 0.9375rem 1.25rem;
-  /* ←縦パディング増やしたいならここ */
   border-radius: 999px;
   white-space: nowrap;
-  /* 縦読み防止 */
   transition: background-color 0.3s;
 }
-
-@media (min-width: 800px) {
-  .inquiry-carry__btn {
-    min-width: 11.875rem;
-    /* PCで折り返し事故防止 */
-  }
-}
-/* -------------------------
-   鳩のラッパー（★食い込み調整はここが確実）
-------------------------- */
 .inquiry-carry__bird-wrap {
+  position: relative;
   display: inline-block;
-  line-height: 0;
-  /* 余計な隙間防止 */
-  /* SP/PC行き：鳩が右側 → 左方向へ食い込ませる */
-  margin-left: -0.5rem;
-  /* ←SPの食い込みはここ */
-}
-
-/* PC行き（右→左）の食い込み */
-@media (min-width: 800px) {
-  .inquiry-carry__bird-wrap {
-    margin-left: -0.5rem;
-    /* ←PC行きの食い込みはここ */
-  }
-  /* PC戻り（左→右）：鳩が左側になるので、右方向へ食い込ませる */
-  .inquiry-carry.is-back .inquiry-carry__bird-wrap {
-    margin-left: 0;
-    margin-right: -0.4375rem;
-    /* ←PC戻りの食い込みはここ（ここが効く） */
-  }
-  /* ★戻りだけ鳩を反転（画像が左向き前提） */
-  .inquiry-carry.is-back .inquiry-carry__bird-wrap {
-    transform: scaleX(-1);
-  }
-}
-/* -------------------------
-   鳩（上下ふわふわだけ担当）
-   ※横位置は bird-wrap の margin で調整する
-------------------------- */
-.inquiry-carry__bird {
-  height: auto;
   width: 4.375rem;
   pointer-events: none;
-  position: relative;
-  /* ★SPは上下位置（咥える高さ） */
-  --bite-y: var(--bite-y-sp);
-  -webkit-animation: carry-bird 2.4s ease-in-out infinite;
-          animation: carry-bird 2.4s ease-in-out infinite;
+  margin-left: -0.5rem;
+  transform: translateY(1.125rem);
 }
-.inquiry-carry__bird::after {
-  content: "🌸";
+.inquiry-carry__bird-body {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.inquiry-carry__bird-wing {
   position: absolute;
-  left: -6px;
-  top: 60%;
-  font-size: 0.875rem;
-  transform: translateY(-50%);
-  -webkit-animation: flower-float 2.8s ease-in-out infinite;
-          animation: flower-float 2.8s ease-in-out infinite;
+  left: 1.375rem;
+  top: 0rem;
+  width: 60%;
+  height: auto;
+  display: block;
+  transform-origin: 18% 55%;
+  -webkit-animation: bird-flap 1.6s ease-in-out infinite;
+          animation: bird-flap 1.6s ease-in-out infinite;
+  will-change: transform;
 }
-
-@media (min-width: 800px) {
-  .inquiry-carry__bird {
-    width: 5.75rem;
-    --bite-y: var(--bite-y-pc);
-    /* PC行き */
-  }
-  .inquiry-carry.is-back .inquiry-carry__bird {
-    --bite-y: var(--bite-y-back);
-    /* PC戻り */
+@media (min-width: 480px) {
+  .inquiry-carry__bird-wing {
+    left: 1.6875rem;
+    top: -0.0625rem;
   }
 }
-/* -------------------------
-   hover：止める＋色
-------------------------- */
 .inquiry-carry:hover {
   -webkit-animation-play-state: paused;
           animation-play-state: paused;
 }
-
 .inquiry-carry:hover .inquiry-carry__anim,
-.inquiry-carry:hover .inquiry-carry__bird {
+.inquiry-carry:hover .inquiry-carry__bird-wing {
   -webkit-animation-play-state: paused;
           animation-play-state: paused;
 }
-
 .inquiry-carry:hover .inquiry-carry__btn {
   background-color: #E89A67;
 }
 
-/* =========================
-   PC（800px〜）：往復（Uターン）
-========================= */
+/* ===== PC only ===== */
 @media (min-width: 800px) {
   .inquiry-carry {
     left: calc(100vw - var(--carry-w) - var(--carry-edge-gap));
     right: auto;
     bottom: var(--carry-bottom-pc) !important;
-    /* 速度：遅くしたいなら秒数↑ */
     -webkit-animation: carry-yo-yo 35s ease-in-out infinite;
             animation: carry-yo-yo 35s ease-in-out infinite;
     -webkit-animation-delay: -6s;
             animation-delay: -6s;
   }
+  .inquiry-carry__btn {
+    min-width: 11.875rem;
+  }
+  .inquiry-carry__bird-wrap {
+    width: 5.75rem;
+    transform: translateY(1.375rem);
+  }
+  .inquiry-carry.is-back .inquiry-carry__anim {
+    flex-direction: row-reverse;
+  }
+  .inquiry-carry.is-back .inquiry-carry__bird-wrap {
+    margin-left: 0;
+    margin-right: -0.4375rem;
+    transform: translateY(1.375rem) scaleX(-1);
+  }
 }
-/* =========================
-   animations
-========================= */
-/* 鳩だけ上下（咥える位置） */
-@-webkit-keyframes carry-bird {
+/* ===== animations ===== */
+@-webkit-keyframes bird-flap {
   0% {
-    translate: 0 var(--bite-y);
+    transform: rotate(12deg) translateY(0) scale(1);
   }
   50% {
-    translate: 0 calc(var(--bite-y) - 0.25rem);
+    transform: rotate(-18deg) translateY(-0.1875rem) scale(1.02);
   }
   100% {
-    translate: 0 var(--bite-y);
+    transform: rotate(12deg) translateY(0) scale(1);
   }
 }
-@keyframes carry-bird {
+@keyframes bird-flap {
   0% {
-    translate: 0 var(--bite-y);
+    transform: rotate(12deg) translateY(0) scale(1);
   }
   50% {
-    translate: 0 calc(var(--bite-y) - 0.25rem);
+    transform: rotate(-18deg) translateY(-0.1875rem) scale(1.02);
   }
   100% {
-    translate: 0 var(--bite-y);
+    transform: rotate(12deg) translateY(0) scale(1);
   }
 }
-/* 塊ごとふわふわ */
 @-webkit-keyframes carry-pack-float {
   0% {
     transform: translateY(0) rotate(0deg);
@@ -741,7 +671,6 @@ a {
     transform: translateY(0) rotate(0deg);
   }
 }
-/* PCの往復（Uターン） */
 @-webkit-keyframes carry-yo-yo {
   0% {
     transform: translateX(0);
@@ -762,28 +691,6 @@ a {
   }
   100% {
     transform: translateX(0);
-  }
-}
-@-webkit-keyframes flower-float {
-  0% {
-    transform: translateY(-50%) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-54%) rotate(3deg);
-  }
-  100% {
-    transform: translateY(-50%) rotate(0deg);
-  }
-}
-@keyframes flower-float {
-  0% {
-    transform: translateY(-50%) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-54%) rotate(3deg);
-  }
-  100% {
-    transform: translateY(-50%) rotate(0deg);
   }
 }
 .btn {
