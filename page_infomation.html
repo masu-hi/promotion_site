@@ -17,9 +17,9 @@
         <div class="flash"></div>
     </div>
     <div class="bg-birds" aria-hidden="true">
-        <!-- left -> right：右向き = left.webp -->
+        <!-- 1: 青（左→右）右向き素材 -->
         <span class="bg-birds__fly bg-birds__fly--lr">
-            <span class="bg-birds__curve bg-birds__curve--a">
+            <span class="bg-birds__curve">
                 <span class="bg-birds__float">
                     <img src="./images/webp/bluebird-left.webp" alt="" class="bg-birds__bird bg-birds__bird--blue"
                         width="168" height="167">
@@ -27,39 +27,38 @@
             </span>
         </span>
 
-        <span class="bg-birds__fly bg-birds__fly--lr">
-            <span class="bg-birds__curve bg-birds__curve--b">
-                <span class="bg-birds__float">
-                    <img src="./images/webp/whitebird-left.webp" alt="" class="bg-birds__bird bg-birds__bird--white"
-                        width="168" height="167">
-                </span>
-            </span>
-        </span>
-
-        <!-- right -> left：左向き = right.webp -->
+        <!-- 2: 白（右→左）左向き素材 -->
         <span class="bg-birds__fly bg-birds__fly--rl">
-            <span class="bg-birds__curve bg-birds__curve--c">
-                <span class="bg-birds__float">
-                    <img src="./images/webp/bluebird-right.webp" alt="" class="bg-birds__bird bg-birds__bird--blue"
-                        width="167" height="168">
-                </span>
-            </span>
-        </span>
-
-        <span class="bg-birds__fly bg-birds__fly--rl">
-            <span class="bg-birds__curve bg-birds__curve--d">
+            <span class="bg-birds__curve">
                 <span class="bg-birds__float">
                     <img src="./images/webp/whitebird-right.webp" alt="" class="bg-birds__bird bg-birds__bird--white"
                         width="167" height="168">
                 </span>
             </span>
         </span>
+        <!-- 3: 青（右→左）左向き素材 -->
+        <span class="bg-birds__fly bg-birds__fly--rl">
+            <span class="bg-birds__curve"><span class="bg-birds__float">
+                    <img src="./images/webp/bluebird-right.webp" alt="" class="bg-birds__bird bg-birds__bird--blue"
+                        width="167" height="168">
+                </span></span>
+        </span>
+
+        <!-- 4: 白（左→右）右向き素材 -->
+        <span class="bg-birds__fly bg-birds__fly--lr">
+            <span class="bg-birds__curve"><span class="bg-birds__float">
+                    <img src="./images/webp/whitebird-left.webp" alt="" class="bg-birds__bird bg-birds__bird--white"
+                        width="168" height="167">
+                </span></span>
+        </span>
     </div>
     <header class="header">
         <div class="header__inner">
             <h1 class="header__logo">
-                <a href="index.html"><img src="./images/webp/logo_maruver.webp" alt="GLASSY-PHOTO" class="header__logo"
-                        width="220" height="233"></a>
+                <a href="index.html">
+                    <img src="./images/webp/logo_maruver.webp" alt="GLASSY-PHOTO" class="header__logo-img" width="220"
+                        height="233">
+                </a>
             </h1>
             <nav class="pcnav" aria-label="グローバルナビゲーション">
                 <ul class="pcnav__list">
@@ -350,7 +349,8 @@
             </div>
         </div>
     </footer>
-    <script src="./js/script.js"></script>
+    <script src="./js/script.js" defer></script>
+    <script src="./js/shutter.js" defer></script>
 </body>
 
 </html>

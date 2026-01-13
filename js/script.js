@@ -1,44 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     (() => {
-        if (window.__SHUTTER_BOUND__) return;
-        window.__SHUTTER_BOUND__ = true;
+        const header = document.querySelector(".header");
+        if (!header) return;
 
-        const shutter = document.getElementById("shutter");
-        if (!shutter) return;
+        const isHome = document.body.classList.contains("is-home");
+        if (!isHome) return; // 他ページはCSSで常時ONなので何もしない
 
-        const play = () => {
-            shutter.classList.add("show");
-            shutter.classList.remove("play");
-            void shutter.offsetWidth;      // アニメ再始動
-            shutter.classList.add("play");
+        const THRESHOLD = 950;
+
+        const update = () => {
+            header.classList.toggle("is-solid", window.scrollY >= THRESHOLD);
         };
 
-        // ページ表示時：開く演出→消す
-        window.addEventListener("pageshow", () => {
-            play();
-            setTimeout(() => shutter.classList.remove("show"), 980);
-        });
-
-        // リンククリック時：閉じてから遷移
-        document.addEventListener("click", (e) => {
-            const a = e.target.closest("a");
-            if (!a) return;
-
-            const href = a.getAttribute("href") || "";
-            const sameOrigin = a.origin === location.origin;
-
-            // 除外（外部、新規タブ、DL、ページ内#）
-            if (a.target === "_blank" || a.hasAttribute("download") || !href || href.startsWith("#") || !sameOrigin) return;
-
-            e.preventDefault();
-            play();
-
-            // 閉じ切るタイミング（0.95sの30%あたり）
-            setTimeout(() => {
-                location.href = a.href;
-            }, 320);
-        }, { capture: true });
+        update();
+        window.addEventListener("scroll", update, { passive: true });
     })();
 
     // =========================

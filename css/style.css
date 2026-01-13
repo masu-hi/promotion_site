@@ -5,10 +5,23 @@ body {
   font-family: "Hiragino Maru Gothic ProN", "ヒラギノ丸ゴ ProN", "Hiragino Sans", "ヒラギノ角ゴシック", "Meiryo", "メイリオ", sans-serif;
   line-height: 1.75;
   letter-spacing: 0.05em;
+  background: transparent;
+  transition: background-color 0.2s ease;
+}
+body.is-solid {
+  background-color: rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+}
+
+/* 他ページは最初から背景あり */
+body:not(.is-home) .header {
+  background-color: rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
 }
 
 :focus-visible {
-  /* ブラウザ標準の青枠を出す */
   outline: revert;
   outline-offset: 2px;
 }
@@ -23,6 +36,17 @@ a {
   text-decoration: none;
 }
 
+main,
+footer {
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  position: fixed;
+  z-index: 100;
+}
+
 .header {
   position: fixed;
   top: 0;
@@ -30,6 +54,18 @@ a {
   width: 100%;
   padding: 1.25rem 0;
   z-index: 10;
+  background-color: transparent;
+  transition: background-color 0.25s ease;
+}
+.header.is-solid {
+  background-color: rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+}
+body:not(.is-home) .header {
+  background-color: rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
 }
 .header__inner {
   max-width: 1280px;
@@ -42,15 +78,15 @@ a {
   align-items: center;
   position: relative;
 }
-.header__logo {
+.header__logo-img {
   width: 3.75rem;
   height: auto;
   -o-object-fit: cover;
      object-fit: cover;
 }
 @media (min-width: 480px) {
-  .header__logo {
-    width: 6.25rem;
+  .header__logo-img {
+    width: 5rem;
   }
 }
 
@@ -369,139 +405,150 @@ a {
      object-fit: cover;
 }
 
+/* =========================
+   Shutter (global)  ※置き換え
+========================= */
 #shutter {
   position: fixed;
   inset: 0;
-  background: #fff;
   z-index: 9999;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
+  overflow: hidden;
+  background: transparent;
 }
-
-#shutter.show {
+#shutter.is-show {
   opacity: 1;
   visibility: visible;
 }
-
-.panel {
+#shutter .panel {
   position: absolute;
   top: 0;
-  width: 50%;
+  width: calc(50% + 2px);
   height: 100%;
-  background: #6F625B;
+  background: #3A2D26;
+  will-change: transform;
 }
-
-.panel--left {
+#shutter .panel--left {
   left: 0;
   transform: translateX(-100%);
 }
-
-.panel--right {
+#shutter .panel--right {
   right: 0;
   transform: translateX(100%);
 }
-
-.flash {
+#shutter .flash {
   position: absolute;
   inset: 0;
-  background: #fff;
+  background: #3A2D26;
   opacity: 0;
 }
-
-/* 再生 */
-#shutter.play .panel--left {
-  -webkit-animation: leftCloseOpen 1.05s ease-in-out forwards;
-          animation: leftCloseOpen 1.05s ease-in-out forwards;
+#shutter.is-opening .panel--left {
+  -webkit-animation: shutter-open-left 0.24s cubic-bezier(0.3, 0, 0.2, 1) forwards;
+          animation: shutter-open-left 0.24s cubic-bezier(0.3, 0, 0.2, 1) forwards;
+}
+#shutter.is-opening .panel--right {
+  -webkit-animation: shutter-open-right 0.24s cubic-bezier(0.3, 0, 0.2, 1) forwards;
+          animation: shutter-open-right 0.24s cubic-bezier(0.3, 0, 0.2, 1) forwards;
+}
+#shutter.is-closing .panel--left {
+  -webkit-animation: shutter-close-left 0.18s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+          animation: shutter-close-left 0.18s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+}
+#shutter.is-closing .panel--right {
+  -webkit-animation: shutter-close-right 0.18s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+          animation: shutter-close-right 0.18s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+}
+#shutter.is-closing .flash {
+  -webkit-animation: shutter-flash 0.1s ease-out 0.18s forwards;
+          animation: shutter-flash 0.1s ease-out 0.18s forwards;
 }
 
-#shutter.play .panel--right {
-  -webkit-animation: rightCloseOpen 1.05s ease-in-out forwards;
-          animation: rightCloseOpen 1.05s ease-in-out forwards;
-}
-
-#shutter.play .flash {
-  -webkit-animation: flash 1.05s ease-in-out forwards;
-          animation: flash 1.05s ease-in-out forwards;
-}
-
-/* 左右：開→閉→止→開 */
-@-webkit-keyframes leftCloseOpen {
-  0% {
-    transform: translateX(-100%);
-  }
-  30% {
+@-webkit-keyframes shutter-open-left {
+  from {
     transform: translateX(0);
   }
-  60% {
-    transform: translateX(0);
-  }
-  100% {
+  to {
     transform: translateX(-100%);
   }
 }
-@keyframes leftCloseOpen {
-  0% {
-    transform: translateX(-100%);
-  }
-  30% {
+
+@keyframes shutter-open-left {
+  from {
     transform: translateX(0);
   }
-  60% {
-    transform: translateX(0);
-  }
-  100% {
+  to {
     transform: translateX(-100%);
   }
 }
-@-webkit-keyframes rightCloseOpen {
-  0% {
-    transform: translateX(100%);
-  }
-  30% {
+@-webkit-keyframes shutter-open-right {
+  from {
     transform: translateX(0);
   }
-  60% {
-    transform: translateX(0);
-  }
-  100% {
+  to {
     transform: translateX(100%);
   }
 }
-@keyframes rightCloseOpen {
-  0% {
-    transform: translateX(100%);
-  }
-  30% {
+@keyframes shutter-open-right {
+  from {
     transform: translateX(0);
   }
-  60% {
-    transform: translateX(0);
-  }
-  100% {
+  to {
     transform: translateX(100%);
   }
 }
-/* フラッシュ（閉じた瞬間を強調） */
-@-webkit-keyframes flash {
-  0%, 38% {
+@-webkit-keyframes shutter-close-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes shutter-close-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@-webkit-keyframes shutter-close-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes shutter-close-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@-webkit-keyframes shutter-flash {
+  from {
     opacity: 0;
   }
-  48% {
+  30% {
     opacity: 1;
   }
-  60%, 100% {
+  to {
     opacity: 0;
   }
 }
-@keyframes flash {
-  0%, 38% {
+@keyframes shutter-flash {
+  from {
     opacity: 0;
   }
-  48% {
+  30% {
     opacity: 1;
   }
-  60%, 100% {
+  to {
     opacity: 0;
   }
 }
@@ -735,18 +782,7 @@ a {
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
-  background: #fff;
 }
-
-/* コンテンツを前面にしたい場合 */
-header,
-main,
-footer {
-  position: relative;
-  z-index: 1;
-}
-
-/* 横切り（基準移動） */
 .bg-birds__fly {
   position: absolute;
   left: 0;
@@ -756,97 +792,26 @@ footer {
   -webkit-animation-iteration-count: infinite;
           animation-iteration-count: infinite;
 }
-
-/* 左→右 / 右→左（横方向は親で担当） */
 .bg-birds__fly--lr {
   -webkit-animation-name: bird-fly-lr;
           animation-name: bird-fly-lr;
 }
-
 .bg-birds__fly--rl {
   -webkit-animation-name: bird-fly-rl;
           animation-name: bird-fly-rl;
 }
-
-/* 4レーン（高さ・速度・ズレ） */
-.bg-birds__fly:nth-child(1) {
-  top: 12%;
-  -webkit-animation-duration: 22s;
-          animation-duration: 22s;
-  -webkit-animation-delay: -2s;
-          animation-delay: -2s;
-}
-
-.bg-birds__fly:nth-child(2) {
-  top: 34%;
-  -webkit-animation-duration: 28s;
-          animation-duration: 28s;
-  -webkit-animation-delay: -12s;
-          animation-delay: -12s;
-}
-
-.bg-birds__fly:nth-child(3) {
-  top: 58%;
-  -webkit-animation-duration: 26s;
-          animation-duration: 26s;
-  -webkit-animation-delay: -6s;
-          animation-delay: -6s;
-}
-
-.bg-birds__fly:nth-child(4) {
-  top: 80%;
-  -webkit-animation-duration: 30s;
-          animation-duration: 30s;
-  -webkit-animation-delay: -18s;
-          animation-delay: -18s;
-}
-
-/* カーブ（ゆるいS字）＝中間レイヤーで担当 */
 .bg-birds__curve {
   display: inline-block;
   will-change: transform;
-  -webkit-animation: bird-curve 5.6s ease-in-out infinite;
-          animation: bird-curve 5.6s ease-in-out infinite;
+  -webkit-animation: bird-curve 6s ease-in-out infinite;
+          animation: bird-curve 6s ease-in-out infinite;
 }
-
-/* カーブの個体差（同じだと機械っぽいのでズラす） */
-.bg-birds__curve--a {
-  -webkit-animation-duration: 6.4s;
-          animation-duration: 6.4s;
-  -webkit-animation-delay: -1.2s;
-          animation-delay: -1.2s;
-}
-
-.bg-birds__curve--b {
-  -webkit-animation-duration: 7.2s;
-          animation-duration: 7.2s;
-  -webkit-animation-delay: -2.8s;
-          animation-delay: -2.8s;
-}
-
-.bg-birds__curve--c {
-  -webkit-animation-duration: 6.8s;
-          animation-duration: 6.8s;
-  -webkit-animation-delay: -3.6s;
-          animation-delay: -3.6s;
-}
-
-.bg-birds__curve--d {
-  -webkit-animation-duration: 7.6s;
-          animation-duration: 7.6s;
-  -webkit-animation-delay: -1.9s;
-          animation-delay: -1.9s;
-}
-
-/* 鳥っぽい：上下ふわふわ＋ちょい傾き */
 .bg-birds__float {
   display: inline-block;
   will-change: transform;
   -webkit-animation: bird-wobble 3.8s ease-in-out infinite;
           animation: bird-wobble 3.8s ease-in-out infinite;
 }
-
-/* 鳥本体：小刻みな浮遊（微スケール） */
 .bg-birds__bird {
   width: 4.375rem;
   display: block;
@@ -855,50 +820,159 @@ footer {
   -webkit-animation: bird-bob 1.9s ease-in-out infinite;
           animation: bird-bob 1.9s ease-in-out infinite;
 }
-
-/* 色の差（白い鳥は控えめ） */
 .bg-birds__bird--blue {
   opacity: 0.9;
 }
-
 .bg-birds__bird--white {
   opacity: 0.6;
 }
-
-/* 横移動 */
-@-webkit-keyframes bird-fly-lr {
-  0% {
-    transform: translateX(-20vw);
-  }
-  100% {
-    transform: translateX(120vw);
+.bg-birds__fly:nth-child(n+3) {
+  display: none;
+}
+@media (min-width: 800px) {
+  .bg-birds__fly:nth-child(n+3) {
+    display: block;
   }
 }
-@keyframes bird-fly-lr {
-  0% {
-    transform: translateX(-20vw);
+
+.header {
+  z-index: 100;
+}
+
+/* ===== ランダム感を強めた個体差 ===== */
+.bg-birds__fly:nth-child(1) {
+  top: 22%;
+  -webkit-animation-duration: 18s;
+          animation-duration: 18s;
+  -webkit-animation-delay: -5s;
+          animation-delay: -5s;
+}
+
+.bg-birds__fly:nth-child(1) .bg-birds__curve {
+  -webkit-animation-duration: 5.8s;
+          animation-duration: 5.8s;
+  -webkit-animation-delay: -1.3s;
+          animation-delay: -1.3s;
+}
+
+.bg-birds__fly:nth-child(1) .bg-birds__float {
+  -webkit-animation-duration: 3.1s;
+          animation-duration: 3.1s;
+}
+
+.bg-birds__fly:nth-child(1) .bg-birds__bird {
+  -webkit-animation-duration: 1.6s;
+          animation-duration: 1.6s;
+}
+
+.bg-birds__fly:nth-child(2) {
+  top: 66%;
+  -webkit-animation-duration: 26s;
+          animation-duration: 26s;
+  -webkit-animation-delay: -19s;
+          animation-delay: -19s;
+}
+
+.bg-birds__fly:nth-child(2) .bg-birds__curve {
+  -webkit-animation-duration: 7.4s;
+          animation-duration: 7.4s;
+  -webkit-animation-delay: -3.1s;
+          animation-delay: -3.1s;
+}
+
+.bg-birds__fly:nth-child(2) .bg-birds__float {
+  -webkit-animation-duration: 4.6s;
+          animation-duration: 4.6s;
+}
+
+.bg-birds__fly:nth-child(2) .bg-birds__bird {
+  -webkit-animation-duration: 2.3s;
+          animation-duration: 2.3s;
+}
+
+.bg-birds__fly:nth-child(3) {
+  top: 43%;
+  -webkit-animation-duration: 34s;
+          animation-duration: 34s;
+  -webkit-animation-delay: -33s;
+          animation-delay: -33s;
+}
+
+.bg-birds__fly:nth-child(3) .bg-birds__curve {
+  -webkit-animation-duration: 6.1s;
+          animation-duration: 6.1s;
+  -webkit-animation-delay: -2.4s;
+          animation-delay: -2.4s;
+}
+
+.bg-birds__fly:nth-child(3) .bg-birds__float {
+  -webkit-animation-duration: 3.8s;
+          animation-duration: 3.8s;
+}
+
+.bg-birds__fly:nth-child(3) .bg-birds__bird {
+  -webkit-animation-duration: 1.9s;
+          animation-duration: 1.9s;
+}
+
+.bg-birds__fly:nth-child(4) {
+  top: 80%;
+  -webkit-animation-duration: 22s;
+          animation-duration: 22s;
+  -webkit-animation-delay: -11s;
+          animation-delay: -11s;
+}
+
+.bg-birds__fly:nth-child(4) .bg-birds__curve {
+  -webkit-animation-duration: 8.2s;
+          animation-duration: 8.2s;
+  -webkit-animation-delay: -4.6s;
+          animation-delay: -4.6s;
+}
+
+.bg-birds__fly:nth-child(4) .bg-birds__float {
+  -webkit-animation-duration: 5.2s;
+          animation-duration: 5.2s;
+}
+
+.bg-birds__fly:nth-child(4) .bg-birds__bird {
+  -webkit-animation-duration: 2.7s;
+          animation-duration: 2.7s;
+}
+
+@-webkit-keyframes bird-fly-lr {
+  from {
+    transform: translateX(-30vw);
   }
-  100% {
-    transform: translateX(120vw);
+  to {
+    transform: translateX(130vw);
+  }
+}
+
+@keyframes bird-fly-lr {
+  from {
+    transform: translateX(-30vw);
+  }
+  to {
+    transform: translateX(130vw);
   }
 }
 @-webkit-keyframes bird-fly-rl {
-  0% {
-    transform: translateX(120vw);
+  from {
+    transform: translateX(130vw);
   }
-  100% {
-    transform: translateX(-20vw);
+  to {
+    transform: translateX(-30vw);
   }
 }
 @keyframes bird-fly-rl {
-  0% {
-    transform: translateX(120vw);
+  from {
+    transform: translateX(130vw);
   }
-  100% {
-    transform: translateX(-20vw);
+  to {
+    transform: translateX(-30vw);
   }
 }
-/* ゆるいカーブ飛行（横方向は親がやるので、ここはXをいじらずYと傾きだけ） */
 @-webkit-keyframes bird-curve {
   0% {
     transform: translateY(0) rotate(0deg);
@@ -933,7 +1007,6 @@ footer {
     transform: translateY(0) rotate(0deg);
   }
 }
-/* 鳥っぽい揺れ（少しだけ） */
 @-webkit-keyframes bird-wobble {
   0% {
     transform: translateY(0) rotate(0deg);
@@ -962,7 +1035,6 @@ footer {
     transform: translateY(0) rotate(0deg);
   }
 }
-/* 小刻み浮遊 */
 @-webkit-keyframes bird-bob {
   0% {
     transform: translateY(0) scale(1);
@@ -985,7 +1057,6 @@ footer {
     transform: translateY(0) scale(1);
   }
 }
-/* アクセシビリティ */
 @media (prefers-reduced-motion: reduce) {
   .bg-birds__fly,
 .bg-birds__curve,
