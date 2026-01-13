@@ -113,12 +113,12 @@
         </a>
         <section class="mainvisual">
             <picture>
-                <source media="(width >= 640px)" srcset="./images/photo/ceremony/ceremony10.webp"
+                <source media="(width >= 640px)" srcset="./images/photo/ceremony/ceremony10.webp" alt="新郎新婦の笑顔の写真"
                     class="mainvisual_photo" width="1600" height="1067">
-                <source media="(width < 640px)" srcset="./images/webp/mainvisual_sp.webp" class="mainvisual_photo"
-                    width="640" height="1231">
-                <img src="./images/photo/ceremony/ceremony10.webp" alt="" class="mainvisual_photo" width="1600"
-                    height="1067">
+                <source media="(width < 640px)" srcset="./images/webp/mainvisual_sp.webp" alt="新郎新婦の笑顔の写真"
+                    class="mainvisual_photo" width="640" height="1231">
+                <img src="./images/photo/ceremony/ceremony10.webp" alt="新郎新婦の笑顔の写真" class="mainvisual_photo"
+                    width="1600" height="1067">
             </picture>
         </section>
         <section class="style">
@@ -189,6 +189,7 @@
                     </div>
                     <a href="page_photo.html" class="decoration__more"><span>viewmore</span></a>
                 </div>
+            </div>
         </section>
 
         <div class="plan">
@@ -247,7 +248,7 @@
                     <h3 class="inquiry__subtitle">結婚式写真撮影のご相談・ご注文フォーム</h3>
                     <div class="inquiry__check">
                         <label class="checkbox">
-                            <input id="check1" type="checkbox" class="checkbox__input">
+                            <input id="check1" type="checkbox" name="checkbox" class="checkbox__input">
                             <span class="checkbox__box"></span>
                             <span class="checkbox__text">- 免責・誓約事項 - に同意する</span>
                         </label>
@@ -255,7 +256,7 @@
 
                     <div class="inquiry__check">
                         <label class="checkbox">
-                            <input id="check2" type="checkbox" class="checkbox__input"> <!-- ← ID を変える -->
+                            <input id="check2" type="checkbox" name="checkbox" class="checkbox__input">
                             <span class="checkbox__box"></span>
                             <span class="checkbox__text">- 個人情報保護方針 - に同意する</span>
                         </label>
@@ -265,7 +266,7 @@
                     </a>
                     <label class="inquiry__content">
                         <p class="inquiry__name">お名前</p>
-                        <input type="text" name="name" class="inquiry__name--column">
+                        <input type="text" name="name" class="inquiry__name--column" required>
                     </label>
                     <label class="inquiry__content">
                         <p class="inquiry__email">メールアドレス</p>
@@ -279,7 +280,7 @@
                         <p class="inquiry__place">会場</p>
                         <input type="text" name="place" class="inquiry__place--column">
                     </label>
-                    <label class="inquiry__content">
+                    <label class="inquiry__content" for="お問い合わせ内容">
                         <p class="inquiry__text">お問い合わせ内容</p>
                         <textarea name="message" class="inquiry__text--column"></textarea>
                     </label>
