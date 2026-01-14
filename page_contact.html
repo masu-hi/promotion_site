@@ -4,8 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="結婚式写真撮影のご相談・ご予約はこちら。挙式や披露宴、前撮りなど、アットホームな雰囲気で大切な一日を写真に残します。お気軽にお問い合わせください。">
-    <title>お問い合わせ GLASSY-PHOTO</title>
+
+    <title>GLASSY-PHOTO</title>
+    <meta name="description" content="GLASSY-PHOTOは、結婚式や前撮りを中心に撮影するウェディングフォトグラファーの公式サイトです。自然な表情と温かい空気感を大切にした写真をお届けします。">
+
+    <!-- OGP -->
+    <meta property="og:title" content="GLASSY-PHOTO">
+    <meta property="og:description" content="結婚式や前撮りを中心に撮影するウェディングフォトグラファーの公式サイト。自然な表情と温かい空気感を大切にした写真をお届けします。">
+    <meta property="og:url" content="https://rumc-hk.sub.jp/promotion_site/">
+    <meta property="og:image" content="https://rumc-hk.sub.jp/promotion_site/images/ogp.jpg">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/the-new-css-reset/css/reset.min.css">
     <link rel="stylesheet" href="./css/style.css">
 </head>
@@ -102,52 +114,56 @@
                     <h2 class="inquiry__title">お問い合わせ</h2>
                     <h3 class="inquiry__subtitle">結婚式写真撮影のご相談・ご注文フォーム</h3>
 
-                    <form action="page_confirm.html" method="get" id="inquiryForm">
+                    <form class="inquiry__form" action="page_confirm.html" method="post">
                         <div class="inquiry__check">
-                            <label class="checkbox">
-                                <input id="check1" name="agree1" type="checkbox" class="checkbox__input" required>
+                            <label class="checkbox" for="check1">
+                                <input id="check1" type="checkbox" name="agree_pledge" class="checkbox__input" required>
                                 <span class="checkbox__box"></span>
                                 <span class="checkbox__text">- 免責・誓約事項 - に同意する</span>
                             </label>
                         </div>
 
                         <div class="inquiry__check">
-                            <label class="checkbox">
-                                <input id="check2" name="agree2" type="checkbox" class="checkbox__input" required>
+                            <label class="checkbox" for="check2">
+                                <input id="check2" type="checkbox" name="agree_privacy" class="checkbox__input"
+                                    required>
                                 <span class="checkbox__box"></span>
                                 <span class="checkbox__text">- 個人情報保護方針 - に同意する</span>
                             </label>
                         </div>
 
-                        <a href="#" class="btn--confirmation">
+                        <!-- # ではなく実体ページへ -->
+                        <a href="page_pledge.html" class="btn--confirmation">
                             免責・誓約事項、個人情報保護方針に関するご確認はこちら
                         </a>
 
-                        <label class="inquiry__content">
-                            <p class="inquiry__name">お名前<span class="inquiry__required">必須</span></p>
-                            <input type="text" name="name" class="inquiry__name--column" required>
-                        </label>
+                        <div class="inquiry__content">
+                            <label class="inquiry__name" for="name">お名前</label>
+                            <input id="name" type="text" name="name" class="inquiry__name--column" required
+                                autocomplete="name">
+                        </div>
 
-                        <label class="inquiry__content">
-                            <p class="inquiry__email">メールアドレス<span class="inquiry__required">必須</span></p>
-                            <input type="email" name="email" autocomplete="email" class="inquiry__email--column"
-                                required>
-                        </label>
+                        <div class="inquiry__content">
+                            <label class="inquiry__email" for="email">メールアドレス</label>
+                            <input id="email" type="email" name="email" class="inquiry__email--column"
+                                autocomplete="email" required>
+                        </div>
 
-                        <label class="inquiry__content">
-                            <p class="inquiry__day">挙式披露宴日</p>
-                            <input type="date" name="day" class="inquiry__day--column">
-                        </label>
+                        <div class="inquiry__content">
+                            <label class="inquiry__day" for="day">挙式披露宴日</label>
+                            <input id="day" type="date" name="day" class="inquiry__day--column">
+                        </div>
 
-                        <label class="inquiry__content">
-                            <p class="inquiry__place">会場</p>
-                            <input type="text" name="place" class="inquiry__place--column">
-                        </label>
+                        <div class="inquiry__content">
+                            <label class="inquiry__place" for="place">会場</label>
+                            <input id="place" type="text" name="place" class="inquiry__place--column"
+                                autocomplete="organization">
+                        </div>
 
-                        <label class="inquiry__content">
-                            <p class="inquiry__text">お問い合わせ内容</p>
-                            <textarea name="message" class="inquiry__text--column"></textarea>
-                        </label>
+                        <div class="inquiry__content">
+                            <label class="inquiry__text" for="message">お問い合わせ内容</label>
+                            <textarea id="message" name="message" class="inquiry__text--column" required></textarea>
+                        </div>
 
                         <div class="inquiry__submit">
                             <button type="submit" class="inquiry__submit-btn">お問い合わせ内容を確認</button>

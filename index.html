@@ -4,8 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="GLASSY-PHOTOは、結婚式や前撮りを中心に撮影するウェディングフォトグラファーの公式サイトです。自然な表情と温かい空気感を大切にした写真をお届けします。">
+
     <title>GLASSY-PHOTO</title>
+    <meta name="description" content="GLASSY-PHOTOは、結婚式や前撮りを中心に撮影するウェディングフォトグラファーの公式サイトです。自然な表情と温かい空気感を大切にした写真をお届けします。">
+
+    <!-- OGP -->
+    <meta property="og:title" content="GLASSY-PHOTO">
+    <meta property="og:description" content="結婚式や前撮りを中心に撮影するウェディングフォトグラファーの公式サイト。自然な表情と温かい空気感を大切にした写真をお届けします。">
+    <meta property="og:url" content="https://rumc-hk.sub.jp/promotion_site/">
+    <meta property="og:image" content="https://rumc-hk.sub.jp/promotion_site/images/ogp.jpg">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/the-new-css-reset/css/reset.min.css">
     <link rel="stylesheet" href="./css/style.css">
 </head>
@@ -16,8 +28,8 @@
         <div class="panel panel--right"></div>
         <div class="flash"></div>
     </div>
+
     <div class="bg-birds" aria-hidden="true">
-        <!-- 1: 青（左→右）右向き素材 -->
         <span class="bg-birds__fly bg-birds__fly--lr">
             <span class="bg-birds__curve">
                 <span class="bg-birds__float">
@@ -27,7 +39,6 @@
             </span>
         </span>
 
-        <!-- 2: 白（右→左）左向き素材 -->
         <span class="bg-birds__fly bg-birds__fly--rl">
             <span class="bg-birds__curve">
                 <span class="bg-birds__float">
@@ -36,30 +47,35 @@
                 </span>
             </span>
         </span>
-        <!-- 3: 青（右→左）左向き素材 -->
+
         <span class="bg-birds__fly bg-birds__fly--rl">
-            <span class="bg-birds__curve"><span class="bg-birds__float">
+            <span class="bg-birds__curve">
+                <span class="bg-birds__float">
                     <img src="./images/webp/bluebird-right.webp" alt="" class="bg-birds__bird bg-birds__bird--blue"
                         width="167" height="168">
-                </span></span>
+                </span>
+            </span>
         </span>
 
-        <!-- 4: 白（左→右）右向き素材 -->
         <span class="bg-birds__fly bg-birds__fly--lr">
-            <span class="bg-birds__curve"><span class="bg-birds__float">
+            <span class="bg-birds__curve">
+                <span class="bg-birds__float">
                     <img src="./images/webp/whitebird-left.webp" alt="" class="bg-birds__bird bg-birds__bird--white"
                         width="168" height="167">
-                </span></span>
+                </span>
+            </span>
         </span>
     </div>
+
     <header class="header">
         <div class="header__inner">
             <h1 class="header__logo">
                 <a href="index.html">
                     <img src="./images/webp/logo_maruver.webp" alt="GLASSY-PHOTO" class="header__logo-img" width="220"
-                        height="233">
+                        height="233" decoding="async">
                 </a>
             </h1>
+
             <nav class="pcnav" aria-label="グローバルナビゲーション">
                 <ul class="pcnav__list">
                     <li class="pcnav__item"><a href="index.html">ホーム</a></li>
@@ -72,9 +88,7 @@
 
             <div class="drawer">
                 <button class="drawer__toggle" aria-label="メニューを開く">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                    <span></span><span></span><span></span>
                 </button>
 
                 <button class="drawer__close" aria-label="メニューを閉じる">×</button>
@@ -103,15 +117,23 @@
 
                 <span class="inquiry-carry__bird-wrap" aria-hidden="true">
                     <img src="images/webp/whitebird-winter.webp" alt="" class="inquiry-carry__bird-body" width="163"
-                        height="133">
+                        height="133" decoding="async">
                     <span class="inquiry-carry__wing-wrap">
                         <img src="images/webp/whitebird-feather.webp" alt="" class="inquiry-carry__bird-wing"
-                            width="110" height="85">
+                            width="110" height="85" decoding="async">
                     </span>
                 </span>
             </span>
         </a>
-        <section class="mainvisual"></section>
+        <section class="mainvisual" aria-label="メインビジュアル">
+            <picture>
+                <source media="(width >= 640px)" srcset="./images/photo/ceremony/ceremony10.webp">
+                <source media="(width < 640px)" srcset="./images/webp/mainvisual_sp.webp">
+                <img src="./images/photo/ceremony/ceremony10.webp" alt="新郎新婦が笑顔で見つめ合う結婚式の写真" class="mainvisual_photo"
+                    width="1600" height="1067" decoding="async" fetchpriority="high">
+            </picture>
+        </section>
+
         <section class="style">
             <div class="style__inner">
                 <h2 class="style__title">Style</h2>
@@ -127,75 +149,88 @@
                 </div>
             </div>
         </section>
+
         <section class="gallery">
             <div class="gallery__inner">
                 <h2 class="gallery__title">フォトギャラリー</h2>
+
                 <div class="gallery__kinds ceremony">
                     <h3 class="ceremony__title">セレモニー</h3>
                     <div class="ceremony__list">
                         <img src="./images/photo/ceremony/ceremony1.webp" alt="セレモニーの写真" class="ceremony__item"
-                            width="1600" height="1067">
+                            width="1600" height="1067" loading="lazy" decoding="async">
                         <img src="./images/photo/ceremony/ceremony2.webp" alt="セレモニーの写真" class="ceremony__item"
-                            width="1600" height="1067">
+                            width="1600" height="1067" loading="lazy" decoding="async">
                     </div>
+
                     <div class="ceremony__list--column">
                         <img src="./images/photo/ceremony/ceremony3.webp" alt="セレモニーの写真" class="ceremony__item1"
-                            width="1067" height="1600">
+                            width="1067" height="1600" loading="lazy" decoding="async">
                         <img src="./images/photo/ceremony/ceremony4.webp" alt="セレモニーの写真" class="ceremony__item2"
-                            width="1600" height="1067">
+                            width="1600" height="1067" loading="lazy" decoding="async">
                         <img src="./images/photo/ceremony/ceremony5.webp" alt="セレモニーの写真" class="ceremony__item3"
-                            width="1600" height="1067">
+                            width="1600" height="1067" loading="lazy" decoding="async">
                     </div>
+
                     <a href="page_photo.html" class="ceremony__more"><span>viewmore</span></a>
                 </div>
+
                 <div class="gallery__kinds reception">
                     <h3 class="reception__title">レセプション</h3>
                     <div class="reception__list">
                         <img src="./images/photo/reception/reception1.webp" alt="レセプションの写真" class="reception__item1"
-                            width="1600" height="1067">
+                            width="1600" height="1067" loading="lazy" decoding="async">
                         <img src="./images/photo/reception/reception2.webp" alt="レセプションの写真" class="reception__item2"
-                            width="1600" height="1067">
+                            width="1600" height="1067" loading="lazy" decoding="async">
                         <img src="./images/photo/reception/reception3.webp" alt="レセプションの写真" class="reception__item3"
-                            width="1067" height="1600">
+                            width="1067" height="1600" loading="lazy" decoding="async">
                     </div>
+
                     <div class="reception__list--column">
                         <img src="./images/photo/reception/reception4.webp" alt="レセプションの写真" class="reception__item"
-                            width="1600" height="1067">
+                            width="1600" height="1067" loading="lazy" decoding="async">
                         <img src="./images/photo/reception/reception5.webp" alt="レセプションの写真" class="reception__item"
-                            width="1600" height="1067">
+                            width="1600" height="1067" loading="lazy" decoding="async">
                     </div>
+
                     <a href="page_photo.html" class="reception__more"><span>viewmore</span></a>
                 </div>
+
                 <div class="gallery__kinds decoration">
                     <h3 class="decoration__title">会場・装飾</h3>
                     <div class="decoration__list">
                         <img src="./images/photo/place&decoration/place&decoration1.webp" alt="会場と装飾の写真"
-                            class="decoration__item" width="1600" height="1067">
+                            class="decoration__item" width="1600" height="1067" loading="lazy" decoding="async">
                         <img src="./images/photo/place&decoration/place&decoration2.webp" alt="会場と装飾の写真"
-                            class="decoration__item" width="1600" height="1067">
+                            class="decoration__item" width="1600" height="1067" loading="lazy" decoding="async">
                         <img src="./images/photo/place&decoration/place&decoration3.webp" alt="会場と装飾の写真"
-                            class="decoration__item" width="1600" height="1067">
+                            class="decoration__item" width="1600" height="1067" loading="lazy" decoding="async">
                         <img src="./images/photo/place&decoration/place&decoration4.webp" alt="会場と装飾の写真"
-                            class="decoration__item" width="1600" height="1067">
+                            class="decoration__item" width="1600" height="1067" loading="lazy" decoding="async">
                     </div>
+
                     <a href="page_photo.html" class="decoration__more"><span>viewmore</span></a>
                 </div>
+
             </div>
         </section>
 
         <div class="plan">
             <div class="plan__inner">
-                <img src="./images/webp/bluebird-left.webp" alt="" class="plan__bird" loading="lazy">
+                <img src="./images/webp/bluebird-left.webp" alt="" class="plan__bird" loading="lazy" decoding="async"
+                    aria-hidden="true">
                 <a href="page_price.html" class="btn">料金プランについてはこちら</a>
-                <img src="./images/webp/bluebird-right.webp" alt="" class="plan__bird--sp" loading="lazy">
+                <img src="./images/webp/bluebird-right.webp" alt="" class="plan__bird--sp" loading="lazy"
+                    decoding="async" aria-hidden="true">
             </div>
         </div>
+
         <section class="photographer">
             <div class="photographer__inner">
                 <h2 class="photographer__title">フォトグラファー</h2>
                 <div class="photographer__profile">
                     <img src="./images/webp/photographer_img.webp" alt="カメラマンの写真" class="photographer__photo"
-                        loading="lazy" width="448" height="557">
+                        loading="lazy" width="448" height="557" decoding="async">
                     <div class="photographer__text">
                         <h3 class="photographer__name">河合満彦 Michihiko Kawai</h3>
                         <p class="photographer__description">
@@ -237,64 +272,81 @@
                 <div class="inquiry__box">
                     <h2 class="inquiry__title">お問い合わせ</h2>
                     <h3 class="inquiry__subtitle">結婚式写真撮影のご相談・ご注文フォーム</h3>
-                    <div class="inquiry__check">
-                        <label class="checkbox">
-                            <input id="check1" type="checkbox" name="checkbox" class="checkbox__input">
-                            <span class="checkbox__box"></span>
-                            <span class="checkbox__text">- 免責・誓約事項 - に同意する</span>
-                        </label>
-                    </div>
 
-                    <div class="inquiry__check">
-                        <label class="checkbox">
-                            <input id="check2" type="checkbox" name="checkbox" class="checkbox__input">
-                            <span class="checkbox__box"></span>
-                            <span class="checkbox__text">- 個人情報保護方針 - に同意する</span>
-                        </label>
-                    </div>
-                    <a href="#" class="btn--confirmation">
-                        免責・誓約事項、個人情報保護方針に関するご確認はこちら
-                    </a>
-                    <label class="inquiry__content">
-                        <p class="inquiry__name">お名前</p>
-                        <input type="text" name="name" class="inquiry__name--column" required>
-                    </label>
-                    <label class="inquiry__content">
-                        <p class="inquiry__email">メールアドレス</p>
-                        <input type="email" name="email" autocomplete="email" required class="inquiry__email--column" />
-                    </label>
-                    <label class="inquiry__content">
-                        <p class="inquiry__day">挙式披露宴日</p>
-                        <input type="date" name="day" class="inquiry__day--column">
-                    </label>
-                    <label class="inquiry__content">
-                        <p class="inquiry__place">会場</p>
-                        <input type="text" name="place" class="inquiry__place--column">
-                    </label>
-                    <label class="inquiry__content" for="お問い合わせ内容">
-                        <p class="inquiry__text">お問い合わせ内容</p>
-                        <textarea name="message" class="inquiry__text--column"></textarea>
-                    </label>
-                    <div class="inquiry__submit">
-                        <input type="submit" value="お問い合わせ内容を確認" class="inquiry__submit-btn">
-                    </div>
+                    <form class="inquiry__form" action="page_confirm.html" method="post">
+                        <div class="inquiry__check">
+                            <label class="checkbox" for="check1">
+                                <input id="check1" type="checkbox" name="agree_pledge" class="checkbox__input" required>
+                                <span class="checkbox__box"></span>
+                                <span class="checkbox__text">- 免責・誓約事項 - に同意する</span>
+                            </label>
+                        </div>
+
+                        <div class="inquiry__check">
+                            <label class="checkbox" for="check2">
+                                <input id="check2" type="checkbox" name="agree_privacy" class="checkbox__input"
+                                    required>
+                                <span class="checkbox__box"></span>
+                                <span class="checkbox__text">- 個人情報保護方針 - に同意する</span>
+                            </label>
+                        </div>
+
+                        <a href="page_pledge.html" class="btn--confirmation">
+                            免責・誓約事項、個人情報保護方針に関するご確認はこちら
+                        </a>
+
+                        <div class="inquiry__content">
+                            <label class="inquiry__name" for="name">お名前</label>
+                            <input id="name" type="text" name="name" class="inquiry__name--column" required
+                                autocomplete="name">
+                        </div>
+
+                        <div class="inquiry__content">
+                            <label class="inquiry__email" for="email">メールアドレス</label>
+                            <input id="email" type="email" name="email" class="inquiry__email--column"
+                                autocomplete="email" required>
+                        </div>
+
+                        <div class="inquiry__content">
+                            <label class="inquiry__day" for="day">挙式披露宴日</label>
+                            <input id="day" type="date" name="day" class="inquiry__day--column">
+                        </div>
+
+                        <div class="inquiry__content">
+                            <label class="inquiry__place" for="place">会場</label>
+                            <input id="place" type="text" name="place" class="inquiry__place--column"
+                                autocomplete="organization">
+                        </div>
+
+                        <div class="inquiry__content">
+                            <label class="inquiry__text" for="message">お問い合わせ内容</label>
+                            <textarea id="message" name="message" class="inquiry__text--column" required></textarea>
+                        </div>
+
+                        <div class="inquiry__submit">
+                            <button type="submit" class="inquiry__submit-btn">お問い合わせ内容を確認</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </section>
+
     </main>
+
     <footer class="footer">
         <div class="footer__inner">
             <div class="footer__about">
                 <a href="page_pledge.html">免責・誓約事項、個人情報保護方針について</a>
             </div>
+
             <div class="footer__copy">
-                <small>&copy;結婚式に持ち込む写真カメラマン GLASSY-PHOTO
-                </small>
-                <img src="./images/webp/photographer_img.webp" alt="" class="footer__img" loading="lazy" width="448"
-                    height="557">
+                <small>&copy;結婚式に持ち込む写真カメラマン GLASSY-PHOTO</small>
+                <img src="./images/webp/photographer_img.webp" class="footer__img" loading="lazy" width="448"
+                    height="557" decoding="async" aria-hidden + alt="">
             </div>
         </div>
     </footer>
+
     <script src="./js/script.js" defer></script>
     <script src="./js/shutter.js" defer></script>
 </body>

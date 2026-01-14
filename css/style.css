@@ -1067,8 +1067,30 @@ body:not(.is-home) .header {
   }
 }
 .mainvisual {
-  background: url(../images/photo/ceremony/ceremony10.webp) no-repeat center center/cover;
-  padding: 37.5rem 25rem;
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  min-height: calc(100svh - var(--header-height, 5rem));
+}
+@media (min-width: 480px) {
+  .mainvisual {
+    min-height: calc(100svh - var(--header-height, 5.625rem));
+  }
+}
+.mainvisual picture,
+.mainvisual img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.mainvisual img {
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+  display: block;
 }
 
 .style__inner {
@@ -1956,12 +1978,22 @@ body:not(.is-home) .header {
     height: 1px;
   }
 }
+.inquiry__form {
+  display: block;
+}
 .inquiry__content {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   margin-bottom: 1.875rem;
-  text-align: center;
+  text-align: left;
+}
+.inquiry__content label {
+  font-size: 0.875rem;
+  line-height: 1.5714285714;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 .inquiry__content input,
 .inquiry__content textarea {
@@ -1989,26 +2021,25 @@ body:not(.is-home) .header {
     flex-direction: row;
     align-items: flex-start;
     gap: 2.5rem;
-    text-align: left;
   }
-  .inquiry__content p {
+  .inquiry__content label {
     width: 8.75rem;
     flex-shrink: 0;
     padding-top: 0.5rem;
   }
 }
-.inquiry__submit {
-  text-align: center;
+.inquiry .inquiry__submit {
+  display: flex;
+  justify-content: center;
   margin-bottom: 3.75rem;
 }
 @media (min-width: 800px) {
-  .inquiry__submit {
-    margin-bottom: 5rem;
+  .inquiry .inquiry__submit {
+    margin: 2.5rem 0 5rem;
   }
 }
-.inquiry__submit-btn {
+.inquiry .inquiry__submit-btn {
   display: inline-block;
-  margin: 0 auto;
   background-color: #C06F62;
   border: 3px solid #F1E5DD;
   color: #fff;
@@ -2018,7 +2049,7 @@ body:not(.is-home) .header {
   cursor: pointer;
   transition: 0.3s;
 }
-.inquiry__submit-btn:hover {
+.inquiry .inquiry__submit-btn:hover {
   opacity: 0.8;
   background-color: #fff;
   color: #C06F62;
@@ -2166,74 +2197,55 @@ body:not(.is-home) .header {
   color: #C06F62;
 }
 
-/* ===== チェックボックス ===== */
-/* input を隠す */
-.checkbox__input[type=checkbox] {
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  width: 0.3rem;
-  height: 0.3rem;
-  border: 2px solid #C06F62;
-  border-radius: 3px;
-  cursor: pointer;
-  position: relative;
-  z-index: 2;
-}
-
-/* チェックが付いた時だけチェックマーク表示 */
-.checkbox__input:checked ~ .checkbox__box::after {
-  opacity: 1;
-}
-
+/* ===== チェックボックス（置き換え） ===== */
 .checkbox {
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.625rem;
   cursor: pointer;
-  z-index: 3;
+  /* checked */
+  /* focus */
 }
 .checkbox__input {
   position: absolute;
   opacity: 0;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-  z-index: 4;
+  width: 1px;
+  height: 1px;
 }
 .checkbox__box {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  position: relative;
   width: 1.875rem;
   height: 1.875rem;
   border: 2px solid #C06F62;
-  border-radius: 0.6rem;
-  font-size: 0.875rem;
-  cursor: pointer;
+  border-radius: 0.625rem;
+  background: #fff;
+  flex-shrink: 0;
+  position: relative;
 }
 .checkbox__box::after {
   content: "";
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0.9rem;
-  height: 0.5rem;
+  width: 0.75rem;
+  height: 0.4375rem;
   border-left: 2px solid #C06F62;
   border-bottom: 2px solid #C06F62;
-  transform: translate(-50%, -60%) rotate(-45deg);
+  transform: rotate(-45deg);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
-.checkbox__input:checked ~ .checkbox__box::after {
+.checkbox__text {
+  font-size: 0.875rem;
+  line-height: 1.5714285714;
+}
+.checkbox__input:checked + .checkbox__box::after {
   opacity: 1;
 }
-
-.checkbox label {
-  position: relative;
-  z-index: 2;
+.checkbox__input:focus-visible + .checkbox__box {
+  outline: 2px solid #3A2D26;
+  outline-offset: 2px;
 }
 
 /* ===== 下の確認リンク ===== */
