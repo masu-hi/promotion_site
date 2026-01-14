@@ -116,14 +116,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const carryEl = document.querySelector(".inquiry-carry");
     if (carryEl) {
         let lastLeft = null;
+        let lastIsBack = false;
 
         const loop = () => {
+            // ★ホバー中は向きを更新しない（止まった瞬間の向きを維持）
+            if (carryEl.matches(":hover")) {
+                requestAnimationFrame(loop);
+                return;
+            }
+
             const left = carryEl.getBoundingClientRect().left;
 
             if (lastLeft !== null) {
                 // leftが増える＝左→右（戻り）
-                carryEl.classList.toggle("is-back", left > lastLeft);
+                lastIsBack = left > lastLeft;
+                carryEl.classList.toggle("is-back", lastIsBack);
             }
+
             lastLeft = left;
             requestAnimationFrame(loop);
         };

@@ -117,7 +117,7 @@ $breakpoints: (
     display: block;
     width: 100%;
     text-align: right;
-    margin-top: rem(30);
+    margin: rem(50);
 
     span {
         position: relative;
@@ -181,7 +181,7 @@ $breakpoints: (
         display: block;
         width: 100%;
         text-align: right;
-        margin-top: rem(50);
+        margin: rem(80) 0;
 
         span {
             font-size: rem(16);
@@ -374,60 +374,60 @@ footer {
     }
 }
 
-/* =========================
-   Drawer（SPだけ表示）
-========================= */
-.drawer {
-    position: relative;
+/* Drawer（SPのみ） */
 
-    /* ✅ PCではdrawer一式を非表示 */
+.drawer {
     @include mq(desktop) {
         display: none;
     }
 
     &__toggle {
-        position: fixed;
-        top: percentage(math.div(40, 850));
-        right: percentage(math.div(50, 1280));
-        width: 20px;
-        height: 20px;
+        position: absolute;
+        top: rem(20);
+        right: rem(20);
+        width: rem(22);
+        height: rem(22);
         z-index: 1000;
         cursor: pointer;
 
         @include mq(sp) {
-            width: 30px;
-            height: 30px;
+            top: rem(26);
+            right: rem(26);
+            width: rem(30);
+            height: rem(30);
         }
 
         span {
             position: absolute;
+            left: 0;
             width: 100%;
             height: 2px;
-            background-color: $color-text;
-            left: 0;
-            transition: .7s;
+            background: $color-text;
             border-radius: 2px;
+            transition: .7s;
 
             @include mq(sp) {
                 height: 3px;
             }
         }
 
-        span:nth-child(1) {
-            top: rem(4);
-        }
+        @for $i from 1 through 3 {
+            span:nth-child(#{$i}) {
+                top: rem(4 + ($i - 1) * 9);
+            }
 
-        span:nth-child(2) {
-            top: rem(13);
-        }
-
-        span:nth-child(3) {
-            top: rem(22);
+            // 4,13,22
         }
     }
 
-    &__close {
+    &__close,
+    &__mask,
+    &__nav,
+    .flash-effect {
         position: fixed;
+    }
+
+    &__close {
         top: rem(20);
         right: rem(20);
         display: none;
@@ -437,22 +437,20 @@ footer {
     }
 
     &__mask {
-        display: none;
-        position: fixed;
         inset: 0;
-        background: rgba(0, 0, 0, 0.6);
+        display: none;
+        background: rgba(0, 0, 0, .6);
         z-index: 900;
     }
 
     &__nav {
-        position: fixed;
         top: 0;
         right: -280px;
         width: min(80vw, 280px);
         height: 100vh;
+        padding: rem(40) rem(20);
         background: #fff;
         transition: right .7s;
-        padding: rem(40) rem(20);
         z-index: 1000;
     }
 
@@ -469,7 +467,7 @@ footer {
         a {
             color: inherit;
             text-decoration: none;
-            @include hover(drawer); // ←キラン＋下線
+            @include hover(drawer);
         }
     }
 
@@ -478,10 +476,7 @@ footer {
             right: 0;
         }
 
-        .drawer__mask {
-            display: block;
-        }
-
+        .drawer__mask,
         .drawer__close {
             display: block;
         }
@@ -492,19 +487,18 @@ footer {
     }
 }
 
-/* フラッシュ */
+/* flash */
 .flash-effect {
-    position: fixed;
     inset: 0;
-    background: white;
+    background: #fff;
     opacity: 0;
     pointer-events: none;
     z-index: 2000;
-    transition: opacity 0.2s ease;
-}
+    transition: opacity .2s ease;
 
-.flash-effect.is-active {
-    opacity: 1;
+    &.is-active {
+        opacity: 1;
+    }
 }
 
 .footer {
@@ -527,6 +521,8 @@ footer {
         line-height: math.div(18, 12);
         text-align: center;
         display: flex;
+        justify-content: center;
+        align-items: center;
         gap: rem(30);
     }
 
@@ -1169,6 +1165,11 @@ $wobbleD: (
 
     &__title {
         @include title-main(gallery);
+        margin: rem(212) 0 rem(-30);
+
+        @include mq() {
+            margin: rem(180) 0 rem(70);
+        }
     }
 
     &__note {
@@ -1177,31 +1178,31 @@ $wobbleD: (
         text-align: right;
     }
 
-    // ▼ tabs：モバイルは固定＆右寄せ
     &__tabs {
         position: fixed;
         left: 0;
         right: 0;
-
-        // header直下に固定（ヘッダーの高さに合わせて調整）
-        // 例）ヘッダーが80pxなら top: rem(80);
-        top: var(--header-height, #{rem(80)});
+        top: var(--header-height, #{rem(100)});
         z-index: 50;
 
         display: flex;
-        justify-content: flex-end; // 右寄せ
+        justify-content: center;
         align-items: center;
-        gap: rem(12); // 10〜15px相当
+        gap: rem(20);
         padding: rem(10) rem(16);
 
-        background: transparent; // ← 背景色なし
-        border: none; // 枠も不要ならnone（残したいなら 1px solid〜に戻してOK）
+        background: transparent;
+        border: none;
+
+        @include mq(sp) {
+            gap: rem(30);
+        }
     }
 
     &__tab {
         appearance: none;
         border: 1px solid $color-line;
-        background: transparent; // 背景なし
+        background: $color-bg; // 背景なし
         color: $color-text;
         font-size: rem(13);
         line-height: 1;
@@ -1275,7 +1276,13 @@ $wobbleD: (
 .gallery-modal {
     position: fixed;
     inset: 0;
-    z-index: 1200; // drawerより上に
+
+    // まず桁違いに上へ（headerやdrawerがどれだけ高くても勝つ）
+    z-index: 2147483647;
+
+    // 最前面のスタッキングコンテキストを作って、他の影響を受けにくくする
+    isolation: isolate;
+
     display: none;
 
     &.is-open {
@@ -1285,14 +1292,14 @@ $wobbleD: (
     &__bg {
         position: absolute;
         inset: 0;
-        border: 0;
-        background: rgba(232, 154, 103, .2); // $color-main透過
+        z-index: 0;
         cursor: pointer;
     }
 
     &__content {
         position: absolute;
         inset: rem(16);
+        z-index: 1;
         display: grid;
         place-items: center;
     }
@@ -1305,42 +1312,53 @@ $wobbleD: (
     }
 
     &__img {
+        display: block;
         width: 100%;
         max-height: 85vh;
         object-fit: contain;
-        display: block;
         border-radius: rem(12);
         background: $color-bg;
+
+        position: relative;
+        z-index: 1;
     }
-
 }
-
-$icon-close: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 6 L18 18 M18 6 L6 18' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E";
 
 .gallery-modal__close {
     position: absolute;
     top: rem(10);
     right: rem(10);
+    z-index: 2;
 
     width: rem(44);
     height: rem(44);
     padding: 0;
-    border-radius: rem(999);
-
-    border: 2px solid rgba(255, 255, 255, 0.65);
-    background-color: rgba(58, 45, 38, 0.45);
-
+    border: 0;
+    background: none;
     cursor: pointer;
 
-    /* テキストは使わない */
-    font-size: 0;
-    line-height: 0;
+    // クリックしやすく
+    display: grid;
+    place-items: center;
+}
 
-    /* SVG × */
-    background-image: url(#{$icon-close}) !important;
-    background-repeat: no-repeat !important;
-    background-position: center !important;
-    background-size: rem(22) rem(22) !important;
+/* ×をCSSだけで描画 */
+.gallery-modal__close::before,
+.gallery-modal__close::after {
+    content: "";
+    position: absolute;
+    width: rem(24);
+    height: rem(2.5);
+    background: #fff; // 白い×
+    border-radius: rem(2);
+}
+
+.gallery-modal__close::before {
+    transform: rotate(45deg);
+}
+
+.gallery-modal__close::after {
+    transform: rotate(-45deg);
 }
 
 .ceremony {
@@ -1385,6 +1403,14 @@ $icon-close: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
                 grid-column-gap: rem(50);
                 grid-row-gap: rem(50);
             }
+        }
+    }
+
+    &__item {
+        cursor: default;
+
+        &:hover {
+            cursor: zoom-in;
         }
     }
 
@@ -1439,6 +1465,14 @@ $icon-close: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
         }
     }
 
+    &__item {
+        cursor: default;
+
+        &:hover {
+            cursor: zoom-in;
+        }
+    }
+
     &__more {
         @include viewmore(reception);
     }
@@ -1456,6 +1490,14 @@ $icon-close: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
 
         @include mq() {
             gap: rem(50);
+        }
+    }
+
+    &__item {
+        cursor: default;
+
+        &:hover {
+            cursor: zoom-in;
         }
     }
 
@@ -2258,22 +2300,22 @@ $icon-close: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
 
     &__subtitle {
         @include title-sub(option);
-        margin-top: rem(50);
+        margin-top: rem(80);
 
         @include mq() {
-            margin-top: rem(60);
+            margin-top: rem(100);
         }
     }
 
     &__text {
-        margin-top: rem(30);
+        margin-top: rem(50);
         display: grid;
         row-gap: rem(20);
 
         @include mq() {
             display: flex;
             justify-content: center;
-            margin-top: rem(60);
+            margin-top: rem(80);
         }
 
         &--inner {
@@ -2385,7 +2427,7 @@ $icon-close: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
 
     &__list {
         width: fit-content;
-        margin: 0 auto;
+        margin: rem(60) auto;
         text-align: left;
     }
 
