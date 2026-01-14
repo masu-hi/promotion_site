@@ -1066,6 +1066,11 @@ body:not(.is-home) .header {
             animation: none !important;
   }
 }
+.mainvisual {
+  background: url(../images/photo/ceremony/ceremony10.webp) no-repeat center center/cover;
+  padding: 37.5rem 25rem;
+}
+
 .style__inner {
   max-width: 1200px;
   width: 92.1875%;

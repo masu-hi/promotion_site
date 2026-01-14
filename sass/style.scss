@@ -1097,6 +1097,12 @@ $wobbleD: (
 //  index.html
 // =================================================================
 
+.mainvisual {
+    background: url(../images/photo/ceremony/ceremony10.webp) no-repeat center center/cover;
+    padding: rem(600) rem(400);
+}
+
+
 .style {
     &__inner {
         @include inner();
